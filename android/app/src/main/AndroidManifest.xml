@@ -1,0 +1,97 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="Instantiatable"
+
+    package="com.tsbeh">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
+<!--     <uses-permission android:name="android.permission.USE_EXACT_ALARM"-->
+<!--        android:minSdkVersion="33"/>-->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+        <!-- If your app checks for SMS support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="sms" />
+        </intent>
+        <!-- If your app checks for call support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+    </queries>
+
+   <application
+        android:label="tsbeh"
+        android:name="${applicationName}"
+       android:usesCleartextTraffic="true"
+
+       android:icon="@mipmap/ic_launcher">
+
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="true"-->
+<!--            tools:ignore="Instantiatable"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:theme="@style/LaunchTheme"-->
+<!--            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"-->
+<!--            android:hardwareAccelerated="true"-->
+<!--            android:windowSoftInputMode="adjustResize">-->
+<!--            &lt;!&ndash; Specifies an Android theme to apply to this Activity as soon as-->
+<!--                 the Android process has started. This theme is visible to the user-->
+<!--                 while the Flutter UI initializes. After that, this theme continues-->
+<!--                 to determine the Window background behind the Flutter UI. &ndash;&gt;-->
+<!--            <meta-data-->
+<!--              android:name="io.flutter.embedding.android.NormalTheme"-->
+<!--              android:resource="@style/NormalTheme"-->
+<!--              />-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+       <activity
+           android:name="com.ryanheise.audioservice.AudioServiceActivity"
+           android:launchMode="singleTop"
+           android:theme="@style/LaunchTheme"
+           android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+           android:hardwareAccelerated="true"
+           android:windowSoftInputMode="adjustResize"
+           android:exported="true">
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN"/>
+               <category android:name="android.intent.category.LAUNCHER"/>
+           </intent-filter>
+       </activity>
+
+       <service
+           android:name="com.ryanheise.audioservice.AudioService"
+           android:foregroundServiceType="mediaPlayback"
+           android:exported="true">
+           <intent-filter>
+               <action android:name="android.media.browse.MediaBrowserService" />
+           </intent-filter>
+       </service>
+
+       <receiver
+           android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+           android:exported="true">
+           <intent-filter>
+               <action android:name="android.intent.action.MEDIA_BUTTON" />
+           </intent-filter>
+       </receiver>
+
+       <meta-data
+           android:name="flutterEmbedding"
+           android:value="2" />
+
+
+   </application>
+</manifest>
