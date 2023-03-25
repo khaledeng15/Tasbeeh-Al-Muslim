@@ -12,7 +12,6 @@ import 'package:awesome_notifications/awesome_notifications.dart'
 import 'package:awesome_notifications/awesome_notifications.dart' as Utils
     show AwesomeDateUtils;
 
-
 import 'package:url_launcher/url_launcher.dart';
 
 /* *********************************************
@@ -34,7 +33,7 @@ Future<void> externalUrl(String url) async {
   }
 }
 
-int createUniqueID(int maxValue){
+int createUniqueID(int maxValue) {
   Random random = new Random();
   return random.nextInt(maxValue);
 }
@@ -44,261 +43,259 @@ int createUniqueID(int maxValue){
 ************************************************ */
 
 class NotificationUtils {
-
   static Future<bool> redirectToPermissionsPage() async {
     await AwesomeNotifications().showNotificationConfigPage();
     return await AwesomeNotifications().isNotificationAllowed();
   }
-  
+
   static Future<void> redirectToBasicChannelPage() async {
-    await AwesomeNotifications().showNotificationConfigPage(channelKey: 'basic_channel');
+    await AwesomeNotifications()
+        .showNotificationConfigPage(channelKey: 'basic_channel');
   }
-  
+
   static Future<void> redirectToAlarmPage() async {
     await AwesomeNotifications().showAlarmPage();
   }
 
   static Future<void> redirectToScheduledChannelsPage() async {
-    await AwesomeNotifications().showNotificationConfigPage(channelKey: 'scheduled');
+    await AwesomeNotifications()
+        .showNotificationConfigPage(channelKey: 'scheduled');
   }
 
   static Future<void> redirectToOverrideDndsPage() async {
     await AwesomeNotifications().showGlobalDndOverridePage();
   }
-  
-  static Future<bool> requestBasicPermissionToSendNotifications(BuildContext context) async {
+
+  static Future<bool> requestBasicPermissionToSendNotifications(
+      BuildContext context) async {
     bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
-    if(!isAllowed){
+    if (!isAllowed) {
       await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: Color(0xfffbfbfb),
-            title: Text(
-                'Get Notified!',
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/images/animated-bell.gif',
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  fit: BoxFit.fitWidth,
+                backgroundColor: Color(0xfffbfbfb),
+                title: Text('Get Notified!',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/images/animated-bell.gif',
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    Text(
+                      'Allow Awesome Notifications to send you beautiful notifications!',
+                      maxLines: 4,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                Text(
-                  'Allow Awesome Notifications to send you beautiful notifications!',
-                  maxLines: 4,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                  onPressed: (){ Navigator.pop(context); },
-                  child: Text(
-                    'Later',
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
-                  )
-              ),
-              TextButton(
-                onPressed: () async {
-                  isAllowed = await AwesomeNotifications().requestPermissionToSendNotifications();
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Allow',
-                  style: TextStyle(color: Colors.deepPurple, fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          )
-      );
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Later',
+                        style: TextStyle(color: Colors.grey, fontSize: 18),
+                      )),
+                  TextButton(
+                    onPressed: () async {
+                      isAllowed = await AwesomeNotifications()
+                          .requestPermissionToSendNotifications();
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Allow',
+                      style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ));
     }
     return isAllowed;
   }
 
-  static Future<void> requestFullScheduleChannelPermissions(BuildContext context, List<NotificationPermission> requestedPermissions) async {
+  static Future<void> requestFullScheduleChannelPermissions(
+      BuildContext context,
+      List<NotificationPermission> requestedPermissions) async {
     String channelKey = 'scheduled';
 
-    await requestUserPermissions(context, channelKey: channelKey, permissionList: requestedPermissions);
+    await requestUserPermissions(context,
+        channelKey: channelKey, permissionList: requestedPermissions);
   }
 
   static Future<List<NotificationPermission>> requestUserPermissions(
-      BuildContext context,{
+      BuildContext context,
+      {
       // if you only intends to request the permissions until app level, set the channelKey value to null
       required String? channelKey,
-      required List<NotificationPermission> permissionList}
-    ) async {
-
+      required List<NotificationPermission> permissionList}) async {
     // Check if the basic permission was conceived by the user
-    if(!await requestBasicPermissionToSendNotifications(context))
-      return [];
+    if (!await requestBasicPermissionToSendNotifications(context)) return [];
 
     // Check which of the permissions you need are allowed at this time
-    List<NotificationPermission> permissionsAllowed = await AwesomeNotifications().checkPermissionList(
-        channelKey: channelKey,
-        permissions: permissionList
-    );
+    List<NotificationPermission> permissionsAllowed =
+        await AwesomeNotifications().checkPermissionList(
+            channelKey: channelKey, permissions: permissionList);
 
     // If all permissions are allowed, there is nothing to do
-    if(permissionsAllowed.length == permissionList.length)
+    if (permissionsAllowed.length == permissionList.length)
       return permissionsAllowed;
 
     // Refresh the permission list with only the disallowed permissions
     List<NotificationPermission> permissionsNeeded =
-      permissionList.toSet().difference(permissionsAllowed.toSet()).toList();
+        permissionList.toSet().difference(permissionsAllowed.toSet()).toList();
 
     // Check if some of the permissions needed request user's intervention to be enabled
-    List<NotificationPermission> lockedPermissions = await AwesomeNotifications().shouldShowRationaleToRequest(
-        channelKey: channelKey,
-        permissions: permissionsNeeded
-    );
+    List<NotificationPermission> lockedPermissions =
+        await AwesomeNotifications().shouldShowRationaleToRequest(
+            channelKey: channelKey, permissions: permissionsNeeded);
 
     // If there is no permitions depending of user's intervention, so request it directly
-    if(lockedPermissions.isEmpty){
-
+    if (lockedPermissions.isEmpty) {
       // Request the permission through native resources.
       await AwesomeNotifications().requestPermissionToSendNotifications(
-          channelKey: channelKey,
-          permissions: permissionsNeeded
-      );
+          channelKey: channelKey, permissions: permissionsNeeded);
 
       // After the user come back, check if the permissions has successfully enabled
       permissionsAllowed = await AwesomeNotifications().checkPermissionList(
-          channelKey: channelKey,
-          permissions: permissionsNeeded
-      );
-    }
-    else {
+          channelKey: channelKey, permissions: permissionsNeeded);
+    } else {
       // If you need to show a rationale to educate the user to conceed the permission, show it
       await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: Color(0xfffbfbfb),
-            title: Text('Awesome Notificaitons needs your permission',
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/images/animated-clock.gif',
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  fit: BoxFit.fitWidth,
-                ),
-                Text(
-                  'To proceede, you need to enable the permissions above'+
-                      (channelKey?.isEmpty ?? true ? '' : ' on channel $channelKey')+':',
-                  maxLines: 2,
+                backgroundColor: Color(0xfffbfbfb),
+                title: Text(
+                  'Awesome Notificaitons needs your permission',
                   textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 5),
-                Text(
-                  lockedPermissions.join(', ').replaceAll('NotificationPermission.', ''),
                   maxLines: 2,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                 ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                  onPressed: (){ Navigator.pop(context); },
-                  child: Text(
-                    'Deny',
-                    style: TextStyle(color: Colors.red, fontSize: 18),
-                  )
-              ),
-              TextButton(
-                onPressed: () async {
-
-                  // Request the permission through native resources. Only one page redirection is done at this point.
-                  await AwesomeNotifications().requestPermissionToSendNotifications(
-                      channelKey: channelKey,
-                      permissions: lockedPermissions
-                  );
-
-                  // After the user come back, check if the permissions has successfully enabled
-                  permissionsAllowed = await AwesomeNotifications().checkPermissionList(
-                      channelKey: channelKey,
-                      permissions: lockedPermissions
-                  );
-
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Allow',
-                  style: TextStyle(color: Colors.deepPurple, fontSize: 18, fontWeight: FontWeight.bold),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/images/animated-clock.gif',
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    Text(
+                      'To proceede, you need to enable the permissions above' +
+                          (channelKey?.isEmpty ?? true
+                              ? ''
+                              : ' on channel $channelKey') +
+                          ':',
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      lockedPermissions
+                          .join(', ')
+                          .replaceAll('NotificationPermission.', ''),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          )
-      );
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Deny',
+                        style: TextStyle(color: Colors.red, fontSize: 18),
+                      )),
+                  TextButton(
+                    onPressed: () async {
+                      // Request the permission through native resources. Only one page redirection is done at this point.
+                      await AwesomeNotifications()
+                          .requestPermissionToSendNotifications(
+                              channelKey: channelKey,
+                              permissions: lockedPermissions);
+
+                      // After the user come back, check if the permissions has successfully enabled
+                      permissionsAllowed = await AwesomeNotifications()
+                          .checkPermissionList(
+                              channelKey: channelKey,
+                              permissions: lockedPermissions);
+
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Allow',
+                      style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ));
     }
 
     // Return the updated list of allowed permissions
     return permissionsAllowed;
   }
 
-  static Future<bool> requestCriticalAlertsPermission(BuildContext context) async {
-
+  static Future<bool> requestCriticalAlertsPermission(
+      BuildContext context) async {
     List<NotificationPermission> requestedPermissions = [
       NotificationPermission.CriticalAlert
     ];
 
     List<NotificationPermission> permissionsAllowed =
-    await requestUserPermissions(
-        context,
-        channelKey: null,
-        permissionList: requestedPermissions);
+        await requestUserPermissions(context,
+            channelKey: null, permissionList: requestedPermissions);
 
     return permissionsAllowed.isNotEmpty;
   }
 
   static Future<bool> requestFullIntentPermission(BuildContext context) async {
-
     List<NotificationPermission> requestedPermissions = [
       NotificationPermission.CriticalAlert
     ];
 
     List<NotificationPermission> permissionsAllowed =
-    await requestUserPermissions(
-        context,
-        channelKey: null,
-        permissionList: requestedPermissions);
+        await requestUserPermissions(context,
+            channelKey: null, permissionList: requestedPermissions);
 
     return permissionsAllowed.isNotEmpty;
   }
 
-  static Future<bool> requestPreciseAlarmPermission(BuildContext context) async {
-
+  static Future<bool> requestPreciseAlarmPermission(
+      BuildContext context) async {
     List<NotificationPermission> requestedPermissions = [
       NotificationPermission.PreciseAlarms
     ];
 
     List<NotificationPermission> permissionsAllowed =
-    await requestUserPermissions(
-        context,
-        channelKey: null,
-        permissionList: requestedPermissions);
+        await requestUserPermissions(context,
+            channelKey: null, permissionList: requestedPermissions);
 
     return permissionsAllowed.isNotEmpty;
   }
 
   static Future<bool> requestOverrideDndPermission(BuildContext context) async {
-
     List<NotificationPermission> requestedPermissions = [
       NotificationPermission.OverrideDnD
     ];
 
     List<NotificationPermission> permissionsAllowed =
-    await requestUserPermissions(
-        context,
-        channelKey: null,
-        permissionList: requestedPermissions);
+        await requestUserPermissions(context,
+            channelKey: null, permissionList: requestedPermissions);
 
     return permissionsAllowed.isNotEmpty;
   }
@@ -306,38 +303,36 @@ class NotificationUtils {
   /* *********************************************
       BASIC NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showBasicNotification(int id) async {
     await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: id,
-        channelKey: 'basic_channel',
-        title: 'Simple Notification',
-        body: 'Simple body',
-        customSound: 'resource://raw/res_morph_power_rangers'
-      )
-    );
+        content: NotificationContent(
+            id: id,
+            channelKey: 'basic_channel',
+            title: 'Simple Notification',
+            body: 'Simple body',
+            customSound: 'resource://raw/res_morph_power_rangers'));
   }
-  
+
   static Future<void> showEmojiNotification(int id) async {
     await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: id,
-        channelKey: 'basic_channel',
-        category: NotificationCategory.Social,
-        title: 'Emojis are awesome too! ' +
-            Emojis.smile_face_with_tongue +
-            Emojis.smile_smiling_face +
-            Emojis.smile_smiling_face_with_heart_eyes,
-        body:
-            'Simple body with a bunch of Emojis! ${Emojis.transport_police_car} ${Emojis.animals_dog} ${Emojis.flag_UnitedStates} ${Emojis.person_baby}',
-        largeIcon: 'https://tecnoblog.net/wp-content/uploads/2019/09/emoji.jpg',
-        bigPicture: 'https://tecnoblog.net/wp-content/uploads/2019/09/emoji.jpg',
-        hideLargeIconOnExpand: true,
-        notificationLayout: NotificationLayout.BigPicture,
+        content: NotificationContent(
+      id: id,
+      channelKey: 'basic_channel',
+      category: NotificationCategory.Social,
+      title: 'Emojis are awesome too! ' +
+          Emojis.smile_face_with_tongue +
+          Emojis.smile_smiling_face +
+          Emojis.smile_smiling_face_with_heart_eyes,
+      body:
+          'Simple body with a bunch of Emojis! ${Emojis.transport_police_car} ${Emojis.animals_dog} ${Emojis.flag_UnitedStates} ${Emojis.person_baby}',
+      largeIcon: 'https://tecnoblog.net/wp-content/uploads/2019/09/emoji.jpg',
+      bigPicture: 'https://tecnoblog.net/wp-content/uploads/2019/09/emoji.jpg',
+      hideLargeIconOnExpand: true,
+      notificationLayout: NotificationLayout.BigPicture,
     ));
   }
-  
+
   static Future<void> showNotificationWithPayloadContent(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -347,7 +342,7 @@ class NotificationUtils {
             body: 'Only a simple notification',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showNotificationWithoutTitle(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -356,7 +351,7 @@ class NotificationUtils {
             body: 'Only a simple notification',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showNotificationWithoutBody(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -365,7 +360,7 @@ class NotificationUtils {
             title: 'plain title',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> sendBackgroundNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -373,11 +368,11 @@ class NotificationUtils {
             channelKey: 'basic_channel',
             payload: {'secret-command': 'block_user'}));
   }
-  
+
   /* *********************************************
       BADGE NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showBadgeNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -385,10 +380,12 @@ class NotificationUtils {
             channelKey: 'badge_channel',
             title: 'Badge test notification',
             body: 'This notification does activate badge indicator'),
-        schedule: NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier())
-    );
+        schedule: NotificationInterval(
+            interval: 5,
+            timeZone:
+                await AwesomeNotifications().getLocalTimeZoneIdentifier()));
   }
-  
+
   static Future<void> showWithoutBadgeNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -396,37 +393,39 @@ class NotificationUtils {
             channelKey: 'basic_channel',
             title: 'Badge test notification',
             body: 'This notification does not activate badge indicator'),
-        schedule: NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier())
-    );
+        schedule: NotificationInterval(
+            interval: 5,
+            timeZone:
+                await AwesomeNotifications().getLocalTimeZoneIdentifier()));
   }
-  
+
   // ON BADGE METHODS, NULL CHANNEL SETS THE GLOBAL COUNTER
-  
+
   static Future<int> getBadgeIndicator() async {
     int amount = await AwesomeNotifications().getGlobalBadgeCounter();
     return amount;
   }
-  
+
   static Future<void> setBadgeIndicator(int amount) async {
     await AwesomeNotifications().setGlobalBadgeCounter(amount);
   }
-  
+
   static Future<int> incrementBadgeIndicator() async {
     return await AwesomeNotifications().incrementGlobalBadgeCounter();
   }
-  
+
   static Future<int> decrementBadgeIndicator() async {
     return await AwesomeNotifications().decrementGlobalBadgeCounter();
   }
-  
+
   static Future<void> resetBadgeIndicator() async {
     await AwesomeNotifications().resetGlobalBadge();
   }
-  
+
   /* *********************************************
       ACTION BUTTONS NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showNotificationWithActionButtons(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -439,10 +438,13 @@ class NotificationUtils {
           NotificationActionButton(
               key: 'READ', label: 'Mark as read', autoDismissible: true),
           NotificationActionButton(
-              key: 'PROFILE', label: 'Profile', autoDismissible: true, enabled: false)
+              key: 'PROFILE',
+              label: 'Profile',
+              autoDismissible: true,
+              enabled: false)
         ]);
   }
-  
+
   static Future<void> showNotificationWithIconsAndActionButtons(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -455,16 +457,19 @@ class NotificationUtils {
           NotificationActionButton(
               key: 'READ', label: 'Mark as read', autoDismissible: true),
           NotificationActionButton(
-              key: 'PROFILE', label: 'Profile', autoDismissible: true, color: Colors.green),
+              key: 'PROFILE',
+              label: 'Profile',
+              autoDismissible: true,
+              color: Colors.green),
           NotificationActionButton(
               key: 'DISMISS',
               label: 'Dismiss',
               autoDismissible: true,
-              buttonType: ActionButtonType.DisabledAction,
+              // buttonType: ActionButtonType.DisabledAction,
               isDangerousOption: true)
         ]);
   }
-  
+
   static Future<void> showNotificationWithActionButtonsAndReply(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -478,7 +483,7 @@ class NotificationUtils {
             key: 'REPLY',
             label: 'Reply',
             autoDismissible: true,
-            buttonType: ActionButtonType.InputField,
+            // buttonType: ActionButtonType.InputField,
           ),
           NotificationActionButton(
               key: 'READ', label: 'Mark as read', autoDismissible: true),
@@ -547,18 +552,18 @@ class NotificationUtils {
   //       ]
   //   );
   // }
-  
+
   /* *********************************************
       LOCKED (ONGOING) NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showLockedNotification(int id) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: 'locked_notification',
         channelName: 'Locked notification',
         channelDescription: 'Channel created on the fly with lock option',
         locked: true));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -567,14 +572,14 @@ class NotificationUtils {
             body: 'This notification is locked and cannot be dismissed',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showUnlockedNotification(int id) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: 'locked_notification',
         channelName: 'Unlocked notification',
         channelDescription: 'Channel created on the fly with lock option',
         locked: true));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -584,18 +589,18 @@ class NotificationUtils {
             payload: {'uuid': 'uuid-test'},
             locked: false));
   }
-  
+
   /* *********************************************
       NOTIFICATION CHANNELS MANIPULATION
   ************************************************ */
-  
+
   static Future<void> showNotificationImportance(
       int id, NotificationImportance importance) async {
     String importanceKey = importance.toString().toLowerCase().split('.').last;
     String channelKey = 'importance_' + importanceKey + '_channel';
     String title = 'Importance levels (' + importanceKey + ')';
     String body = 'Test of importance levels to ' + importanceKey;
-  
+
     await AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: channelKey,
         channelName: title,
@@ -604,7 +609,7 @@ class NotificationUtils {
         defaultColor: Colors.red,
         ledColor: Colors.red,
         vibrationPattern: highVibrationPattern));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -613,11 +618,11 @@ class NotificationUtils {
             body: body,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   /* *********************************************
       NOTIFICATION CHANNELS MANIPULATION
   ************************************************ */
-  
+
   static Future<void> createTestChannel(String channelName) async {
     await AwesomeNotifications().setChannel(NotificationChannel(
         channelGroupKey: 'channel_tests',
@@ -626,7 +631,7 @@ class NotificationUtils {
         channelDescription:
             "Channel created to test the channels manipulation."));
   }
-  
+
   static Future<void> updateTestChannel(String channelName) async {
     await AwesomeNotifications().setChannel(NotificationChannel(
         channelGroupKey: 'channel_tests',
@@ -634,16 +639,16 @@ class NotificationUtils {
         channelName: channelName + " (updated)",
         channelDescription: "This channel was successfuly updated."));
   }
-  
+
   static Future<void> removeTestChannel(String channelName) async {
     await AwesomeNotifications()
         .removeChannel(channelName.toLowerCase().replaceAll(' ', '_'));
   }
-  
+
   /* *********************************************
       DELAYED NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> delayNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -652,14 +657,16 @@ class NotificationUtils {
             title: 'scheduled title',
             body: 'scheduled body',
             payload: {'uuid': 'uuid-test'}),
-        schedule: NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier())
-    );
+        schedule: NotificationInterval(
+            interval: 5,
+            timeZone:
+                await AwesomeNotifications().getLocalTimeZoneIdentifier()));
   }
-  
+
   /* *********************************************
       DELAYED NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showLowVibrationNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -669,7 +676,7 @@ class NotificationUtils {
             body: 'This is a notification with low vibration pattern',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showMediumVibrationNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -679,7 +686,7 @@ class NotificationUtils {
             body: 'This is a notification with medium vibration pattern',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showHighVibrationNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -689,7 +696,7 @@ class NotificationUtils {
             body: 'This is a notification with high vibration pattern',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showCustomVibrationNotification(int id) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: "custom_vibration",
@@ -699,7 +706,7 @@ class NotificationUtils {
             Int64List.fromList([0, 1000, 200, 200, 1000, 1500, 200, 200]),
         ledOnMs: 1000,
         ledOffMs: 500));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -710,11 +717,11 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   /* *********************************************
       COLORFUL AND LED NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> redNotification(int id, bool delayLEDTests) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: "colorful_notification",
@@ -725,7 +732,7 @@ class NotificationUtils {
         ledColor: Colors.red,
         ledOnMs: 1000,
         ledOffMs: 500));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -733,22 +740,27 @@ class NotificationUtils {
             title: "<font color='${Colors.red.value}'>Red Notification</font>",
             body:
                 "<font color='${Colors.red.value}'>A colorful notification</font>",
-            payload: {'uuid': 'uuid-red'}),
+            payload: {
+              'uuid': 'uuid-red'
+            }),
         actionButtons: [
           NotificationActionButton(
             key: 'REPLY',
             label: 'Reply',
             autoDismissible: true,
-            buttonType: ActionButtonType.InputField,
+            // buttonType: ActionButtonType.InputField,
           ),
           NotificationActionButton(
               key: 'ARCHIVE', label: 'Archive', autoDismissible: true)
         ],
-        schedule: delayLEDTests ? NotificationInterval(
-            interval: 5,
-            timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier()) : null);
+        schedule: delayLEDTests
+            ? NotificationInterval(
+                interval: 5,
+                timeZone:
+                    await AwesomeNotifications().getLocalTimeZoneIdentifier())
+            : null);
   }
-  
+
   static Future<void> blueNotification(int id, bool delayLEDTests) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: "colorful_notification",
@@ -759,7 +771,7 @@ class NotificationUtils {
         ledColor: Colors.blueAccent,
         ledOnMs: 1000,
         ledOffMs: 500));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -767,20 +779,27 @@ class NotificationUtils {
             title:
                 '<font color="${Colors.blueAccent.value}">Blue Notification</font>',
             body: "<font color='${Colors.blueAccent.value}'>A colorful notification</font>",
-            payload: {'uuid': 'uuid-blue'}),
+            payload: {
+              'uuid': 'uuid-blue'
+            }),
         actionButtons: [
           NotificationActionButton(
             key: 'REPLY',
             label: 'Reply',
             autoDismissible: true,
-            buttonType: ActionButtonType.InputField,
+            // buttonType: ActionButtonType.InputField,
           ),
           NotificationActionButton(
               key: 'ARCHIVE', label: 'Archive', autoDismissible: true)
         ],
-        schedule: delayLEDTests ? NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier()) : null);
+        schedule: delayLEDTests
+            ? NotificationInterval(
+                interval: 5,
+                timeZone:
+                    await AwesomeNotifications().getLocalTimeZoneIdentifier())
+            : null);
   }
-  
+
   static Future<void> yellowNotification(int id, bool delayLEDTests) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: "colorful_notification",
@@ -791,7 +810,7 @@ class NotificationUtils {
         ledColor: CupertinoColors.activeOrange,
         ledOnMs: 1000,
         ledOffMs: 500));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -805,14 +824,19 @@ class NotificationUtils {
             key: 'REPLY',
             label: 'Reply',
             autoDismissible: true,
-            buttonType: ActionButtonType.InputField,
+            // buttonType: ActionButtonType.InputField,
           ),
           NotificationActionButton(
               key: 'ARCHIVE', label: 'Archive', autoDismissible: true)
         ],
-        schedule: delayLEDTests ? NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier()) : null);
+        schedule: delayLEDTests
+            ? NotificationInterval(
+                interval: 5,
+                timeZone:
+                    await AwesomeNotifications().getLocalTimeZoneIdentifier())
+            : null);
   }
-  
+
   static Future<void> purpleNotification(int id, bool delayLEDTests) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: "colorful_notification",
@@ -823,7 +847,7 @@ class NotificationUtils {
         ledColor: Colors.deepPurple,
         ledOnMs: 1000,
         ledOffMs: 500));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -831,20 +855,27 @@ class NotificationUtils {
             title:
                 '<font color="${Colors.deepPurple.value}">Purple Notification</font>',
             body: "<font color='${Colors.deepPurple.value}'>A colorful notification</font>",
-            payload: {'uuid': 'uuid-purple'}),
+            payload: {
+              'uuid': 'uuid-purple'
+            }),
         actionButtons: [
           NotificationActionButton(
             key: 'REPLY',
             label: 'Reply',
             autoDismissible: true,
-            buttonType: ActionButtonType.InputField,
+            // buttonType: ActionButtonType.InputField,
           ),
           NotificationActionButton(
               key: 'ARCHIVE', label: 'Archive', autoDismissible: true)
         ],
-        schedule: delayLEDTests ? NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier()) : null);
+        schedule: delayLEDTests
+            ? NotificationInterval(
+                interval: 5,
+                timeZone:
+                    await AwesomeNotifications().getLocalTimeZoneIdentifier())
+            : null);
   }
-  
+
   static Future<void> greenNotification(int id, bool delayLEDTests) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: "colorful_notification",
@@ -855,7 +886,7 @@ class NotificationUtils {
         ledColor: Colors.lightGreen,
         ledOnMs: 1000,
         ledOffMs: 500));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -863,21 +894,27 @@ class NotificationUtils {
             title:
                 '<font color="${Colors.lightGreen.value}">Green Notification</font>',
             body: "<font color='${Colors.lightGreen.value}'>A colorful notification</font>",
-            payload: {'uuid': 'uuid-green'}),
+            payload: {
+              'uuid': 'uuid-green'
+            }),
         actionButtons: [
           NotificationActionButton(
             key: 'REPLY',
             label: 'Reply',
             autoDismissible: true,
-            buttonType: ActionButtonType.InputField,
+            // buttonType: ActionButtonType.InputField,
           ),
           NotificationActionButton(
               key: 'ARCHIVE', label: 'Archive', autoDismissible: true)
         ],
-        schedule: delayLEDTests ? NotificationInterval(interval: 5, timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier()) : null
-    );
+        schedule: delayLEDTests
+            ? NotificationInterval(
+                interval: 5,
+                timeZone:
+                    await AwesomeNotifications().getLocalTimeZoneIdentifier())
+            : null);
   }
-  
+
   static Future<void> startForegroundServiceNotification() async {
     await AndroidForegroundService.startForeground(
         content: NotificationContent(
@@ -887,25 +924,21 @@ class NotificationUtils {
             channelKey: 'basic_channel',
             bigPicture: 'asset://assets/images/android-bg-worker.jpg',
             notificationLayout: NotificationLayout.BigPicture,
-            category: NotificationCategory.Service
-        ),
+            category: NotificationCategory.Service),
         actionButtons: [
           NotificationActionButton(
-              key: 'SHOW_SERVICE_DETAILS',
-              label: 'Show details'
-          )
-        ]
-    );
+              key: 'SHOW_SERVICE_DETAILS', label: 'Show details')
+        ]);
   }
-  
+
   static Future<void> stopForegroundServiceNotification() async {
-    await AndroidForegroundService.stopForeground();
+    await AndroidForegroundService.stopForeground(0);
   }
-  
+
   /* *********************************************
       CUSTOM SOUND NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showCustomSoundNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -920,31 +953,32 @@ class NotificationUtils {
           'secret': 'the green ranger and the white ranger are the same person'
         }));
   }
-  
+
   /* *********************************************
       WAKE UP LOCK SCREEN NOTIFICATIONS
   ************************************************ */
-  
-  static Future<void> scheduleNotificationWithWakeUp(int id, int seconds) async {
+
+  static Future<void> scheduleNotificationWithWakeUp(
+      int id, int seconds) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: id,
-            channelKey: 'basic_channel',
-            title: 'Hey! Wake up!!',
-            body: 'Its time to wake up!',
-            wakeUpScreen: true,
-            notificationLayout: NotificationLayout.BigPicture,
-            bigPicture: 'asset://assets/images/melted-clock.png',
-            color: Colors.blueGrey,
-            category: NotificationCategory.Alarm,
+          id: id,
+          channelKey: 'basic_channel',
+          title: 'Hey! Wake up!!',
+          body: 'Its time to wake up!',
+          wakeUpScreen: true,
+          notificationLayout: NotificationLayout.BigPicture,
+          bigPicture: 'asset://assets/images/melted-clock.png',
+          color: Colors.blueGrey,
+          category: NotificationCategory.Alarm,
         ),
         schedule: NotificationInterval(interval: seconds, preciseAlarm: true));
   }
-  
+
   /* *********************************************
       FULL SCREEEN INTENT NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> scheduleFullScrenNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -962,11 +996,11 @@ class NotificationUtils {
         ),
         schedule: NotificationInterval(interval: 5, preciseAlarm: true));
   }
-  
+
   /* *********************************************
       SILENCED NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showNotificationWithNoSound(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -976,15 +1010,15 @@ class NotificationUtils {
             body: 'Shhhhhh!!!',
             notificationLayout: NotificationLayout.BigPicture,
             bigPicture:
-            'https://image.freepik.com/fotos-gratis/medico-serio-mostrando-o-gesto-de-silencio_1262-17188.jpg',
+                'https://image.freepik.com/fotos-gratis/medico-serio-mostrando-o-gesto-de-silencio_1262-17188.jpg',
             color: Colors.blueGrey,
             payload: {'advice': 'shhhhhhh'}));
   }
-  
+
   /* *********************************************
       BIG PICTURE NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showBigPictureNetworkNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -996,7 +1030,7 @@ class NotificationUtils {
                 'https://media.wired.com/photos/598e35994ab8482c0d6946e0/master/w_2560%2Cc_limit/phonepicutres-TA.jpg',
             notificationLayout: NotificationLayout.BigPicture));
   }
-  
+
   static Future<void> showBigPictureAssetNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1008,7 +1042,7 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   // /// Just to simulates a file already saved inside device storage
   // static Future<void> showBigPictureFileNotification(int id) async {
   //   String newFilePath = await downloadAndSaveImageOnDisk(
@@ -1029,7 +1063,7 @@ class NotificationUtils {
   //           notificationLayout: NotificationLayout.BigPicture,
   //           payload: {'uuid': 'uuid-test'}));
   // }
-  
+
   static Future<void> showBigPictureResourceNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1041,7 +1075,7 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showLargeIconNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1055,7 +1089,7 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showBigPictureAndLargeIconNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1063,14 +1097,15 @@ class NotificationUtils {
             channelKey: "big_picture",
             title: 'Big <b>BIG</b> picture title',
             summary: 'Summary <i>text</i>',
-            body: '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
+            body:
+                '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
             largeIcon:
                 'https://image.freepik.com/vetores-gratis/modelo-de-logotipo-de-restaurante-retro_23-2148451519.jpg',
             bigPicture: 'https://media-cdn.tripadvisor.com/media/photo-s/15/dd/20/61/al-punto.jpg',
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showBigPictureNotificationActionButtons(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1078,7 +1113,8 @@ class NotificationUtils {
             channelKey: "big_picture",
             title: 'Big <b>BIG</b> picture title',
             summary: 'Summary <i>text</i>',
-            body: '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
+            body:
+                '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
             largeIcon:
                 'https://image.freepik.com/vetores-gratis/modelo-de-logotipo-de-restaurante-retro_23-2148451519.jpg',
             bigPicture: 'https://media-cdn.tripadvisor.com/media/photo-s/15/dd/20/61/al-punto.jpg',
@@ -1089,11 +1125,14 @@ class NotificationUtils {
           NotificationActionButton(
               key: 'READ', label: 'Mark as read', autoDismissible: true),
           NotificationActionButton(
-              key: 'REMEMBER', label: 'Remember-me later', autoDismissible: false)
+              key: 'REMEMBER',
+              label: 'Remember-me later',
+              autoDismissible: false)
         ]);
   }
-  
-  static Future<void> showBigPictureNotificationActionButtonsAndReply(int id) async {
+
+  static Future<void> showBigPictureNotificationActionButtonsAndReply(
+      int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -1101,7 +1140,8 @@ class NotificationUtils {
             title: 'Big <b>BIG</b> picture title',
             summary: 'Summary <i>text</i>',
             category: NotificationCategory.Promo,
-            body: '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
+            body:
+                '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
             largeIcon:
                 'https://image.freepik.com/vetores-gratis/modelo-de-logotipo-de-restaurante-retro_23-2148451519.jpg',
             bigPicture: 'https://media-cdn.tripadvisor.com/media/photo-s/15/dd/20/61/al-punto.jpg',
@@ -1110,16 +1150,20 @@ class NotificationUtils {
             payload: {'uuid': 'uuid-test'}),
         actionButtons: [
           NotificationActionButton(
-              key: 'REPLY',
-              label: 'Reply',
-              autoDismissible: true,
-              buttonType: ActionButtonType.InputField),
+            key: 'REPLY',
+            label: 'Reply',
+            autoDismissible: true,
+            // buttonType: ActionButtonType.InputField
+          ),
           NotificationActionButton(
-              key: 'REMEMBER', label: 'Remember-me later', autoDismissible: true)
+              key: 'REMEMBER',
+              label: 'Remember-me later',
+              autoDismissible: true)
         ]);
   }
-  
-  static Future<void> showBigPictureNotificationHideExpandedLargeIcon(int id) async {
+
+  static Future<void> showBigPictureNotificationHideExpandedLargeIcon(
+      int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -1127,7 +1171,8 @@ class NotificationUtils {
             category: NotificationCategory.Promo,
             title: 'Big <b>BIG</b> picture title',
             summary: 'Summary <i>text</i>',
-            body: '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
+            body:
+                '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
             hideLargeIconOnExpand: true,
             largeIcon:
                 'https://img.itdg.com.br/tdg/images/blog/uploads/2019/05/hamburguer.jpg',
@@ -1136,11 +1181,11 @@ class NotificationUtils {
             color: Colors.indigoAccent,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   /* *********************************************
       BIG TEXT NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showBigTextNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1151,8 +1196,9 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigText,
             payload: {'uuid': 'uuid-test'}));
   }
-  
-  static Future<void> showBigTextNotificationWithDifferentSummary(int id) async {
+
+  static Future<void> showBigTextNotificationWithDifferentSummary(
+      int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -1163,7 +1209,7 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigText,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showBigTextHtmlNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1171,11 +1217,12 @@ class NotificationUtils {
             channelKey: "big_text",
             title: 'Big <b>BIG</b> text title',
             summary: 'Summary <i>text</i>',
-            body: '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
+            body:
+                '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
             notificationLayout: NotificationLayout.BigText,
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showBigTextNotificationWithActionAndReply(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1183,25 +1230,29 @@ class NotificationUtils {
             channelKey: "big_text",
             title: 'Big <b>BIG</b> text title',
             summary: 'Summary <i>text</i>',
-            body: '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
+            body:
+                '$lorenIpsumText<br><br>$lorenIpsumText<br><br>$lorenIpsumText',
             color: Colors.indigoAccent,
             notificationLayout: NotificationLayout.BigText,
             payload: {'uuid': 'uuid-test'}),
         actionButtons: [
           NotificationActionButton(
-              key: 'REPLY',
-              label: 'Reply',
-              autoDismissible: true,
-              buttonType: ActionButtonType.InputField),
+            key: 'REPLY',
+            label: 'Reply',
+            autoDismissible: true,
+            // buttonType: ActionButtonType.InputField
+          ),
           NotificationActionButton(
-              key: 'REMEMBER', label: 'Remember-me later', autoDismissible: true)
+              key: 'REMEMBER',
+              label: 'Remember-me later',
+              autoDismissible: true)
         ]);
   }
-  
+
   /* *********************************************
       MEDIA CONTROLLER NOTIFICATIONS
   ************************************************ */
-  
+
   // static void updateNotificationMediaPlayer(int id, MediaModel? mediaNow) {
   //   if (mediaNow == null) {
   //     cancelNotification(id);
@@ -1265,29 +1316,31 @@ class NotificationUtils {
   //             buttonType: ActionButtonType.KeepOnTop)
   //       ]);
   // }
-  
+
   static int _messageIncrement = 0;
-  static Future<void> simulateChatConversation({required String groupKey}) async {
-    _messageIncrement++ % 4 < 2 ?
-      createMessagingNotification(
-        channelKey: 'chats',
-        groupKey: groupKey,
-        chatName: 'Jhonny\'s Group',
-        username: 'Jhonny',
-        largeIcon: 'asset://assets/images/80s-disc.jpg',
-        message: 'Jhonny\'s message $_messageIncrement',
-      ):
-      createMessagingNotification(
-        channelKey: 'chats',
-        groupKey: 'jhonny_group',
-        chatName: 'Jhonny\'s Group',
-        username: 'Michael',
-        largeIcon: 'asset://assets/images/dj-disc.jpg',
-        message: 'Michael\'s message $_messageIncrement',
-      );
+  static Future<void> simulateChatConversation(
+      {required String groupKey}) async {
+    _messageIncrement++ % 4 < 2
+        ? createMessagingNotification(
+            channelKey: 'chats',
+            groupKey: groupKey,
+            chatName: 'Jhonny\'s Group',
+            username: 'Jhonny',
+            largeIcon: 'asset://assets/images/80s-disc.jpg',
+            message: 'Jhonny\'s message $_messageIncrement',
+          )
+        : createMessagingNotification(
+            channelKey: 'chats',
+            groupKey: 'jhonny_group',
+            chatName: 'Jhonny\'s Group',
+            username: 'Michael',
+            largeIcon: 'asset://assets/images/dj-disc.jpg',
+            message: 'Michael\'s message $_messageIncrement',
+          );
   }
-  
-  static Future<void> simulateSendResponseChatConversation({required String msg, required String groupKey}) async {
+
+  static Future<void> simulateSendResponseChatConversation(
+      {required String msg, required String groupKey}) async {
     createMessagingNotification(
       channelKey: 'chats',
       groupKey: groupKey,
@@ -1297,50 +1350,46 @@ class NotificationUtils {
       message: msg,
     );
   }
-  
-  static Future<void> createMessagingNotification({
-    required String channelKey,
-    required String groupKey,
-    required String chatName,
-    required String username,
-    required String message,
-    String? largeIcon,
-    bool checkPermission = true
-  }) async {
-      await AwesomeNotifications().createNotification(
-          content:
-          NotificationContent(
-              id: createUniqueID(AwesomeNotifications.maxID),
-              groupKey: groupKey,
-              channelKey: channelKey,
-              summary: chatName,
-              title: username,
-              body: message,
-              largeIcon: largeIcon,
-              notificationLayout: NotificationLayout.Messaging,
-              category: NotificationCategory.Message
+
+  static Future<void> createMessagingNotification(
+      {required String channelKey,
+      required String groupKey,
+      required String chatName,
+      required String username,
+      required String message,
+      String? largeIcon,
+      bool checkPermission = true}) async {
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: createUniqueID(AwesomeNotifications.maxID),
+            groupKey: groupKey,
+            channelKey: channelKey,
+            summary: chatName,
+            title: username,
+            body: message,
+            largeIcon: largeIcon,
+            notificationLayout: NotificationLayout.Messaging,
+            category: NotificationCategory.Message),
+        actionButtons: [
+          NotificationActionButton(
+            key: 'REPLY',
+            label: 'Reply',
+            // buttonType: ActionButtonType.InputField,
+            autoDismissible: false,
           ),
-          actionButtons: [
-            NotificationActionButton(
-              key: 'REPLY',
-              label: 'Reply',
-              buttonType: ActionButtonType.InputField,
-              autoDismissible: false,
-            ),
-            NotificationActionButton(
-              key: 'READ',
-              label: 'Mark as Read',
-              autoDismissible: true,
-              buttonType: ActionButtonType.InputField,
-            )
-          ]
-      );
+          NotificationActionButton(
+            key: 'READ',
+            label: 'Mark as Read',
+            autoDismissible: true,
+            // buttonType: ActionButtonType.InputField,
+          )
+        ]);
   }
-  
+
   /* *********************************************
       INBOX NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showInboxNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1386,7 +1435,7 @@ class NotificationUtils {
           NotificationActionButton(
               key: 'DISMISS',
               label: 'Dismiss',
-              buttonType: ActionButtonType.DisabledAction,
+              // buttonType: ActionButtonType.DisabledAction,
               autoDismissible: true,
               icon: 'resource://drawable/res_ic_close'),
           NotificationActionButton(
@@ -1397,11 +1446,11 @@ class NotificationUtils {
           )
         ]);
   }
-  
+
   /* *********************************************
       INBOX NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> showGroupedNotifications(String channelKey) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1409,33 +1458,33 @@ class NotificationUtils {
             channelKey: channelKey,
             title: 'Little Jhonny',
             body: 'Hey dude! Look what i found!'));
-  
+
     sleep(Duration(seconds: 2));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 2, channelKey: 'grouped', title: 'Cyclano', body: 'What?'));
-  
+
     sleep(Duration(seconds: 2));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 3,
             channelKey: channelKey,
             title: 'Little Jhonny',
             body: 'This push notifications plugin is amazing!'));
-  
+
     sleep(Duration(seconds: 2));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 4,
             channelKey: channelKey,
             title: 'Little Jhonny',
             body: 'Its perfect!'));
-  
+
     sleep(Duration(seconds: 2));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 5,
@@ -1443,20 +1492,19 @@ class NotificationUtils {
             title: 'Little Jhonny',
             body: 'I gonna contribute with the project! For sure!'));
   }
-  
+
   /* *********************************************
       LIST SCHEDULED NOTIFICATIONS
   ************************************************ */
-  
+
   static Future<void> listScheduledNotifications(BuildContext context) async {
     List<NotificationModel> activeSchedules =
         await AwesomeNotifications().listScheduledNotifications();
     for (NotificationModel schedule in activeSchedules) {
-      debugPrint(
-          'pending notification: ['
-              'id: ${schedule.content!.id}, '
-              'title: ${schedule.content!.titleWithoutHtml}, '
-              'schedule: ${schedule.schedule.toString()}'
+      debugPrint('pending notification: ['
+          'id: ${schedule.content!.id}, '
+          'title: ${schedule.content!.titleWithoutHtml}, '
+          'schedule: ${schedule.schedule.toString()}'
           ']');
     }
     return showDialog<void>(
@@ -1476,17 +1524,18 @@ class NotificationUtils {
       },
     );
   }
-  
-  static Future<String> getCurrentTimeZone(){
+
+  static Future<String> getCurrentTimeZone() {
     return AwesomeNotifications().getLocalTimeZoneIdentifier();
   }
-  
-  static Future<String> getUtcTimeZone(){
+
+  static Future<String> getUtcTimeZone() {
     return AwesomeNotifications().getUtcTimeZoneIdentifier();
   }
-  
+
   static Future<void> repeatMinuteNotification() async {
-    String localTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    String localTimeZone =
+        await AwesomeNotifications().getLocalTimeZoneIdentifier();
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: -1,
@@ -1496,28 +1545,33 @@ class NotificationUtils {
                 'This notification was schedule to repeat at every single minute.',
             notificationLayout: NotificationLayout.BigPicture,
             bigPicture: 'asset://assets/images/melted-clock.png',
-            category: NotificationCategory.Reminder
-        ),
-        schedule: NotificationInterval(interval: 60, timeZone: localTimeZone, repeats: true, preciseAlarm: true));
+            category: NotificationCategory.Reminder),
+        schedule: NotificationInterval(
+            interval: 60,
+            timeZone: localTimeZone,
+            repeats: true,
+            preciseAlarm: true));
   }
-  
+
   static Future<void> repeatMultiple5Crontab() async {
-    String localTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    String localTimeZone =
+        await AwesomeNotifications().getLocalTimeZoneIdentifier();
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: -1,
             channelKey: 'scheduled',
             title: 'Notification at every 5 seconds for 1 minute',
             body:
-            'This notification was schedule to repeat at every 5 seconds.'),
+                'This notification was schedule to repeat at every 5 seconds.'),
         schedule: NotificationAndroidCrontab(
             initialDateTime: DateTime.now().add(Duration(seconds: 10)).toUtc(),
-            expirationDateTime: DateTime.now().add(Duration(seconds: 10, minutes: 1)).toUtc(),
+            expirationDateTime:
+                DateTime.now().add(Duration(seconds: 10, minutes: 1)).toUtc(),
             crontabExpression: '/5 * * * * ? *',
             timeZone: localTimeZone,
             repeats: true));
   }
-  
+
   static Future<void> repeatPreciseThreeTimes() async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1528,15 +1582,15 @@ class NotificationUtils {
             notificationLayout: NotificationLayout.BigPicture,
             bigPicture: 'asset://assets/images/melted-clock.png'),
         schedule: NotificationAndroidCrontab(preciseSchedules: [
-              DateTime.now().add(Duration(seconds: 10)).toUtc(),
-              DateTime.now().add(Duration(seconds: 25)).toUtc(),
-              DateTime.now().add(Duration(seconds: 45)).toUtc()
-            ],
-            repeats: true));
+          DateTime.now().add(Duration(seconds: 10)).toUtc(),
+          DateTime.now().add(Duration(seconds: 25)).toUtc(),
+          DateTime.now().add(Duration(seconds: 45)).toUtc()
+        ], repeats: true));
   }
-  
+
   static Future<void> repeatMinuteNotificationOClock() async {
-    String localTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    String localTimeZone =
+        await AwesomeNotifications().getLocalTimeZoneIdentifier();
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: -1,
@@ -1546,9 +1600,10 @@ class NotificationUtils {
                 'This notification was schedule to repeat at every single minute at clock.',
             notificationLayout: NotificationLayout.BigPicture,
             bigPicture: 'asset://assets/images/melted-clock.png'),
-        schedule: NotificationCalendar(second: 0, millisecond: 0, timeZone: localTimeZone, repeats: true));
+        schedule: NotificationCalendar(
+            second: 0, millisecond: 0, timeZone: localTimeZone, repeats: true));
   }
-  
+
   static Future<void> showNotificationAtSchedulePreciseDate(
       DateTime scheduleTime) async {
     String timeZoneIdentifier = AwesomeNotifications.localTimeZoneIdentifier;
@@ -1558,25 +1613,29 @@ class NotificationUtils {
           channelKey: 'scheduled',
           title: 'Just in time!',
           body: 'This notification was schedule to shows at ' +
-              (Utils.AwesomeDateUtils.parseDateToString(scheduleTime.toLocal()) ?? '?') +
+              (Utils.AwesomeDateUtils.parseDateToString(
+                      scheduleTime.toLocal()) ??
+                  '?') +
               ' $timeZoneIdentifier (' +
-              (Utils.AwesomeDateUtils.parseDateToString(scheduleTime.toUtc()) ?? '?') +
+              (Utils.AwesomeDateUtils.parseDateToString(scheduleTime.toUtc()) ??
+                  '?') +
               ' utc)',
           notificationLayout: NotificationLayout.BigPicture,
           bigPicture: 'asset://assets/images/delivery.jpeg',
           payload: {'uuid': 'uuid-test'},
           autoDismissible: false,
         ),
-        schedule: NotificationCalendar.fromDate(date: scheduleTime, preciseAlarm: true));
+        schedule: NotificationCalendar.fromDate(
+            date: scheduleTime, preciseAlarm: true));
   }
-  
+
   static Future<void> showNotificationWithNoBadge(int id) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelKey: 'no_badge',
         channelName: 'No Badge Notifications',
         channelDescription: 'Notifications with no badge',
         channelShowBadge: false));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -1585,7 +1644,7 @@ class NotificationUtils {
             body: 'no badge body',
             payload: {'uuid': 'uuid-test'}));
   }
-  
+
   static Future<void> showProgressNotification(int id) async {
     var maxStep = 10;
     for (var simulatedStep = 1; simulatedStep <= maxStep + 1; simulatedStep++) {
@@ -1623,7 +1682,7 @@ class NotificationUtils {
       });
     }
   }
-  
+
   static Future<void> showIndeterminateProgressNotification(int id) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -1640,14 +1699,15 @@ class NotificationUtils {
             progress: null,
             locked: true));
   }
-  
-  static Future<void> showNotificationWithUpdatedChannelDescription(int id) async {
+
+  static Future<void> showNotificationWithUpdatedChannelDescription(
+      int id) async {
     AwesomeNotifications().setChannel(NotificationChannel(
         channelGroupKey: 'channel_tests',
         channelKey: 'updated_channel',
         channelName: 'Channel to update (updated)',
         channelDescription: 'Notifications with updated channel'));
-  
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: id,
@@ -1657,7 +1717,7 @@ class NotificationUtils {
             category: NotificationCategory.Status,
             payload: {'uuid': '0123456789'}));
   }
-  
+
   static Future<void> removeChannel() async {
     AwesomeNotifications().removeChannel('updated_channel');
   }
@@ -1669,31 +1729,32 @@ class NotificationUtils {
   static Future<void> cancelSchedule(int id) async {
     await AwesomeNotifications().cancelSchedule(id);
   }
-  
+
   static Future<void> cancelNotification(int id) async {
     await AwesomeNotifications().cancel(id);
   }
-  
-  static Future<void> dismissNotificationsByChannelKey(String channelKey) async {
+
+  static Future<void> dismissNotificationsByChannelKey(
+      String channelKey) async {
     await AwesomeNotifications().dismissNotificationsByChannelKey(channelKey);
   }
-  
+
   static Future<void> dismissNotificationsByGroupKey(String groupKey) async {
     await AwesomeNotifications().dismissNotificationsByGroupKey(groupKey);
   }
-  
+
   static Future<void> cancelSchedulesByChannelKey(String channelKey) async {
     await AwesomeNotifications().cancelSchedulesByChannelKey(channelKey);
   }
-  
+
   static Future<void> cancelSchedulesByGroupKey(String groupKey) async {
     await AwesomeNotifications().cancelSchedulesByGroupKey(groupKey);
   }
-  
+
   static Future<void> cancelNotificationsByChannelKey(String channelKey) async {
     await AwesomeNotifications().cancelNotificationsByChannelKey(channelKey);
   }
-  
+
   static Future<void> cancelNotificationsByGroupKey(String groupKey) async {
     await AwesomeNotifications().cancelNotificationsByGroupKey(groupKey);
   }
@@ -1705,13 +1766,12 @@ class NotificationUtils {
   static Future<void> cancelAllSchedules() async {
     await AwesomeNotifications().cancelAllSchedules();
   }
-  
+
   static Future<void> cancelAllNotifications() async {
     await AwesomeNotifications().cancelAll();
   }
-  
+
   String toTwoDigitString(int value) {
     return value.toString().padLeft(2, '0');
   }
-
 }

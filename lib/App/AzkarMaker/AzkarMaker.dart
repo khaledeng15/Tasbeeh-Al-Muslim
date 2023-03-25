@@ -25,7 +25,8 @@ class AzkarMaker extends StatefulWidget {
   AzkarMakerState createState() => AzkarMakerState();
 }
 
-class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMixin {
+class AzkarMakerState extends State<AzkarMaker>
+    with SingleTickerProviderStateMixin {
   double expandHeight = 350;
   late List<ZekerModel> zekerList = [];
   late List<ZekerModel> selectedZekerList = [];
@@ -36,7 +37,6 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
   int selectedSegmentedListType = 0;
 
   late AnimationController _animationController;
-  bool isPlaying = false;
 
   @override
   void initState() {
@@ -50,10 +50,10 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
       setState(() {});
     });
 
-    selectedZekerList = BuildAzkar.getSelectedZeker() ;
+    selectedZekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
 
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   @override
@@ -97,7 +97,7 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
                                         appColorPrimary.withOpacity(0.6)),
                                 child:
                                     Container(), //searchWidget(Colors.white).paddingSymmetric(horizontal: 16),
-                              )
+                              ),
                             ]),
                             Container(
                               width: context.width(),
@@ -184,100 +184,82 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
       }),
     );
   }
+
   Widget cellList(int num, int index) {
-  return Container(
-    margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-        boxShadow: defaultBoxShadow(),
-        color: context.scaffoldBackgroundColor),
-    child: Stack(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child:
-              Column(
-                children: [
-
-                  Row(
+    return Container(
+      margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: defaultBoxShadow(),
+          color: context.scaffoldBackgroundColor),
+      child: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
                     children: [
-                      cellCheckBox(index),
-                       10.width,
-                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Text(
-                            zekerList[index].zeker_name,
-                            style:  boldTextStyle(   color:  textPrimaryColorGlobal),
-                            // maxLines: 1,
-                            overflow: TextOverflow.visible,
-                          ),
-
+                          cellCheckBox(index),
+                          10.width,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                zekerList[index].zeker_name,
+                                style: boldTextStyle(
+                                    color: textPrimaryColorGlobal),
+                                // maxLines: 1,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ],
+                          ).expand(),
+                          10.width,
+                          cellPlayVideo(index),
                         ],
-                      ).expand(),
-                      10.width,
-                      cellPlayVideo(index),
+                      ),
+                      16.height,
+                      segmentedCell(zekerList[index])
                     ],
-                  ),
-
-                  16.height,
-                  segmentedCell(zekerList[index])
-                ],
-              )
-            ),
-
-          ],
-        ),
-      ],
-    ),
-
-  );
-
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget cellPlayVideo(int index)
-  {
-   return    GestureDetector(
-     child:  Icon(Icons.play_circle_fill, size: 24, color: t3_green),
-     onTap: (){
-       var temp = zekerList[index] ;
-       var fileName  = "";
-       if (temp.zeker_repeat.isEmpty)
-       {
-         fileName = temp.zeker_id ;
-       }
-       else
-       {
-         fileName = temp.zeker_id + "-1" ;
-       }
+  Widget cellPlayVideo(int index) {
+    return GestureDetector(
+      child: Icon(Icons.play_circle_fill, size: 24, color: t3_green),
+      onTap: () {
+        var temp = zekerList[index];
 
-       playerAzkar.setAsset("assets/sounds/$fileName.mp3").then((value)
-       {
-         playerAzkar.play();
-
-       });
-
-     },
-   ) ;
+        playerAzkar.setAsset(temp.soundFileNamePath()).then((value) {
+          playerAzkar.play();
+        });
+      },
+    );
   }
 
-  Widget cellCheckBox(int index)
-  {
+  Widget cellCheckBox(int index) {
     var zeker = zekerList[index];
-    var estateSelected = zeker ;
-    var estateSelectedIndex = selectedZekerList.indexWhere((elment) => elment.zeker_id == zeker.zeker_id) ;
-    if(estateSelectedIndex != -1)
-    {
-      estateSelected = selectedZekerList[estateSelectedIndex] ;
+    var estateSelected = zeker;
+    var estateSelectedIndex = selectedZekerList
+        .indexWhere((elment) => elment.zeker_id == zeker.zeker_id);
+    if (estateSelectedIndex != -1) {
+      estateSelected = selectedZekerList[estateSelectedIndex];
     }
 
     return Container(
       width: 25,
       height: 25,
       decoration: BoxDecoration(
-        color:
-        estateSelected.selected == true ? appColorPrimary : Colors.transparent,
+        color: estateSelected.selected == true
+            ? appColorPrimary
+            : Colors.transparent,
         border: Border.all(
           width: 1,
           color: t3_green,
@@ -289,33 +271,23 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
           unselectedWidgetColor: Colors.transparent,
         ),
         child: Checkbox(
-          value:   estateSelected.selected ,
+          value: estateSelected.selected,
           onChanged: (state) {
             setState(() {
-
-
               estateSelected.selected = state!;
 
-              if(estateSelectedIndex == -1)
-              {
+              if (estateSelectedIndex == -1) {
                 selectedZekerList.add(estateSelected);
-              }
-              else
-                {
-                  if(estateSelected.selected  == false)
-                    {
-                      selectedZekerList.removeAt(estateSelectedIndex) ;
-                    }
-                    else
-                      {
-                        selectedZekerList[estateSelectedIndex] = estateSelected ;
-
-                      }
-
+              } else {
+                if (estateSelected.selected == false) {
+                  selectedZekerList.removeAt(estateSelectedIndex);
+                } else {
+                  selectedZekerList[estateSelectedIndex] = estateSelected;
                 }
+              }
 
-              BuildAzkar.saveSelectedZeker(selectedZekerList) ;
-
+              BuildAzkar.saveZekerListFor(
+                  selectedZekerList, zekerListFor.selected);
             });
           },
           activeColor: Colors.transparent,
@@ -323,13 +295,12 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
           materialTapTargetSize: MaterialTapTargetSize.padded,
         ),
       ),
-    ) ;
+    );
   }
 
-
   Padding settingText(
-      var text,
-      ) {
+    var text,
+  ) {
     return Padding(
       padding: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
       child: Text(
@@ -385,7 +356,6 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
                       setState(() {});
                     }),
                     Text('Done', style: primaryTextStyle(size: 18)).onTap(() {
-
                       builder.everyTime.hours = selectedHours;
                       builder.everyTime.minutes = selectedMinutes;
                       builder.saveEveryTime();
@@ -415,7 +385,8 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
                         children: [
                           Expanded(
                             child: CupertinoPicker(
-                              scrollController: FixedExtentScrollController(initialItem:builder.everyTime.hours ),
+                              scrollController: FixedExtentScrollController(
+                                  initialItem: builder.everyTime.hours),
 
                               // backgroundColor: context.scaffoldBackgroundColor,
                               itemExtent: 24,
@@ -431,7 +402,8 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
                           ),
                           Expanded(
                             child: CupertinoPicker(
-                              scrollController: FixedExtentScrollController(initialItem:builder.everyTime.minutes ),
+                              scrollController: FixedExtentScrollController(
+                                  initialItem: builder.everyTime.minutes),
                               // backgroundColor: context.scaffoldBackgroundColor,
                               itemExtent: 59,
                               children: minutes.map((e) {
@@ -441,7 +413,6 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
                               onSelectedItemChanged: (int val) {
                                 // selectedValue = countryName[val];
                                 selectedMinutes = val;
-
                               },
                             ),
                           )
@@ -533,24 +504,21 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
   }
 
   Widget segmentedCell(ZekerModel zeker) {
-    if (selectedSegmentedListType != 0)
-    {
+    if (selectedSegmentedListType != 0) {
       return Container();
     }
 
-    var estateSelected = zeker ;
-    var estateSelectedIndex = selectedZekerList.indexWhere((elment) => elment.zeker_id == zeker.zeker_id) ;
-    if(estateSelectedIndex != -1)
-    {
-      estateSelected = selectedZekerList[estateSelectedIndex] ;
+    var estateSelected = zeker;
+    var estateSelectedIndex = selectedZekerList
+        .indexWhere((elment) => elment.zeker_id == zeker.zeker_id);
+    if (estateSelectedIndex != -1) {
+      estateSelected = selectedZekerList[estateSelectedIndex];
     }
-    if (estateSelected.choose_repeat.isEmpty)
-      {
-        estateSelected.choose_repeat = "1";
-      }
+    if (estateSelected.choose_repeat.isEmpty) {
+      estateSelected.choose_repeat = "1";
+    }
 
-
-    int selectedValue =  estateSelected.choose_repeat.toInt();
+    int selectedValue = estateSelected.choose_repeat.toInt();
 
     final Map<int, Widget> sWidget = <int, Widget>{
       1: Padding(
@@ -584,18 +552,12 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
                 selectedColor: appColorPrimary,
                 groupValue: selectedValue,
                 onValueChanged: (dynamic val) {
-
-                  if(estateSelectedIndex != -1)
-                  {
-                    estateSelected.choose_repeat = val.toString() ;
-                    BuildAzkar.saveSelectedZeker(selectedZekerList) ;
-                    setState(() {
-
-                    });
+                  if (estateSelectedIndex != -1) {
+                    estateSelected.choose_repeat = val.toString();
+                    BuildAzkar.saveZekerListFor(
+                        selectedZekerList, zekerListFor.selected);
+                    setState(() {});
                   }
-
-
-
                 },
                 children: sWidget,
               ),
@@ -676,27 +638,60 @@ class AzkarMakerState extends State<AzkarMaker> with SingleTickerProviderStateMi
         ));
   }
 
-  Widget playBar()
-  {
-    return
-      BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(MaterialCommunityIcons.skip_previous, color: appColorPrimary), label: ''),
-          BottomNavigationBarItem(icon: AnimatedIcon(progress: _animationController, icon: AnimatedIcons.play_pause, color: appColorPrimary), label: ''),
-          BottomNavigationBarItem(icon: Icon(MaterialCommunityIcons.skip_next, color: appColorPrimary), label: ''),
-        ],
-        selectedLabelStyle: TextStyle(fontSize: 0),
-        unselectedLabelStyle: TextStyle(fontSize: 0),
-        backgroundColor: Colors.white,
-        onTap: (v) {
-          print(v);
-          setState(() {
-            isPlaying = !isPlaying;
-            isPlaying ? _animationController.forward() : _animationController.reverse();
-            buildNotifications.build(builder,context) ;
-          });
-        },
-      );
+  Widget playBar() {
+    return FloatingActionButton(
+        elevation: 0.0,
+        child: AnimatedIcon(
+            progress: _animationController,
+            icon: BuildAzkar.isPlay() == false
+                ? AnimatedIcons.play_pause
+                : AnimatedIcons.pause_play,
+            color: appColorPrimary),
+        backgroundColor: Colors.greenAccent,
+        onPressed: () {
+          bool isPlay = BuildAzkar.isPlay();
+          if (isPlay == false) {
+            buildNotifications.build(builder, context);
+            BuildAzkar.play();
+          } else {
+            buildNotifications.stop(context);
+            BuildAzkar.stop();
+          }
+          setState(() {});
+        });
   }
 
+  Widget playBarOld() {
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+            icon: Icon(MaterialCommunityIcons.skip_previous,
+                color: appColorPrimary),
+            label: ''),
+        BottomNavigationBarItem(
+            icon: AnimatedIcon(
+                progress: _animationController,
+                icon: AnimatedIcons.play_pause,
+                color: appColorPrimary),
+            label: ''),
+        BottomNavigationBarItem(
+            icon:
+                Icon(MaterialCommunityIcons.skip_next, color: appColorPrimary),
+            label: ''),
+      ],
+      selectedLabelStyle: TextStyle(fontSize: 0),
+      unselectedLabelStyle: TextStyle(fontSize: 0),
+      backgroundColor: Colors.white,
+      onTap: (v) {
+        print(v);
+        setState(() {
+          // isPlaying = !isPlaying;
+          // isPlaying
+          //     ? _animationController.forward()
+          //     : _animationController.reverse();
+          buildNotifications.build(builder, context);
+        });
+      },
+    );
+  }
 }

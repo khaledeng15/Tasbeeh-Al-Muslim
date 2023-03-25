@@ -6,13 +6,11 @@ import 'package:nb_utils/nb_utils.dart';
 
 import 'package:tsbeh/main.dart';
 
-void showloading(BuildContext context,  String detail) async {
-
+void showloading(BuildContext context, String detail) async {
 // 'Alert Dialog with Shape'
   AlertDialog Alert_Dialog_with_Shape = AlertDialog(
     backgroundColor: appStore.scaffoldBackground,
-    content:
-    Column(
+    content: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,26 +23,25 @@ void showloading(BuildContext context,  String detail) async {
         16.height,
         Text(
           detail,
-          style: secondaryTextStyle(color: appStore.textSecondaryColor,size: 16),
+          style:
+              secondaryTextStyle(color: appStore.textSecondaryColor, size: 16),
         ),
-
-
       ],
     ),
     // contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
   );
 
-
   AlertDialog Alert_Dialog_with_Shape2 = AlertDialog(
-    backgroundColor:  appStore.scaffoldBackground,
-    content:
-    Center( // Aligns the container to center
-        child: Container( // A simplified version of dialog.
+      backgroundColor: appStore.scaffoldBackground,
+      content: Center(
+        // Aligns the container to center
+        child: Container(
+          // A simplified version of dialog.
           width: 200.0,
           height: 100.0,
 
-          child:  Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -54,43 +51,40 @@ void showloading(BuildContext context,  String detail) async {
                 width: 200,
                 repeat: true,
               ),
-
             ],
           ),
         ),
-    )
-    // contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-    // shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
-  );
+      )
+      // contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
+      );
 
   AlertDialog Alert_Dialog_with_Shape3 = AlertDialog(
-      backgroundColor:  appStore.scaffoldBackground,
-      content:
-       Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-       Center( // Aligns the container to center
-       child: Container( // A simplified version of dialog.
-       width: 200.0,
-         height: 100.0,
-         child: Lottie.asset(
-           'res/material-loading.json',
-           height: 100,
-           width: 200,
-           repeat: true,
-         ),
-
-       )
-       )
-            ],
+    backgroundColor: appStore.scaffoldBackground,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(
+            // Aligns the container to center
+            child: Container(
+          // A simplified version of dialog.
+          width: 200.0,
+          height: 100.0,
+          child: Lottie.asset(
+            'res/material-loading.json',
+            height: 100,
+            width: 200,
+            repeat: true,
           ),
-
+        ))
+      ],
+    ),
     contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
   );
-
-
 
   void showDemoDialog<T>({BuildContext? context, Widget? child}) {
     showDialog<T>(
@@ -107,11 +101,11 @@ void showloading(BuildContext context,  String detail) async {
       child: AlertDialog(
         content: Text(detail),
         actions: [
-          FlatButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
+          // FlatButton(
+          //     child: Text('OK'),
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //     }),
         ],
       ));
 }

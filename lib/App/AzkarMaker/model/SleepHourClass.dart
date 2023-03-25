@@ -6,7 +6,7 @@ import 'package:time_range_picker/time_range_picker.dart';
 import '../../../utils/PreferenceUtils.dart';
 
 class SleepHourClass {
-  SleepHourClass() {}
+  SleepHourClass();
 
   var startTime = [21, 0];
   var endTime = [7, 0]; // TimeOfDay(hour: 7, minute: 0);

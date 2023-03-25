@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:tsbeh/App/AzkarMaker/model/zekerModel.dart';
@@ -7,44 +6,53 @@ import '../../../utils/PreferenceUtils.dart';
 import 'SleepHourClass.dart';
 import 'ZekerTime.dart';
 
-class BuildAzkar{
+enum zekerListFor { selected, createdChanel }
 
-    ZekerTime everyTime = getEveryTime()  ;
-    SleepHourClass sleepTime = SleepHourClass.get();
+class BuildAzkar {
+  ZekerTime everyTime = getEveryTime();
+  SleepHourClass sleepTime = SleepHourClass.get();
 
-  void  saveEveryTime()
-  {
-    String jsonStr  = jsonEncode(everyTime);
+  static void play() {
+    PreferenceUtils.instance.setBool("ZekerPlay", true);
+  }
+
+  static void stop() {
+    PreferenceUtils.instance.setBool("ZekerPlay", false);
+  }
+
+  static bool isPlay() {
+    return PreferenceUtils.instance.getBool("ZekerPlay") ?? false;
+  }
+
+  void saveEveryTime() {
+    String jsonStr = jsonEncode(everyTime);
 
     PreferenceUtils.instance.setString("ZekerTime", jsonStr);
   }
 
-    static ZekerTime getEveryTime() {
-      String jsonCls = PreferenceUtils.instance.getString("ZekerTime") ?? "";
-      if (jsonCls.isNotEmpty) {
-        Map<String, dynamic> map = json.decode(jsonCls);
+  static ZekerTime getEveryTime() {
+    String jsonCls = PreferenceUtils.instance.getString("ZekerTime") ?? "";
+    if (jsonCls.isNotEmpty) {
+      Map<String, dynamic> map = json.decode(jsonCls);
 
-        return ZekerTime.fromJson(map);
-      }
-      return ZekerTime();
+      return ZekerTime.fromJson(map);
     }
-
-
-  static saveSelectedZeker(List<ZekerModel> lst)
-  {
-    String jsonStr  = jsonEncode(lst);
-
-    PreferenceUtils.instance.setString("selectedZeker", jsonStr);
+    return ZekerTime();
   }
 
-  static List<ZekerModel>  getSelectedZeker() {
-    String jsonCls = PreferenceUtils.instance.getString("selectedZeker") ?? "";
+  static saveZekerListFor(List<ZekerModel> lst, zekerListFor key) {
+    String jsonStr = jsonEncode(lst);
+
+    PreferenceUtils.instance.setString(key.toString(), jsonStr);
+  }
+
+  static List<ZekerModel> getZekerListFor(zekerListFor key) {
+    String jsonCls = PreferenceUtils.instance.getString(key.toString()) ?? "";
     if (jsonCls.isNotEmpty) {
-      List  lst = json.decode(jsonCls);
+      List lst = json.decode(jsonCls);
 
       return ZekerModel.fromList(lst);
     }
     return [];
   }
-
 }

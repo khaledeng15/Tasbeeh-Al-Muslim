@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,42 +36,42 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    setStatusBarColor(Colors.transparent, statusBarIconBrightness: Brightness.dark);
-    getListOnline(true) ;
+    setStatusBarColor(Colors.transparent,
+        statusBarIconBrightness: Brightness.dark);
+    // getListOnline(true);
+    getList(context, "home").then((value) {
+      menuList = value;
+      setState(() {});
+    });
   }
 
-  Future<void> getListOnline(bool  isCaching) async
-  {
+  static Future<List<ApiModel>> getList(
+      BuildContext context, String fileName) async {
+    String data = await DefaultAssetBundle.of(context)
+        .loadString("assets/json/$fileName.json");
+    final jsonResult = jsonDecode(data);
 
-    setState(() {
-      isLoading = true;
-    });
-
-
-
-    menuList = await   api.menuHome(true);
-    // print(lst);
-
-    setState(() {
-      isLoading = false;
-
-    });
-
-
-
-
-
-
+    return ApiModel.fromList(jsonResult);
   }
 
+  // Future<void> getListOnline(bool isCaching) async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   menuList = await api.menuHome(true);
+  //   // print(lst);
+
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appStore.scaffoldBackground,
-      body:
-
-      CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
             delegate: CustomSliverAppBarDelegate(expandedHeight: expandHeight),
@@ -130,45 +132,34 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-  Widget lstButtons()
-  {
-    return
-
-
-      GridView.builder(
-        physics: ScrollPhysics(),
-
-        itemCount: menuList.length,
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          var temp = menuList[index] ;
-          return
-            GestureDetector(
-              child:
-              Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              commonCacheImageWidget((temp.photo), 90, width: 90, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
-              8.height,
-              Text(temp.title, style: boldTextStyle()),
-              // 2.height,
-              // Text(menuList[1].subtitle, style: secondaryTextStyle()),
-            ],
-          ),
+  Widget lstButtons() {
+    return GridView.builder(
+      physics: ScrollPhysics(),
+      itemCount: menuList.length,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        var temp = menuList[index];
+        return GestureDetector(
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                commonCacheImageWidget((temp.photo), 90,
+                        width: 90, fit: BoxFit.cover)
+                    .cornerRadiusWithClipRRect(8),
+                8.height,
+                Text(temp.title, style: boldTextStyle()),
+                // 2.height,
+                // Text(menuList[1].subtitle, style: secondaryTextStyle()),
+              ],
+            ),
             onTap: () {
-                AppRoutes(context).openAction(temp,[]);
-          });
-
-        }, gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio:1
-        ),
-
+              AppRoutes(context).openAction(temp, []);
+            });
+      },
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3, childAspectRatio: 1),
     );
-
-
   }
 }
 
@@ -178,7 +169,8 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   CustomSliverAppBarDelegate({required this.expandedHeight});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     final size = 120;
     final top = expandedHeight - shrinkOffset - size / 0.6;
     final width = context.width();
@@ -218,13 +210,17 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       opacity: disappear(shrinkOffset),
       child: Stack(
         children: [
-          commonCacheImageWidget("images/app/quran-in-ramadan.jpg", 360, width: width, fit: BoxFit.cover),
+          commonCacheImageWidget("images/app/quran-in-ramadan.jpg", 360,
+              width: width, fit: BoxFit.cover),
           Container(
             padding: EdgeInsets.only(bottom: 16, top: 32),
             alignment: Alignment.topCenter,
             height: 360,
-            decoration: boxDecorationWithRoundedCorners(borderRadius: radius(0), backgroundColor: appColorPrimary.withOpacity(0.6)),
-            child: Container(), //searchWidget(Colors.white).paddingSymmetric(horizontal: 16),
+            decoration: boxDecorationWithRoundedCorners(
+                borderRadius: radius(0),
+                backgroundColor: appColorPrimary.withOpacity(0.6)),
+            child:
+                Container(), //searchWidget(Colors.white).paddingSymmetric(horizontal: 16),
           ),
         ],
       ),
@@ -241,7 +237,8 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("", style: secondaryTextStyle(size: 20, color: white)),
-              Text('تسبيح المسلم', style: boldTextStyle(size: 30, color: white)),
+              Text('تسبيح المسلم',
+                  style: boldTextStyle(size: 30, color: white)),
               Text('اذكر الله', style: boldTextStyle(size: 20, color: white)),
             ],
           ),
@@ -249,7 +246,10 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           Container(
             //height: 80,
             // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: boxDecorationWithShadow(borderRadius: radius(12), backgroundColor: white, offset: Offset(0, 5)),
+            decoration: boxDecorationWithShadow(
+                borderRadius: radius(12),
+                backgroundColor: white,
+                offset: Offset(0, 5)),
             child: Row(
               children: [
                 commonCacheImageWidget(

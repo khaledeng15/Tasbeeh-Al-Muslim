@@ -1,13 +1,10 @@
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'notification_util.dart';
 
-
-class PermissionsNotifications
-{
-  static  String  channelKey = "TSBEH_sound" ;
+class PermissionsNotifications {
+  // static  String  channelKey = "TSBEH_sound" ;
 
   bool globalNotificationsAllowed = false;
   bool schedulesFullControl = false;
@@ -34,16 +31,15 @@ class PermissionsNotifications
     NotificationPermission.PreciseAlarms,
   ];
 
-
-
-  Future<void> check(BuildContext context) async {
-
-    await     refreshPermissionsIcons() ;
-    bool allowed =   await   NotificationUtils.requestBasicPermissionToSendNotifications(context) ;
+  Future<void> check(BuildContext context, String channelKey) async {
+    await refreshPermissionsIcons(channelKey);
+    bool allowed =
+        await NotificationUtils.requestBasicPermissionToSendNotifications(
+            context);
     // bool allowed =  await NotificationUtils.requestUserPermissions(context, channelKey: channelKey, permissionList: channelPermissions);
 
-    if(allowed != globalNotificationsAllowed) {
-      refreshPermissionsIcons();
+    if (allowed != globalNotificationsAllowed) {
+      await refreshPermissionsIcons(channelKey);
     }
 
     // refreshPermissionsIcons().then((_) =>
@@ -55,9 +51,9 @@ class PermissionsNotifications
     // );
   }
 
-  Future<void> refreshPermissionsIcons() async {
-
-    globalNotificationsAllowed  = await   AwesomeNotifications().isNotificationAllowed() ;
+  Future<void> refreshPermissionsIcons(String channelKey) async {
+    globalNotificationsAllowed =
+        await AwesomeNotifications().isNotificationAllowed();
 
     // AwesomeNotifications().isNotificationAllowed().then((isAllowed) async {
     //   // setState(() {
@@ -65,21 +61,21 @@ class PermissionsNotifications
     //   // }
     //   // );
     // });
-    refreshScheduleChannelPermissions();
-    refreshDangerousChannelPermissions();
+    await refreshScheduleChannelPermissions(channelKey);
+    await refreshDangerousChannelPermissions();
   }
 
-  Future<void> refreshScheduleChannelPermissions() async{
-
-    List<NotificationPermission> permissionsAllowed = await  AwesomeNotifications().checkPermissionList(
-        channelKey: channelKey,
-        permissions: channelPermissions
-    ) ;
+  Future<void> refreshScheduleChannelPermissions(String channelKey) async {
+    List<NotificationPermission> permissionsAllowed =
+        await AwesomeNotifications().checkPermissionList(
+            channelKey: channelKey, permissions: channelPermissions);
 
     schedulesFullControl = true;
-    for(NotificationPermission permission in channelPermissions){
-      scheduleChannelPermissions[permission] = permissionsAllowed.contains(permission);
-      schedulesFullControl = schedulesFullControl && scheduleChannelPermissions[permission]!;
+    for (NotificationPermission permission in channelPermissions) {
+      scheduleChannelPermissions[permission] =
+          permissionsAllowed.contains(permission);
+      schedulesFullControl =
+          schedulesFullControl && scheduleChannelPermissions[permission]!;
     }
 
     // AwesomeNotifications().checkPermissionList(
@@ -98,22 +94,21 @@ class PermissionsNotifications
     // );
   }
 
-  Future<void> refreshDangerousChannelPermissions() async{
-
-    List<NotificationPermission> permissionsAllowed =  await   AwesomeNotifications().checkPermissionList(
-        permissions: dangerousPermissions
-    );
+  Future<void> refreshDangerousChannelPermissions() async {
+    List<NotificationPermission> permissionsAllowed =
+        await AwesomeNotifications()
+            .checkPermissionList(permissions: dangerousPermissions);
 
     for (NotificationPermission permission in dangerousPermissions) {
       dangerousPermissionsStatus[permission] =
           permissionsAllowed.contains(permission);
     }
     isCriticalAlertsEnabled =
-    dangerousPermissionsStatus[NotificationPermission.CriticalAlert]!;
+        dangerousPermissionsStatus[NotificationPermission.CriticalAlert]!;
     isPreciseAlarmEnabled =
-    dangerousPermissionsStatus[NotificationPermission.PreciseAlarms]!;
+        dangerousPermissionsStatus[NotificationPermission.PreciseAlarms]!;
     isOverrideDnDEnabled =
-    dangerousPermissionsStatus[NotificationPermission.OverrideDnD]!;
+        dangerousPermissionsStatus[NotificationPermission.OverrideDnD]!;
 
     // AwesomeNotifications().checkPermissionList(
     //     permissions: dangerousPermissions
@@ -133,5 +128,4 @@ class PermissionsNotifications
     // }
     // );
   }
-
 }

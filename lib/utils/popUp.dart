@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
- import 'package:nb_utils/nb_utils.dart';
-
+import 'package:nb_utils/nb_utils.dart';
 
 import 'package:tsbeh/main.dart';
 import 'package:tsbeh/utils/language/appLocalizations.dart';
@@ -10,7 +9,6 @@ import '../ProKitLib/main/utils/AppColors.dart';
 import '../ProKitLib/main/utils/AppWidget.dart';
 
 void showAlertPopup(BuildContext context, String title, String detail) async {
-
 // 'Alert_Dialog_with_Shape'
   AlertDialog Alert_Dialog_with_Shape = AlertDialog(
     backgroundColor: appStore.scaffoldBackground,
@@ -18,11 +16,13 @@ void showAlertPopup(BuildContext context, String title, String detail) async {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text( appLocalizations.of(context)!.translate(title), style: boldTextStyle(color: appStore.textPrimaryColor,size: 16)),
+        Text(appLocalizations.of(context)!.translate(title),
+            style: boldTextStyle(color: appStore.textPrimaryColor, size: 16)),
         16.height,
         Text(
-  appLocalizations.of(context)!.translate(detail),
-          style: secondaryTextStyle(color: appStore.textSecondaryColor,size: 16),
+          appLocalizations.of(context)!.translate(detail),
+          style:
+              secondaryTextStyle(color: appStore.textSecondaryColor, size: 16),
         ),
         16.height,
         GestureDetector(
@@ -41,7 +41,9 @@ void showAlertPopup(BuildContext context, String title, String detail) async {
       ],
     ),
     contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(50), bottomLeft: Radius.circular(50))),
   );
 
   void showDemoDialog<T>({BuildContext? context, Widget? child}) {
@@ -60,11 +62,11 @@ void showAlertPopup(BuildContext context, String title, String detail) async {
         title: Text(title),
         content: Text(detail),
         actions: [
-          FlatButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
+          // FlatButton(
+          //     child: Text('OK'),
+          //     onPressed: () {
+          //       Navigator.pop(context);
+          //     }),
         ],
       ));
 }

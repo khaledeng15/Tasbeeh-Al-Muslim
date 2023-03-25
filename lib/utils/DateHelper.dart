@@ -48,6 +48,10 @@ class DateHelper
      return DateFormat(dateFormat).format(date);
 
   }
+  static DateTime toDate(String dateString,String format)
+  {
+    return DateFormat(format).parse(dateString);
 
+  }
 
 }

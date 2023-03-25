@@ -2,7 +2,6 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:tsbeh/App/AzkarMaker/model/zekerModel.dart';
-import 'package:tsbeh/App/Notifications/Local/NotificationService.dart';
 
 import 'BuildAzkar.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -10,11 +9,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'PermissionsNotifications.dart';
 import 'SleepHourClass.dart';
 import 'ZekerTime.dart';
-import 'package:timezone/timezone.dart' as tz;
-import '../../../ProKitLib/main/utils/AppConstant.dart';
-import 'package:intl/intl.dart';
 
-class BuildNotifications {
+class BuildNotifications_aswom {
   PermissionsNotifications permissionsNotifications =
       PermissionsNotifications();
   late List<ZekerModel> zekerList;
@@ -25,10 +21,6 @@ class BuildNotifications {
   }
 
   Future<void> build(BuildAzkar bz, BuildContext context) async {
-    // tz.TZDateTime scheduledDate = getDate();
-    // scheduledDate = scheduledDate.add(Duration(minutes: 3));
-    // NotificationService().scheduleLocalNotifications(
-    //     1, "Water", "It's time to drink water", scheduledDate, null, "a1_1");
     await removeAllChanel();
 
     zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
@@ -47,16 +39,6 @@ class BuildNotifications {
       await AwesomeNotifications().cancelAll();
       await buildList(bz);
     }
-  }
-
-  tz.TZDateTime getDate() {
-    var currentDate = DateFormat(dateFormat).format(DateTime.now());
-
-    final DateTime tempDate = DateFormat(dateFormat).parse(currentDate);
-
-    tz.TZDateTime scheduledDate = tz.TZDateTime.from(tempDate, tz.local);
-
-    return scheduledDate;
   }
 
   Future<void> removeAllChanel() async {
@@ -253,4 +235,146 @@ class BuildNotifications {
 
     return false;
   }
+  // Future<void> buildListOld(BuildAzkar bz) async {
+  //   int fileCursor = 0;
+  //   int countarr = zekerList.length;
+
+  //   int totalMinutes = bz.everyTime.hours * 60 + bz.everyTime.minutes;
+  //   double unit = 0;
+  //   // DateTimeComponents repeatInterval = DateTimeComponents.time;
+  //   if (totalMinutes < 60) {
+  //     unit = 60 / totalMinutes;
+  //     // repeatInterval =   DateTimeComponents.dateAndTime; //NSCalendarUnitHour | NSCalendarUnitMinute ;
+  //   } else {
+  //     unit = 24 / bz.everyTime.hours;
+  //     // repeatInterval = DateTimeComponents.dayOfWeekAndTime; //NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute  ;
+  //   }
+
+  //   int hourNotif = 0;
+  //   int minuteNotif = 0;
+
+  //   for (int i = 0; i < unit; i++) {
+  //     if (totalMinutes < 60) {
+  //       hourNotif = hourNotif + bz.everyTime.hours;
+  //       minuteNotif = minuteNotif + bz.everyTime.minutes;
+
+  //       if (minuteNotif > 60) {
+  //         minuteNotif = bz.everyTime.minutes;
+  //       }
+  //     } else {
+  //       hourNotif = hourNotif + bz.everyTime.hours;
+  //       minuteNotif = bz.everyTime.minutes;
+  //     }
+
+  //     if (hourNotif >= 24) {
+  //       hourNotif = 0;
+  //     }
+
+  //     if (minuteNotif >= 60) {
+  //       minuteNotif = 0;
+  //     }
+
+  //     if (excludeTime(hourNotif, minuteNotif) == false) {
+  //       ZekerModel temp = zekerList[fileCursor];
+  //       fileCursor = fileCursor + 1;
+  //       if (fileCursor > countarr - 1) {
+  //         fileCursor = 0;
+  //       }
+
+  //       String zekerId = temp.zeker_id;
+  //       String newfilename = "a$zekerId";
+  //       if (temp.choose_repeat.isEmpty == false &&
+  //           temp.zeker_repeat.isEmpty == false) {
+  //         int chooseRepeat = int.parse(temp.choose_repeat);
+  //         int filerepeat = int.parse(temp.zeker_repeat);
+
+  //         if (filerepeat < chooseRepeat) {
+  //           chooseRepeat = filerepeat;
+  //         }
+
+  //         newfilename = "a$zekerId" "_" "$chooseRepeat";
+  //       }
+
+  //       addNotificationSchedule(
+  //           temp, hourNotif, minuteNotif, newfilename, temp.zeker_name);
+  //       // addNotification(0, (hourNotif * 60) + minuteNotif,newfilename,temp.zeker_name,repeatInterval) ;
+
+  //     }
+  //   }
+  // }
+
+  // Future<void> createBuild(BuildAzkar bz) async {
+  //   // azkarList = BuildAzkar.getSelectedZeker() ;
+
+  //   int fileCursor = 0;
+  //   int countarr = zekerList.length;
+
+  //   int totalMinutes = bz.everyTime.hours * 60 + bz.everyTime.minutes;
+  //   double unit = 0;
+  //   // DateTimeComponents repeatInterval = DateTimeComponents.time;
+
+  //   if (totalMinutes < 60) {
+  //     unit = 60 / totalMinutes;
+  //     // repeatInterval =   DateTimeComponents.dateAndTime; //NSCalendarUnitHour | NSCalendarUnitMinute ;
+  //   } else {
+  //     unit = 24 / bz.everyTime.hours;
+  //     // repeatInterval = DateTimeComponents.dayOfWeekAndTime; //NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute  ;
+  //   }
+
+  //   // addNotification(0, 1,"res_morph_power_rangers", "res_morph_power_rangers") ;
+  //   //
+  //   // return;
+  //   int hourNotif = 0;
+  //   int minuteNotif = 0;
+
+  //   for (int i = 0; i < unit; i++) {
+  //     if (totalMinutes < 60) {
+  //       hourNotif = hourNotif + bz.everyTime.hours;
+  //       minuteNotif = minuteNotif + bz.everyTime.minutes;
+
+  //       if (minuteNotif > 60) {
+  //         minuteNotif = bz.everyTime.minutes;
+  //       }
+  //     } else {
+  //       hourNotif = hourNotif + bz.everyTime.hours;
+  //       minuteNotif = bz.everyTime.minutes;
+  //     }
+
+  //     if (hourNotif == 24) {
+  //       hourNotif = 0;
+  //     }
+
+  //     if (minuteNotif == 60) {
+  //       minuteNotif = 0;
+  //     }
+
+  //     if (excludeTime(hourNotif, minuteNotif) == false) {
+  //       ZekerModel temp = zekerList[fileCursor];
+  //       fileCursor = fileCursor + 1;
+  //       if (fileCursor > countarr - 1) {
+  //         fileCursor = 0;
+  //       }
+
+  //       String zekerId = temp.zeker_id;
+  //       String newfilename = "a$zekerId";
+  //       if (temp.choose_repeat.isEmpty == false &&
+  //           temp.zeker_repeat.isEmpty == false) {
+  //         int chooseRepeat = int.parse(temp.choose_repeat);
+  //         int filerepeat = int.parse(temp.zeker_repeat);
+
+  //         if (filerepeat < chooseRepeat) {
+  //           chooseRepeat = filerepeat;
+  //         }
+
+  //         newfilename = "a$zekerId" "_" "$chooseRepeat";
+  //       }
+
+  //       // addNotification(0, (hourNotif * 60) + minuteNotif,newfilename,temp.zeker_name,repeatInterval) ;
+
+  //     }
+  //   }
+
+  //   print("finsh");
+  // }
+
 }
