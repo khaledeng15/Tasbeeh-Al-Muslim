@@ -25,28 +25,28 @@ class BuildNotifications {
   }
 
   Future<void> build(BuildAzkar bz, BuildContext context) async {
-    // tz.TZDateTime scheduledDate = getDate();
-    // scheduledDate = scheduledDate.add(Duration(minutes: 3));
-    // NotificationService().scheduleLocalNotifications(
-    //     1, "Water", "It's time to drink water", scheduledDate, null, "a1_1");
-    await removeAllChanel();
+    tz.TZDateTime scheduledDate = getDate();
+    scheduledDate = scheduledDate.add(Duration(minutes: 3));
+    NotificationService().scheduleLocalNotifications(
+        1, "Water", "It's time to drink water", scheduledDate, null, "a1_1");
+    // await removeAllChanel();
 
-    zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
+    // zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
 
-    for (var item in zekerList) {
-      await createNotificationChannels(
-          item.zeker_id, item.zeker_name, item.soundFileName());
+    // for (var item in zekerList) {
+    //   await createNotificationChannels(
+    //       item.zeker_id, item.zeker_name, item.soundFileName());
 
-      await permissionsNotifications.check(context, item.zeker_id);
+    //   await permissionsNotifications.check(context, item.zeker_id);
 
-      BuildAzkar.saveZekerListFor(zekerList, zekerListFor.createdChanel);
-    }
+    //   BuildAzkar.saveZekerListFor(zekerList, zekerListFor.createdChanel);
+    // }
 
-    bool allowed = permissionsNotifications.globalNotificationsAllowed;
-    if (allowed) {
-      await AwesomeNotifications().cancelAll();
-      await buildList(bz);
-    }
+    // bool allowed = permissionsNotifications.globalNotificationsAllowed;
+    // if (allowed) {
+    //   await AwesomeNotifications().cancelAll();
+    //   await buildList(bz);
+    // }
   }
 
   tz.TZDateTime getDate() {
@@ -82,7 +82,7 @@ class BuildNotifications {
             playSound: true,
             // soundSource: 'resource://raw/res_morph_power_rangers',
             // soundSource: 'resource://raw/a1_1',
-
+            onlyAlertOnce :true,
             soundSource: soundSourcePath,
 
             defaultColor: Colors.red,
@@ -195,18 +195,20 @@ class BuildNotifications {
     NotificationSchedule? scheduleZeker;
 
     if (zekerTime.modeHours == false) {
-      // int minute = zekerTime.minutes;
-      // if (minute == 0) {
-      //   minute = 60;
-      // } else {
-      //   minute = zekerTime.minutes * 60;
-      // }
-      // scheduleZeker = NotificationInterval(
-      //     interval: zekerTime.minutes * 60,
-      //     // timeZone: localTimeZone,
-      //     repeats: true);
-      scheduleZeker = NotificationCalendar(
-          minute: zekerTime.minutes, repeats: true, timeZone: localTimeZone);
+      int minute = zekerTime.minutes;
+      if (minute == 0) {
+        minute = 60;
+      } else {
+        minute = zekerTime.minutes * 60;
+      }
+      scheduleZeker = NotificationInterval(
+          interval: minute,
+          timeZone: localTimeZone,
+          repeats: true);
+      // scheduleZeker = NotificationCalendar(
+      //     minute: zekerTime.minutes, repeats: false, timeZone: localTimeZone);
+
+      
     } else {
       // var dt = DateHelper.toDate("$hour:$minutes","HH:mm");
       scheduleZeker = NotificationCalendar(
@@ -226,6 +228,7 @@ class BuildNotifications {
             fullScreenIntent: true,
             category: NotificationCategory.Reminder,
             wakeUpScreen: true,
+            
 
             // customSound:'resource://raw/res_morph_power_rangers'
             // customSound:'resource://raw/res_morph_power_rangers.m4a',

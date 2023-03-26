@@ -83,7 +83,7 @@ class NotificationUtils {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      'assets/images/animated-bell.gif',
+                      'images/animated-bell.gif',
                       height: MediaQuery.of(context).size.height * 0.3,
                       fit: BoxFit.fitWidth,
                     ),

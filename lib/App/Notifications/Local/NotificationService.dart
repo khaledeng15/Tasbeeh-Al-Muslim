@@ -7,6 +7,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+
   static final NotificationService _notificationService =
       NotificationService._internal();
 
@@ -16,8 +17,8 @@ class NotificationService {
 
   NotificationService._internal();
 
-  static const String CHANNEL_ID = "FUDC";
-  static const String CHANNEL_NAME = "FUDC";
+  static const String CHANNEL_ID = "TSBEH";
+  static const String CHANNEL_NAME = "TSBEH";
   static const String CHANNEL_DESCRIPTION = "";
 
   static const notificationDetailsOld = NotificationDetails(
@@ -74,6 +75,10 @@ class NotificationService {
   }
 
   Future<void> init() async {
+
+      await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+
+
     final AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_logo');
 
@@ -114,9 +119,9 @@ class NotificationService {
       String fileName) async {
     NotificationDetails platformChannelSpecifics = notificationDetails(
         fileName); // NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-        0, title, body, RepeatInterval.everyMinute, platformChannelSpecifics,
-        androidAllowWhileIdle: true);
+    // await flutterLocalNotificationsPlugin.periodicallyShow(
+    //     0, title, body, RepeatInterval.everyMinute, platformChannelSpecifics,
+    //     androidAllowWhileIdle: true);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
