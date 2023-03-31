@@ -11,6 +11,7 @@ import 'PermissionsNotifications.dart';
 import 'SleepHourClass.dart';
 import 'ZekerTime.dart';
 import 'package:timezone/timezone.dart' as tz;
+
 import '../../../ProKitLib/main/utils/AppConstant.dart';
 import 'package:intl/intl.dart';
 
@@ -25,28 +26,45 @@ class BuildNotifications {
   }
 
   Future<void> build(BuildAzkar bz, BuildContext context) async {
-    tz.TZDateTime scheduledDate = getDate();
-    scheduledDate = scheduledDate.add(Duration(minutes: 3));
-    NotificationService().scheduleLocalNotifications(
-        1, "Water", "It's time to drink water", scheduledDate, null, "a1_1");
-    // await removeAllChanel();
+ /*
+ NotificationService().cancelAll() ;
+        tz.TZDateTime scheduledDate = tz.TZDateTime.now(tz.local);
 
-    // zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
+    scheduledDate = scheduledDate.add(const Duration(minutes: 2));
 
-    // for (var item in zekerList) {
-    //   await createNotificationChannels(
-    //       item.zeker_id, item.zeker_name, item.soundFileName());
+    ZekerModel zekerModel = ZekerModel();
+    zekerModel.zeker_id = "1";
+    zekerModel.zeker_repeat = "1" ;
+    zekerModel.channelID = "a1_1" ;
+    zekerModel.channelName =  "a1_1" ;
+    zekerModel.channelDescription =  "" ;
+    zekerModel.notficationId = 1 ;
+    zekerModel.notficationTitle = "test" ;
+    zekerModel.notficationBody = "test" ;
+    zekerModel.notficationScheduledDate = scheduledDate ;
 
-    //   await permissionsNotifications.check(context, item.zeker_id);
+    // "a1_1"
+    NotificationService().scheduleLocalNotifications(zekerModel);
+*/
 
-    //   BuildAzkar.saveZekerListFor(zekerList, zekerListFor.createdChanel);
-    // }
+    await removeAllChanel();
 
-    // bool allowed = permissionsNotifications.globalNotificationsAllowed;
-    // if (allowed) {
-    //   await AwesomeNotifications().cancelAll();
-    //   await buildList(bz);
-    // }
+    zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
+
+    for (var item in zekerList) {
+      await createNotificationChannels(
+          item.zeker_id, item.zeker_name, item.soundFileName());
+
+      await permissionsNotifications.check(context, item.zeker_id);
+
+      BuildAzkar.saveZekerListFor(zekerList, zekerListFor.createdChanel);
+    }
+
+    bool allowed = permissionsNotifications.globalNotificationsAllowed;
+    if (allowed) {
+      await AwesomeNotifications().cancelAll();
+      await buildList(bz);
+    }
   }
 
   tz.TZDateTime getDate() {

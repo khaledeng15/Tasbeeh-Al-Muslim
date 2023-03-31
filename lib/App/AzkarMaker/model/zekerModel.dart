@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:timezone/timezone.dart' as tz;
 
-import '../../../utils/PreferenceUtils.dart';
-
+ 
 class ZekerModel {
   ZekerModel();
 
@@ -19,18 +19,28 @@ class ZekerModel {
 
   String? fullFileName;
 
+// Notfication option
+late String channelID ;
+late String channelName ;
+late String channelDescription;
+late int notficationId;
+late  String notficationTitle;
+late String notficationBody;
+late tz.TZDateTime notficationScheduledDate;
+  
+
   String soundFileName() {
     var fileName = "";
     if (zeker_repeat.isEmpty) {
       fileName = zeker_id;
     } else {
-      fileName = zeker_id + "_1";
+      fileName = "${zeker_id}_1";
     }
 
-    return "a" + fileName;
+    return "a$fileName";
   }
 
-  String soundFileNamePath() {
+  String soundFileNamePath() {  
     var fileName = soundFileName();
     return "assets/$fileName.mp3";
   }

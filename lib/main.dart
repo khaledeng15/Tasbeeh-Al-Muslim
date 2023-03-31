@@ -10,6 +10,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 
 import 'package:just_audio/just_audio.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 AppStore appStore = AppStore();
 BaseLanguage? language;
@@ -27,6 +28,9 @@ Future<void> main() async {
   await NotificationService().init();
   PreferenceUtils.init();
   // initNotificationService();
+
+        tz.initializeTimeZones();
+
 
   runApp(const MyApp());
 }

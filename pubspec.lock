@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.13"
-  awesome_notifications:
-    dependency: "direct dev"
-    description:
-      name: awesome_notifications
-      sha256: "2b430c75cc879d6cfd52bb6eb2b5c1591ed425347816408cdcbd3f6916bba14c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.4+1"
   boolean_selector:
     dependency: transitive
     description:
@@ -854,7 +846,7 @@ packages:
     source: hosted
     version: "3.3.0"
   timezone:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: timezone
       sha256: "24c8fcdd49a805d95777a39064862133ff816ebfffe0ceff110fb5960e557964"

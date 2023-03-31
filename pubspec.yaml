@@ -81,7 +81,8 @@ dev_dependencies:
   flutter_local_notifications: ^13.0.0
   ffi : ^2.0.1
   flutter_native_timezone: ^2.0.0
-  awesome_notifications: ^0.7.4+1
+  # awesome_notifications: ^0.7.4+1
+  timezone: ^0.9.1
 
 
   just_audio: ^0.9.27
