@@ -25,9 +25,19 @@ class SleepHourClass {
 
   save() {
     String jsonStr = json.encode(toJson());
-    // PreferenceUtils.instance.setString("SleepHourClass", jsonStr);
     CashLocal.saveCash("SleepHourClass", jsonStr);
     print("SleepHourClass :" + jsonStr);
+  }
+
+  static SleepHourClass get() {
+    String jsonCls = CashLocal.getStringCash("SleepHourClass");
+    if (jsonCls.isNotEmpty) {
+      Map<String, dynamic> map = json.decode(jsonCls);
+      print(map);
+      SleepHourClass cls = SleepHourClass.fromJson(map);
+      return cls;
+    }
+    return SleepHourClass();
   }
 
   String toStringFormated() {
@@ -49,18 +59,6 @@ class SleepHourClass {
         "${startHour}:${startTime[1]} $startp" +
         " الى " +
         "${endHour}:${endTime[1]} $endP";
-  }
-
-  static SleepHourClass get() {
-    // String jsonCls = PreferenceUtils.instance.getString("SleepHourClass") ?? "";
-    String jsonCls = CashLocal.getStringCash("SleepHourClass");
-    if (jsonCls.isNotEmpty) {
-      Map<String, dynamic> map = json.decode(jsonCls);
-      print(map);
-      SleepHourClass cls = SleepHourClass.fromJson(map);
-      return cls;
-    }
-    return SleepHourClass();
   }
 
   static Future<TimeRange?> showTimeRange(BuildContext context) async {
@@ -102,6 +100,7 @@ class SleepHourClass {
 
       sleepH.startTime = [result.startTime.hour, result.startTime.minute];
       sleepH.endTime = [result.endTime.hour, result.endTime.minute];
+      sleepH.stopAt = true;
 
       sleepH.save();
 

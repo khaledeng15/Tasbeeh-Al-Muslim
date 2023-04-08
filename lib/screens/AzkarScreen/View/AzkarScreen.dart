@@ -135,8 +135,10 @@ class AzkarScreenState extends State<AzkarScreen>
           child: Padding(
               padding: EdgeInsets.all(8.0),
               child: InkWell(
-                onTap: () {
-                  SleepHourClass.showTimeRange(context);
+                onTap: () async {
+                  await SleepHourClass.showTimeRange(context);
+                  _controller.builder.sleepTime = SleepHourClass.get();
+                  setState(() {});
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,9 +212,9 @@ class AzkarScreenState extends State<AzkarScreen>
                         _controller.builder.everyTime.hours = selectedHours;
                         _controller.builder.everyTime.minutes = selectedMinutes;
                         _controller.builder.saveEveryTime();
-                        setState(() {});
-
                         finish(context);
+
+                        setState(() {});
                       }
                     }),
                   ],

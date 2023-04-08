@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:tsbeh/screens/HomeScreen/View/HomeScreen.dart';
@@ -19,7 +20,10 @@ import 'Theme/AppTheme.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'helper/connection/cash/CashLocal.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
+// import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+
 import 'helper/dbSQLiteProvider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -51,7 +55,8 @@ Future<void> main() async {
   // );
 
   await NotificationService().init();
-  tz.initializeTimeZones();
+
+  await setupTimeZone();
 
   await dbSQLiteProvider.db.database;
 
@@ -60,6 +65,12 @@ Future<void> main() async {
   String lang = "ar";
 
   runApp(MyApp(isDarkModeOn, lang));
+}
+
+Future<void> setupTimeZone() async {
+  tz.initializeTimeZones();
+  final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZone));
 }
 
 class MyApp extends StatelessWidget {

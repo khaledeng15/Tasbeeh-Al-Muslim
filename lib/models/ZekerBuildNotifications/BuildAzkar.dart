@@ -9,9 +9,13 @@ import 'ZekerTime.dart';
 enum zekerListFor { selected, createdChanel }
 
 class BuildAzkar {
-  ZekerTime everyTime = getEveryTime();
-  SleepHourClass sleepTime = SleepHourClass.get();
+  late ZekerTime everyTime;
+  late SleepHourClass sleepTime;
 
+  BuildAzkar() {
+    everyTime = getEveryTime();
+    sleepTime = SleepHourClass.get();
+  }
   String stopTimeFormate() {
     if (sleepTime.stopAt == true) {
       String timeStart = timeFormate(
