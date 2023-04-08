@@ -207,7 +207,7 @@ class BuildNotifications {
         zekerModel.channelDescription = "";
         zekerModel.notficationId = zekerTime.timeID();
         zekerModel.notficationTitle = zekerModel.zeker_name;
-        zekerModel.notficationBody = zekerModel.zeker_type;
+        // zekerModel.notficationBody = zekerModel.zeker_type;
         zekerModel.notficationScheduledDate = zekerTime.scheduledDate();
 
         NotificationService().scheduleLocalNotifications(zekerModel);
