@@ -1,0 +1,134 @@
+{
+    "sec_home" : "=====================================================================================================" ,
+      "home" : "Home",
+      "collections": "Collections" ,
+      "best_selling": "Best Selling" ,
+      "products": "Products" ,
+      "view_all": "View all" ,
+ 
+
+    "sec_Genral" : "=====================================================================================================" ,
+    "log_in" :    "Log in",
+    "log_out" : "Log out",
+    "dialog_logout_title" : "Log out ?",
+    "dialog_logout_msg" : "Do You sure to log out ?",
+    "cancel" : "Cancel",
+    "ok" : "Ok",
+    "save" : "Save",
+    "send" : "Send",
+
+    "label_text_name" : "Name",
+    "hint_text_name" : "Enter Full Name",
+    "msg_empty_name" : "Please enter some text",
+
+   "label_text_password" : "Password",
+    "hint_text_password" : "Enter Password",
+    "msg_empty_password" : "Please enter some text",
+    "msg_short_password" : "Please enter long password",
+
+    "label_text_phone" : "Phone",
+    "hint_text_phone" : "Enter your phone",
+    "msg_empty_phone" : "Please enter some text",
+    "msg_invalid_phone" : "Please right number",
+
+
+    "sec_Setting" : "=====================================================================================================" ,
+    "change_language":"Language",
+    "contact_us":"Contact Us",
+    "rate_the_app" : "Rate the app",
+    "share_app" : "Share app",
+    "terms_of_Service" : "Terms of Service",
+    "privacy_policy" : "Privacy Policy",
+    "about_us":"About us",
+    "dark_mode" : "Dark mode",
+    "settings" : "Settings",
+
+    "sec_cart" : "=====================================================================================================" ,
+    "cart":"Cart",
+    "cart_empty" : "Your Cart list is empty .",
+    "total" : "Total",
+     
+
+    "sec_Checkout" : "=====================================================================================================" ,
+    "checkout" : "Checkout",
+    "msg_title_order_success" : "Order Success",
+    "msg_title_order_failure" : "Order failure",
+    "msg_body_order_success" : "Thank you for purchasing. \n You’ll get shipping and delivery updates by email.",
+    "msg_body_order_failure" : "Something went wrong please try again",
+    "btn_continue_shopping" : "Continue shopping",
+
+    "sec_Wishlist" : "=====================================================================================================" ,
+    "my_wishlist" : "My wishlist",
+    "msg_favorite_list_empty" : "Your wishlist  list is empty .",
+
+    "sec_Orders" : "=====================================================================================================" ,
+    "orders" : "Orders",
+    "order" : "Order",
+
+    "sec_Msg" : "=====================================================================================================" ,
+    "msg_no_order" : "No Orders to show.",
+    "msg_no_products" : "No products to show.",
+    "msg_demo_txt" : "This is a demonstration store. You can purchase products like this from ",
+
+    "sec_Product" : "=====================================================================================================" ,
+    "description" : "Description",
+    "btn_remove_from_cart" : "REMOVE FROM CART",
+    "btn_add_to_cart" : "ADD TO CART",
+
+    "sec_Profile" : "=====================================================================================================" ,
+    "account" : "Account",
+    "my_profile" : "My Profile",
+
+    "profile_first_name" : "First Name",
+    "profile_last_name" : "Last Name",
+    "profile_email" : "Email",
+    "profile_phone" : "Phone",
+
+    "profile_dialog_delete_account_title" : "Delete Account ? ",
+    "profile_dialog_delete_account_msg" : "Do You sure to delete your account data?\nAll your data will be removed in 14 day.",
+
+    "sec_History" : "=====================================================================================================" ,
+    "order_history":"Order history",
+    
+    "sec_Login" : "=====================================================================================================" ,
+    "login_body_txt" : "login now to browse our hot offers",
+    "login_title_txt" : "Login Now",
+    "label_text_email_adress" : "Email Adress",
+    "hint_text_email_adress" : "Enter Email Adress",
+    "msg_empty_email_adress" : "Please enter some text",
+    "msg_invalid_email_adress" : "Please enter some text",
+
+    "sec_Sginup" : "=====================================================================================================" ,
+    "sign_up_body_txt" : "login now to browse our hot offers",
+    "sign_up_title_txt" : "Sign Up Now ",
+
+    "btn_login" : "LOGIN",
+    "dont_have_account" : "Don't have an account ?",
+    "already_have_account" : "Already have an account ?",
+
+    "btn_sign_up" : "Sign Up...",
+
+    "sec_Forget_Password" : "=====================================================================================================" ,
+    "btn_forget_password" : "Forget password",
+    "forget_password" : "Forget password",
+    "reset_your_password_by_email" : "Reset your password by email.",
+    "msg_check_your_mail_reset_password" : "Please check your email to reset password",
+
+    "sec_Search" : "=====================================================================================================" ,
+   "search" : "Search",
+   "search_for_products" : "Search for products",
+
+ 
+   "sec_Tabbar" : "=====================================================================================================" ,
+   "tab_search" : "Search",
+   "tab_favorite" : "Wishlist",
+   "tab_settings" : "Settings",
+   "tab_home" : "Home"
+
+
+ 
+
+
+}
+
+

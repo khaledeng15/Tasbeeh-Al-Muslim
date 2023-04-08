@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:tsbehFlutter}/assets/json/database.db",
+            "name": "database tsbeh"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
