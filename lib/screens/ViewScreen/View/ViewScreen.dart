@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:html_character_entities/html_character_entities.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:tsbeh/helper/String+ext.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../helper/html/HtmlToMarkdown.dart';
@@ -34,17 +37,45 @@ class ViewScreenState extends State<ViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(widget.model.titleParent)),
+        bottomSheet: BottomSheet(
+          elevation: 10,
+          enableDrag: false,
+          builder: (context) {
+            return btnShare();
+          },
+          onClosing: () {},
+        ),
         body: Container(
           padding: EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Text(
-              HtmlToMarkdown().convert(_controller.model.html),
+              _controller.txt,
               textAlign: TextAlign.right,
               textDirection: TextDirection.rtl,
               style: TextStyle(fontSize: 20),
             ),
           ),
-          // child:   loading ? CircularProgressIndicator() : WebViewWidget(controller: webController)
         ));
+  }
+
+  Widget btnShare() {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: SizedBox(
+            width: double.maxFinite,
+            height: 45,
+            child: TextButton(
+              onPressed: () {
+                Share.share(_controller.txt, subject: widget.model.title);
+              },
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+              child: Text(
+                'قم بمشاركه المحتوى',
+                style: boldTextStyle(size: 18),
+              ),
+            )));
   }
 }

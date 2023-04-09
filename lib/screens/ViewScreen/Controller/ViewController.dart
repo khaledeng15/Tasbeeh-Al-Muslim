@@ -1,5 +1,6 @@
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../helper/html/HtmlToMarkdown.dart';
 import '../../../models/AzkarElyomeModel.dart';
 import '../../../models/Base/ApiModel.dart';
 import '../../../models/DoaaInQuranModel.dart';
@@ -12,6 +13,8 @@ class ViewController {
 
   ViewController(this.refresh, this.model);
   final ApiModel model;
+  String txt = "";
+
   void update() {
     refresh();
   }
@@ -19,6 +22,8 @@ class ViewController {
   Future<void> onInit() async {
     if (model.readFrom == ApiReadFrom.database) {
       await readFromDB();
+
+      txt = HtmlToMarkdown().convert(model.html);
     }
 
     update();

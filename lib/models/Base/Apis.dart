@@ -1,5 +1,7 @@
 import 'dart:io';
-import 'dart:math';
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import 'ApiBase.dart';
 import 'ApiModel.dart';
@@ -94,8 +96,13 @@ class Apis {
       request.cashKey = cashKey;
 
       ApiBase.requestApi(request, onResult: (response) {
-        var list = ApiModel.fromList(response.result);
-        onResult(list);
+        if (response.statusCode == 200) {
+          var list = ApiModel.fromList(response.result);
+          onResult(list);
+        } else {
+          // EasyLoading.showError(response.errorMessage);
+          onResult([]);
+        }
       });
 
       // final List  res = await _httpClient.getRequest( url , bodyFields: body ,isCaching:isCaching);

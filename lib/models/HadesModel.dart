@@ -31,6 +31,6 @@ class HadesModel extends ApiModel {
 
     List<Map<String, dynamic>> results = await db.rawQuery(sql);
 
-    return ApiModel.fromObject(results.first);
+    return ApiModel(data: results.first);
   }
 }
