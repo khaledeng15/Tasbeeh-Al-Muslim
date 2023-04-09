@@ -72,22 +72,24 @@ class HomeScreenState extends State<HomeScreen> {
       itemBuilder: (context, index) {
         var temp = _controller.cubit.menuList[index];
         return GestureDetector(
-            child: Column(
-              children: [
-                Image.asset("$assetPath/${temp.photo}",
-                    height: 90, width: 90, fit: BoxFit.cover),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(temp.title),
-              ],
+            child: Container(
+              child: Column(
+                children: [
+                  Image.asset("$assetPath/${temp.photo}",
+                      height: 90, width: 90, fit: BoxFit.cover),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(temp.title),
+                ],
+              ),
             ),
             onTap: () {
               _controller.openScreenBy(temp);
             });
       },
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: 1),
+          crossAxisCount: 3, childAspectRatio: 0.8),
     );
   }
 }

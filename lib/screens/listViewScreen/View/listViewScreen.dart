@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:tsbeh/AppRoutes.dart';
 
 import '../../../models/Base/ApiModel.dart';
@@ -19,7 +19,7 @@ class listViewScreenState extends State<listViewScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = listViewController(refresh,widget.model);
+    _controller = listViewController(refresh, widget.model);
     _controller.onInit();
   }
 
@@ -27,40 +27,40 @@ class listViewScreenState extends State<listViewScreen> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_controller.model.title),),
+        appBar: AppBar(
+          title: Text(_controller.model.title),
+        ),
         body: RefreshIndicator(
-            onRefresh:_controller.pullRefresh,
+            onRefresh: _controller.pullRefresh,
             child: Directionality(
                 textDirection: TextDirection.ltr,
                 child: Container(
-                  
                     child: Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 0),
-                          child: Column(
-                            children: <Widget>[
-                              Expanded(
-                                child: SingleChildScrollView(
-                                    physics: ClampingScrollPhysics(),
-                                    controller: _controller.loadMoreController,
-                                    child: Column(children: <Widget>[
-                                      SizedBox(height: 10),
-                                      _buildListView(),
-                                      _buildProgressIndicator(),
-                                    ])),
-                              ),
-                            ],
-                            // ),
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 0),
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: SingleChildScrollView(
+                                physics: ClampingScrollPhysics(),
+                                controller: _controller.loadMoreController,
+                                child: Column(children: <Widget>[
+                                  SizedBox(height: 10),
+                                  _buildListView(),
+                                  _buildProgressIndicator(),
+                                ])),
                           ),
-                        ),
-                        // navigationBase(context, widget.model.title),
-                      ],
-                    )))));
+                        ],
+                        // ),
+                      ),
+                    ),
+                    // navigationBase(context, widget.model.title),
+                  ],
+                )))));
   }
 
   Widget _buildListView() {
@@ -70,36 +70,42 @@ class listViewScreenState extends State<listViewScreen> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-
           return cell(index);
         });
   }
 
-  Widget cell( int index)
-  {
-    return InkWell(onTap: (){
-
-           ApiModel obj = _controller.list[index];
-           obj.titleParent = widget.model.title;
-           AppRoutes.openAction(obj, _controller.list);
-    },child: 
-        Card(
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Container(
-              padding: EdgeInsets.only(top: 10),
+  Widget cell(int index) {
+    return InkWell(
+        onTap: () {
+          ApiModel obj = _controller.list[index];
+          obj.titleParent = widget.model.title;
+          AppRoutes.openAction(obj, _controller.list);
+        },
+        child: Card(
+            child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Container(
+              padding: EdgeInsets.only(top: 10, bottom: 5),
               height: 80,
-              
               child: ListTile(
-                title: Text(_controller.list[index].title,maxLines: 2,overflow: TextOverflow.ellipsis, textAlign: TextAlign.right,),
+                title: Text(
+                  _controller.list[index].title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                ),
+                subtitle: Text(
+                  _controller.list[index].description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                ),
                 trailing: Icon(Icons.arrow_forward_ios),
-              ) ),
-          )
-        )
-    );
+              )),
+        )));
   }
 
-    Widget _buildProgressIndicator() {
+  Widget _buildProgressIndicator() {
     return new Padding(
       padding: const EdgeInsets.all(8.0),
       child: new Center(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../helper/connection/ApiResponse.dart';
 import 'ApiBase.dart';
 import 'ApiModel.dart';
 import 'ApiRequest.dart';
@@ -81,7 +82,7 @@ class Apis {
       required int page,
       bool isCaching = true,
       String cashKey = "",
-      required Function(List<ApiModel>) onResult}) {
+      required Function(List<ApiModel>, ApiResponse? response) onResult}) {
     try {
       Map<String, String> body = <String, String>{
         'page': page.toString(),
@@ -98,10 +99,10 @@ class Apis {
       ApiBase.requestApi(request, onResult: (response) {
         if (response.statusCode == 200) {
           var list = ApiModel.fromList(response.result);
-          onResult(list);
+          onResult(list, response);
         } else {
           // EasyLoading.showError(response.errorMessage);
-          onResult([]);
+          onResult([], response);
         }
       });
 
@@ -111,7 +112,7 @@ class Apis {
       // return _menu;
     } catch (e) {
       print("Could Not Load Data: $e");
-      onResult([]);
+      onResult([], null);
     }
   }
 

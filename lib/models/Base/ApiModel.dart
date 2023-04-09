@@ -125,6 +125,14 @@ class ApiModel {
     map["sharetitle"] = value;
   }
 
+  String get description {
+    return map["description"] ?? "";
+  }
+
+  set description(String value) {
+    map["description"] = value;
+  }
+
   ApiType get type {
     String strType = map["type"] ?? "unDefined";
     return enumFromString<ApiType>(strType, ApiType.values);

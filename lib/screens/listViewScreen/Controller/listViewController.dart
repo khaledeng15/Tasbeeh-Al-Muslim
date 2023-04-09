@@ -91,30 +91,35 @@ class listViewController {
     update();
 
     api.getList(
-      url: model.url!,
+      url: model.url,
       page: page,
       isCaching: isCaching,
       cashKey: model.title + "_$page",
-      onResult: (lst) {
-        isLoading = false;
-        list.clear();
-        list.addAll(lst);
-        update();
-
-        if (page == 1) {
-          loadMoreController.animateTo(
-            0.0,
-            curve: Curves.easeOut,
-            duration: const Duration(milliseconds: 300),
-          );
-        }
-
-        if (lst.length == 0) {
-          page = page - 1;
-          if (page <= 0) {
-            page = 1;
+      onResult: (lst, response) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (list.isNotEmpty && response?.isCashed == false) {
+            return;
           }
-        }
+          isLoading = false;
+          list.clear();
+          list.addAll(lst);
+          update();
+
+          if (page == 1) {
+            loadMoreController.animateTo(
+              0.0,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 300),
+            );
+          }
+
+          if (lst.length == 0) {
+            page = page - 1;
+            if (page <= 0) {
+              page = 1;
+            }
+          }
+        });
       },
     );
   }
