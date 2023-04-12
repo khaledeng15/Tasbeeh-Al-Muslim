@@ -45,131 +45,37 @@ class ApiModel {
 
   Map<String, dynamic> map = {};
 
-  int? get catID {
-    return map["catID"];
-  }
+  int? catID;
 
-  set catID(int? value) {
-    map["catID"] = value;
-  }
+  late String itemId;
 
-  String get itemId {
-    return map["itemId"] ?? "";
-  }
+  late String title;
 
-  set itemId(String value) {
-    map["itemId"] = value;
-  }
+  late String photo;
 
-  String get title {
-    return map["title"] ?? "";
-  }
+  late String? url;
 
-  set title(String value) {
-    map["title"] = value;
-  }
+  late String free;
 
-  String get photo {
-    return map["photo"] ?? "";
-  }
+  late String html;
 
-  set photo(String value) {
-    map["photo"] = value;
-  }
+  late String share;
 
-  String get url {
-    return map["url"] ?? "";
-  }
+  late String shareUrl;
 
-  set url(String? value) {
-    map["url"] = value;
-  }
+  late String shareTitle;
 
-  String get free {
-    return map["free"] ?? "";
-  }
+  late String description;
 
-  set free(String value) {
-    map["free"] = value;
-  }
+  late ApiType type;
 
-  String get html {
-    return map["html"] ?? "";
-  }
+  late ApiSubType subtype;
 
-  set html(String value) {
-    map["html"] = value;
-  }
+  late ApiReadFrom readFrom;
 
-  String get share {
-    return map["share"] ?? "";
-  }
+  late AppModel appModel;
 
-  set share(String value) {
-    map["share"] = value;
-  }
-
-  String get shareUrl {
-    return map["shareurl"] ?? "";
-  }
-
-  set shareUrl(String value) {
-    map["shareurl"] = value;
-  }
-
-  String get shareTitle {
-    return map["sharetitle"] ?? "";
-  }
-
-  set shareTitle(String value) {
-    map["sharetitle"] = value;
-  }
-
-  String get description {
-    return map["description"] ?? "";
-  }
-
-  set description(String value) {
-    map["description"] = value;
-  }
-
-  ApiType get type {
-    String strType = map["type"] ?? "unDefined";
-    return enumFromString<ApiType>(strType, ApiType.values);
-  }
-
-  set type(ApiType value) {
-    map["type"] = enumToString(value);
-  }
-
-  ApiSubType get subtype {
-    String strSubtype = map["subtype"] ?? "unDefined";
-    return enumFromString<ApiSubType>(strSubtype, ApiSubType.values);
-  }
-
-  set subtype(ApiSubType value) {
-    map["subtype"] = enumToString(value);
-  }
-
-  ApiReadFrom get readFrom {
-    String strSubtype = map["readFrom"] ?? "unDefined";
-    return enumFromString<ApiReadFrom>(strSubtype, ApiReadFrom.values);
-  }
-
-  set readFrom(ApiReadFrom value) {
-    map["readFrom"] = enumToString(value);
-  }
-
-  AppModel get appModel {
-    String strSubtype = map["appModel"] ?? "unDefined";
-    return enumFromString<AppModel>(strSubtype, AppModel.values);
-  }
-
-  set appModel(AppModel value) {
-    map["appModel"] = enumToString(value);
-  }
-
-  String titleParent = "";
+  late String titleParent = "";
 
   static List<ApiModel> fromList(List data,
       {ApiType? type,
@@ -179,71 +85,72 @@ class ApiModel {
     List<ApiModel> arr = [];
 
     for (int i = 0; i < data.length; i++) {
-      // ApiModel temp = ApiModel.fromObject(data[i],
-      //     type: type, subtype: subtype, readFrom: readFrom, appModel: appModel);
-      Map<String, dynamic> temp = Map.from(data[i]);
+      ApiModel cls = ApiModel.fromObject(data[i],
+          type: type, subtype: subtype, readFrom: readFrom, appModel: appModel);
+      // Map<String, dynamic> temp = Map.from(data[i]);
 
-      if (type != null) {
-        temp["type"] = enumToString(type);
-      }
-      if (subtype != null) {
-        temp["subtype"] = enumToString(subtype);
-      }
-      if (readFrom != null) {
-        temp["readFrom"] = enumToString(readFrom);
-      }
-      if (appModel != null) {
-        temp["appModel"] = enumToString(appModel);
-      }
+      // if (type != null) {
+      //   temp["type"] = enumToString(type);
+      // }
+      // if (subtype != null) {
+      //   temp["subtype"] = enumToString(subtype);
+      // }
+      // if (readFrom != null) {
+      //   temp["readFrom"] = enumToString(readFrom);
+      // }
+      // if (appModel != null) {
+      //   temp["appModel"] = enumToString(appModel);
+      // }
 
-      ApiModel cls = ApiModel(data: temp);
+      // ApiModel cls = ApiModel(data: temp);
       arr.add(cls);
     }
 
     return arr;
   }
 
-  // factory ApiModel.fromObject(Map<String, dynamic> map,
-  //     {ApiType? type,
-  //     ApiSubType? subtype,
-  //     ApiReadFrom? readFrom,
-  //     AppModel? appModel}) {
-  //   var cls = ApiModel();
-  //   // cls.itemId = map["itemId"] ?? "";
-  //   // cls.catID = map["catID"] ?? 0;
+  factory ApiModel.fromObject(Map<String, dynamic> map,
+      {ApiType? type,
+      ApiSubType? subtype,
+      ApiReadFrom? readFrom,
+      AppModel? appModel}) {
+    var cls = ApiModel();
+    cls.itemId = map["itemId"] ?? "";
+    cls.catID = map["catID"] ?? 0;
 
-  //   // cls.title = map["title"] ?? "";
-  //   // cls.photo = map["photo"] ?? "";
-  //   // cls.url = map["url"] ?? "";
-  //   // cls.free = map["free"] ?? "";
-  //   // cls.html = map["html"] ?? "";
-  //   // cls.share = map["share"] ?? "";
-  //   // cls.shareUrl = map["shareurl"] ?? "";
-  //   // cls.shareTitle = map["sharetitle"] ?? "";
+    cls.title = map["title"] ?? "";
+    cls.photo = map["photo"] ?? "";
+    cls.url = map["url"] ?? "";
+    cls.free = map["free"] ?? "";
+    cls.html = map["html"] ?? "";
+    cls.share = map["share"] ?? "";
+    cls.shareUrl = map["shareurl"] ?? "";
+    cls.shareTitle = map["sharetitle"] ?? "";
+    cls.description = map["description"] ?? "";
 
-  //   if (readFrom != null) {
-  //     cls.readFrom = readFrom;
-  //   }
+    if (readFrom != null) {
+      cls.readFrom = readFrom;
+    }
 
-  //   if (appModel != null) {
-  //     cls.appModel = appModel;
-  //   }
+    if (appModel != null) {
+      cls.appModel = appModel;
+    }
 
-  //   // if (type != null) {
-  //   //   cls.type = type;
-  //   // } else {
-  //   //   String strType = map["type"] ?? "unDefined";
-  //   //   cls.type = enumFromString<ApiType>(strType, ApiType.values);
-  //   // }
+    if (type != null) {
+      cls.type = type;
+    } else {
+      String strType = map["type"] ?? "unDefined";
+      cls.type = enumFromString<ApiType>(strType, ApiType.values);
+    }
 
-  //   if (subtype != null) {
-  //     cls.subtype = subtype;
-  //   } else {
-  //     String strSubtype = map["subtype"] ?? "unDefined";
+    if (subtype != null) {
+      cls.subtype = subtype;
+    } else {
+      String strSubtype = map["subtype"] ?? "unDefined";
 
-  //     cls.subtype = enumFromString<ApiSubType>(strSubtype, ApiSubType.values);
-  //   }
+      cls.subtype = enumFromString<ApiSubType>(strSubtype, ApiSubType.values);
+    }
 
-  //   return cls;
-  // }
+    return cls;
+  }
 }

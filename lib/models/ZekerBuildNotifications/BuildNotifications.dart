@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:tsbeh/helper/List+ext.dart';
 import 'package:tsbeh/models/zekerModel.dart';
 
 import '../../Notifications/Local/NotificationService.dart';
@@ -152,7 +153,11 @@ class BuildNotifications {
 
       if (x.hours >= 24) {
         x.hours = 0;
-        zTimeList.add(x);
+        if (x.hours == 0 && x.minutes == 0) {
+          zTimeList.insert(0, x);
+        } else {
+          zTimeList.add(x);
+        }
         print("N$Fn = ${x.hours}:${x.minutes}");
 
         stop = true;

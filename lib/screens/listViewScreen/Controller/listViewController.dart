@@ -14,6 +14,9 @@ class listViewController {
   final Function() refresh;
 
   listViewController(this.refresh, this.model);
+  var searchController = TextEditingController();
+
+  List<ApiModel> listOrg = [];
 
   List<ApiModel> list = [];
   Apis api = Apis();
@@ -49,36 +52,23 @@ class listViewController {
 
   Future<void> getFromDB() async {
     if (model.appModel == AppModel.hades) {
-      list = await HadesModel.getMainList();
+      listOrg = await HadesModel.getMainList();
     } else if (model.appModel == AppModel.firstInIslam) {
-      list = await FirstInIslamHadesModel.getList(model.catID);
+      listOrg = await FirstInIslamHadesModel.getList(model.catID);
     } else if (model.appModel == AppModel.doaaInQuran) {
-      list = await DoaaInQuranModel.getList();
+      listOrg = await DoaaInQuranModel.getList();
     } else if (model.appModel == AppModel.azkarElyome) {
-      list = await AzkarElyomeModel.getList(categid: model.catID);
+      listOrg = await AzkarElyomeModel.getList(categid: model.catID);
     } else if (model.appModel == AppModel.islamEvents) {
-      list = await IslamEventsModel.getList(categid: model.catID);
+      listOrg = await IslamEventsModel.getList(categid: model.catID);
     }
 
+    list.addAll(listOrg);
     update();
   }
 
   void getFromApi() {
     getListOnline(true);
-
-    // loadMoreController.addListener(() {
-    //   if (loadMoreController.position.maxScrollExtent ==
-    //       loadMoreController.position.pixels) {
-    //     if (isLoading == false) {
-    //       isLoading = true;
-    //       update();
-
-    //       page = page + 1;
-
-    //       getListOnline(true);
-    //     }
-    //   }
-    // });
   }
 
   void _pullRefresh() {
@@ -91,7 +81,7 @@ class listViewController {
     update();
 
     api.getList(
-      url: model.url,
+      url: model.url!,
       page: page,
       isCaching: isCaching,
       cashKey: model.title + "_$page",
@@ -103,6 +93,10 @@ class listViewController {
           isLoading = false;
           list.clear();
           list.addAll(lst);
+
+          listOrg.clear();
+          listOrg.addAll(lst);
+
           update();
 
           if (page == 1) {
@@ -122,5 +116,26 @@ class listViewController {
         });
       },
     );
+  }
+
+  void search(String value) {
+    isLoading = true;
+    list.clear();
+    update();
+
+    getSearchResult(value).then((value) {
+      list = value;
+      isLoading = false;
+      update();
+    });
+  }
+
+  Future<List<ApiModel>> getSearchResult(String value) async {
+    List<ApiModel> result = [];
+
+    result.addAll(listOrg.where((elment) =>
+        elment.title.contains(value) || elment.description.contains(value)));
+
+    return result;
   }
 }

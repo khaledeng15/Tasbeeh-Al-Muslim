@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tsbeh/AppRoutes.dart';
+import 'package:tsbeh/helper/List+ext.dart';
 
 import '../../../Bloc/AppCubit.dart';
 import '../../../Bloc/AppStates.dart';
@@ -22,6 +23,7 @@ class scheduleNotificationsController {
   Future<void> onInit() async {
     NotificationService().pending().then((list) {
       pendingList = list;
+      pendingList.sortedBy((it) => it.id);
 
       update();
     });

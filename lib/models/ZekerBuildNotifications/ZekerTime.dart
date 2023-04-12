@@ -31,8 +31,9 @@ class ZekerTime {
 
   tz.TZDateTime scheduledDate() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime newTime =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hours, minutes);
 
-    return tz.TZDateTime(
-        tz.local, now.year, now.month, now.day, hours, minutes);
+    return newTime;
   }
 }

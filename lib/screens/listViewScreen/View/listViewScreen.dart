@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:tsbeh/AppRoutes.dart';
 
 import '../../../models/Base/ApiModel.dart';
+import '../../../widget/TextSearchWidget.dart';
 import '../Controller/listViewController.dart';
 
 class listViewScreen extends StatefulWidget {
@@ -44,16 +46,37 @@ class listViewScreenState extends State<listViewScreen> {
                       padding: EdgeInsets.only(top: 0),
                       child: Column(
                         children: <Widget>[
-                          Expanded(
-                            child: SingleChildScrollView(
-                                physics: ClampingScrollPhysics(),
-                                controller: _controller.loadMoreController,
-                                child: Column(children: <Widget>[
-                                  SizedBox(height: 10),
-                                  _buildListView(),
-                                  _buildProgressIndicator(),
-                                ])),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 16, right: 16, top: 5, bottom: 5),
+                            child: Form(
+                              child: TextFormFieldSearch(
+                                context,
+                                controller: _controller.searchController,
+                                onChanged: (value) {
+                                  _controller.search(value);
+                                },
+                              ),
+                            ),
                           ),
+                          _controller.list.isEmpty
+                              ? Expanded(
+                                  child: Center(
+                                      child: _controller.isLoading
+                                          ? CircularProgressIndicator()
+                                          : Text("لا توجد نتائج",
+                                              style: TextStyle(fontSize: 30))))
+                              : Expanded(
+                                  child: SingleChildScrollView(
+                                      physics: ClampingScrollPhysics(),
+                                      controller:
+                                          _controller.loadMoreController,
+                                      child: Column(children: <Widget>[
+                                        SizedBox(height: 10),
+                                        _buildListView(),
+                                        _buildProgressIndicator(),
+                                      ])),
+                                ),
                         ],
                         // ),
                       ),
@@ -69,6 +92,9 @@ class listViewScreenState extends State<listViewScreen> {
         itemCount: _controller.list.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
+        prototypeItem: ListTile(
+          title: cell(0),
+        ),
         itemBuilder: (context, index) {
           return cell(index);
         });

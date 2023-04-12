@@ -127,7 +127,8 @@ class ZekerModel {
 
     String dt = map["notficationScheduledDate"] ?? "";
     if (dt.isNotEmpty) {
-      cls.notficationScheduledDate = tzDateTimeFromString(value: dt)!;
+      cls.notficationScheduledDate =
+          tzDateTimeFromString(value: dt, isUtc: false)!;
     }
     return cls;
   }
@@ -188,7 +189,8 @@ class ZekerModel {
       }
     }
     if (dateTime != null) {
-      return tz.TZDateTime.from(dateTime, tz.local);
+      tz.TZDateTime? dt = tz.TZDateTime.from(dateTime, tz.local);
+      return dt;
     }
 
     return null;
