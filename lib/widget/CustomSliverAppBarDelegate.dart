@@ -99,7 +99,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                     "$assetPath/logo.png",
                     height: 80,
                     width: 80,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
                 8.width,

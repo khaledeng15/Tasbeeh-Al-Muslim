@@ -42,6 +42,6 @@ class AzkarElyomeModel extends ApiModel {
 
     List<Map<String, dynamic>> results = await db.rawQuery(sql);
 
-    return ApiModel(data: results.first);
+    return ApiModel.fromObject(results.first);
   }
 }

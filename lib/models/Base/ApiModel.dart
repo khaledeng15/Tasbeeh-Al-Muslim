@@ -39,9 +39,13 @@ enum ApiSubType {
 enum ApiReadFrom { api, database, unDefined }
 
 class ApiModel {
-  ApiModel({Map<String, dynamic>? data}) {
-    if (data != null) map = data;
-  }
+  ApiModel();
+  // ApiModel({Map<String, dynamic>? data}) {
+  //   if (data != null) {
+  //     map = data;
+  //     ApiModel.fromObject(data);
+  //   }
+  // }
 
   Map<String, dynamic> map = {};
 
@@ -49,7 +53,7 @@ class ApiModel {
 
   late String itemId;
 
-  late String title;
+  String title = "";
 
   late String photo;
 

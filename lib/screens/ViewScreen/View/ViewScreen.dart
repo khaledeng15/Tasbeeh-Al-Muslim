@@ -46,7 +46,7 @@ class ViewScreenState extends State<ViewScreen> {
           onClosing: () {},
         ),
         body: Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.only(bottom: 70),
           child: SingleChildScrollView(
             child: Text(
               _controller.txt,

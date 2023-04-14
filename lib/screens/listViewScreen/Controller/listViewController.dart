@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tsbeh/models/hadesModel.dart';
 
 import '../../../models/AzkarElyomeModel.dart';
@@ -40,12 +41,17 @@ class listViewController {
   }
 
   Future<void> onInit() async {
-    if (model.subtype == ApiSubType.Open_list_db) {
+    Future.delayed(const Duration(milliseconds: 1000), () async {
       isLoading = false;
-      getFromDB();
-    } else {
-      getFromApi();
-    }
+
+      if (model.subtype == ApiSubType.Open_list_db) {
+        await getFromDB();
+      } else {
+        getFromApi();
+      }
+
+      update();
+    });
 
     update();
   }
@@ -64,7 +70,7 @@ class listViewController {
     }
 
     list.addAll(listOrg);
-    update();
+    // update();
   }
 
   void getFromApi() {
@@ -86,34 +92,32 @@ class listViewController {
       isCaching: isCaching,
       cashKey: model.title + "_$page",
       onResult: (lst, response) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (list.isNotEmpty && response?.isCashed == false) {
-            return;
+        if (list.isNotEmpty && response?.isCashed == false) {
+          return;
+        }
+        isLoading = false;
+        list.clear();
+        list.addAll(lst);
+
+        listOrg.clear();
+        listOrg.addAll(lst);
+
+        update();
+
+        if (page == 1) {
+          loadMoreController.animateTo(
+            0.0,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
+        }
+
+        if (lst.length == 0) {
+          page = page - 1;
+          if (page <= 0) {
+            page = 1;
           }
-          isLoading = false;
-          list.clear();
-          list.addAll(lst);
-
-          listOrg.clear();
-          listOrg.addAll(lst);
-
-          update();
-
-          if (page == 1) {
-            loadMoreController.animateTo(
-              0.0,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
-          }
-
-          if (lst.length == 0) {
-            page = page - 1;
-            if (page <= 0) {
-              page = 1;
-            }
-          }
-        });
+        }
       },
     );
   }
