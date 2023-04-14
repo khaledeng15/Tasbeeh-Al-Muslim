@@ -21,13 +21,9 @@ class ContactusScreenState extends State<ContactusScreen> {
           body: Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 50),
               child: Column(children: [
-                rowViewIcon(
-                    "الشركه :", "Cybeasy", Icon(Icons.apartment, size: 20), () {
-                  requestUrl("https://www.cybeasy.com/");
-                }),
-                rowViewIcon("البريد الالكترونى :", "Info@Cybeasy.com",
+                rowViewIcon("البريد الالكترونى :", "khaled.he15@gmail.com",
                     Icon(Icons.mail, size: 20), () {
-                  requestUrl("mailto:Info@Cybeasy.com");
+                  requestUrl("mailto:khaled.he15@gmail.com");
                 }),
                 rowViewIcon(
                     "الهاتف :", "+20 103 072 2286", Icon(Icons.call, size: 20),
@@ -37,7 +33,7 @@ class ContactusScreenState extends State<ContactusScreen> {
                 rowViewIcon(" تحميل كود التطبيق بالكامل", "",
                     Icon(Icons.app_shortcut, size: 20), () {
                   requestUrl(
-                      "https://github.com/khaledeng15/Azkar-Flutter-TSBEH-");
+                      "https://github.com/khaledeng15/Tasbeeh-Al-Muslim");
                 }),
               ])),
         ));
@@ -54,7 +50,7 @@ class ContactusScreenState extends State<ContactusScreen> {
   Widget rowViewIcon(
       String title, String value, Icon icon, GestureTapCallback? onClick) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: InkWell(
         onTap: onClick,
         child: Container(
