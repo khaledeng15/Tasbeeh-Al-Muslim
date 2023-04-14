@@ -41,7 +41,7 @@ class listViewController {
   }
 
   Future<void> onInit() async {
-    Future.delayed(const Duration(milliseconds: 1000), () async {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
       isLoading = false;
 
       if (model.subtype == ApiSubType.Open_list_db) {
