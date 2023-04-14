@@ -26,19 +26,14 @@ Thanks 😀
 
 <h4>Screenshots</h4>
 
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/1.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/2.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/3.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/4.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/5.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/6.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/7.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/8.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/9.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/10.png)
-![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/11.png)
+<img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/1.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/2.png" width="350"  >
+<img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/3.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/4.png" width="350"  >
+<img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/5.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/6.png" width="350"  >
+<img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/7.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/8.png" width="350"  >
+<img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/9.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/10.png" width="350"  >
+<img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/11.png" width="350"  >
 
-    Copyright (C) 2023 khaled gad
+<h2>    Copyright (C) 2023 khaled gad</h2>
 
     This program is free software: you can redistribute it and/or modify
     it under no terms or License .
