@@ -18,7 +18,7 @@ Tasbeeh Al Muslim that helps you to remember allah Almighty, as it contains a se
 
 <h4>Contributing</h4>
 
-Development is done in the "develop" branch and the "master" branch reflects the stable version in Google Play Store.
+Development is done in the "develop" branch and the "main" branch reflects the stable version in Google Play Store.
 
 - PRs, issues (bugs, feedback and suggestions) are welcomed.
 
