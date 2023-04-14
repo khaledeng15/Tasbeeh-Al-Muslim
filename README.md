@@ -1,4 +1,4 @@
-# Tasbeeh Al Muslim
+# Flutter Tasbeeh Al Muslim
 
 <a href='https://play.google.com/store/apps/details?id=com.tsbeh'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width = "200" height = "80"/></a>
 
@@ -24,7 +24,13 @@ Development is done in the "develop" branch and the "main" branch reflects the s
 
 Thanks 😀
 
-<h4>Screenshots</h4>
+## ✨ Requirements
+
+- Any Operating System (ie. MacOS X, Linux, Windows)
+- Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
+- A little knowledge of Dart and Flutter
+
+## 📸 ScreenShots
 
 <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/1.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/2.png" width="350"  >
 <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/3.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/4.png" width="350"  >
@@ -32,6 +38,11 @@ Thanks 😀
 <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/7.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/8.png" width="350"  >
 <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/9.png" width="350"  > <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/10.png" width="350"  >
 <img src="https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/11.png" width="350"  >
+
+## Contact
+
+If you have any suggestions, leave a message
+<a href="mailto:khaled.he15@gmail.com?">here</a>
 
 <h2>    Copyright (C) 2023 khaled gad</h2>
 
