@@ -26,17 +26,17 @@ Thanks 😀
 
 <h4>Screenshots</h4>
 
-![Screenshots](https://play-lh.googleusercontent.com/VuGPUYURUGpy83tvwxUGL43gMSOXV4ho1EBW3xTBLSiW8GArZx-_PcBv5NSzhxJh0uU=w720-h310)
-![Screenshots](https://play-lh.googleusercontent.com/4Im0aP5PV4UY9kxpxQcMPSzJURvKnlC_tYQiYGRafjCpc30FfhSoa7t_GL7f075vTwLx=w720-h310)
-![Screenshots](https://play-lh.googleusercontent.com/Tg9vEOeuYLuQaBae3a9rLEFul_QEX1NoY_mNNciGJaB6m7mVFQpdB9xK18WE0w3wU-g=w720-h310)
-![Screenshots](https://play-lh.googleusercontent.com/_hQSafN7MBkbu66wlqP6sJsoqMM3g3B0IGDG3ODw3UpFnAoR_K5BjMr_Pn9RaDgGf8E=w720-h310)
-
-![Screenshots](https://tioccitt.sirv.com/photo1681134640.jpeg?w=720&h=310)
-![Screenshots](https://play-lh.googleusercontent.com/PBMuxL6LSxLPAj1FDsaib6j0DL80rYmB0C6FjI0OJHwMkfkBdGTB4cFwzneYn_43J7w=w720-h310)
-![Screenshots](https://play-lh.googleusercontent.com/9xmbrxLZPhyyFQKZH08UWaUFXBG7UR26BVp0NIZk7fhUvlJrn-jrqhvPnJi3hmOlWoM=w720-h310)
-![Screenshots](https://play-lh.googleusercontent.com/tNVRVcJAkiBnyymnqPNVqO9ftvM6V-dzv5pg4fRsd_tjIkvLtQ6Ng2xw7r4XPTiJe34J=w720-h310)
-
-![Screenshots](https://play-lh.googleusercontent.com/PuLlrz6mJFiP679bUqbySP_KcoOuLOcivTezYktsErY60Vz4p2tY2gsXrY6ebwkSLCzi=w720-h310)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/1.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/2.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/3.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/4.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/5.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/6.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/7.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/8.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/9.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/10.png)
+![Screenshots](https://github.com/khaledeng15/Tasbeeh-Al-Muslim/tree/main/screenShots/11.png)
 
     Copyright (C) 2023 khaled gad
 
