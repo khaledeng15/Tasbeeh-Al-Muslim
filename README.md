@@ -42,7 +42,7 @@ Thanks 😀
 ## Contact
 
 If you have any suggestions, leave a message
-<a href="mailto:khaled.he15@gmail.com?">here</a>
+<a href="mailto:khaled.he15@gmail.com">here</a>
 
 <h2>    Copyright (C) 2023 khaled gad</h2>
 
