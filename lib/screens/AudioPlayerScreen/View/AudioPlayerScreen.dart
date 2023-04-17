@@ -56,7 +56,127 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.model.titleParent)),
-      body: Stack(children: [
+      body: Column(children: [
+        Cover(),
+        const SizedBox(height: 30.0),
+        ControlButtons(player),
+        seekBarConrollers(),
+        const SizedBox(height: 8.0),
+        headerlistMedai(),
+        listMedai()
+      ]),
+    );
+  }
+
+  Widget listMedai() {
+    return Expanded(
+      child: StreamBuilder<SequenceState?>(
+        stream: player.sequenceStateStream,
+        builder: (context, snapshot) {
+          final state = snapshot.data;
+          final sequence = state?.sequence ?? [];
+          return ReorderableListView(
+            onReorder: (int oldIndex, int newIndex) {
+              if (oldIndex < newIndex) newIndex--;
+              _controller.playlist.move(oldIndex, newIndex);
+            },
+            children: [
+              for (var i = 1; i < sequence.length; i++) row(sequence, state, i)
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget headerlistMedai() {
+    return Card(
+      child: Row(
+        children: [
+          StreamBuilder<LoopMode>(
+            stream: player.loopModeStream,
+            builder: (context, snapshot) {
+              final loopMode = snapshot.data ?? LoopMode.off;
+              const icons = [
+                Icon(Icons.repeat, color: Colors.grey),
+                Icon(Icons.repeat, color: Colors.orange),
+                Icon(Icons.repeat_one, color: Colors.orange),
+              ];
+              const cycleModes = [
+                LoopMode.off,
+                LoopMode.all,
+                LoopMode.one,
+              ];
+              final index = cycleModes.indexOf(loopMode);
+              return IconButton(
+                icon: icons[index],
+                onPressed: () {
+                  player.setLoopMode(cycleModes[
+                      (cycleModes.indexOf(loopMode) + 1) % cycleModes.length]);
+                },
+              );
+            },
+          ),
+          Expanded(
+            child: Text(
+              "القائمه",
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          StreamBuilder<bool>(
+            stream: player.shuffleModeEnabledStream,
+            builder: (context, snapshot) {
+              final shuffleModeEnabled = snapshot.data ?? false;
+              return IconButton(
+                icon: shuffleModeEnabled
+                    ? const Icon(Icons.shuffle, color: Colors.orange)
+                    : const Icon(Icons.shuffle, color: Colors.grey),
+                onPressed: () async {
+                  final enable = !shuffleModeEnabled;
+                  if (enable) {
+                    await player.shuffle();
+                  }
+                  await player.setShuffleModeEnabled(enable);
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget seekBarConrollers() {
+    return StreamBuilder<PositionData>(
+      stream: _controller.positionDataStream,
+      builder: (context, snapshot) {
+        final positionData = snapshot.data;
+        if ((positionData?.duration ?? Duration.zero) == Duration.zero) {
+          return SizedBox(
+            height: 20,
+          );
+        } else {
+          return SeekBar(
+            duration: positionData?.duration ?? Duration.zero,
+            position: positionData?.position ?? Duration.zero,
+            bufferedPosition: positionData?.bufferedPosition ?? Duration.zero,
+            onChangeEnd: (newPosition) {
+              player.seek(newPosition);
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Widget Cover() {
+    return Container(
+      decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        BoxShadow(
+            color: Colors.black87, blurRadius: 15.0, offset: Offset(0.0, 0.75))
+      ], color: Theme.of(context).colorScheme.primary),
+      child: Stack(children: [
         Image.asset(
           "$assetPath/cover.jpg",
           height: 200,
@@ -67,135 +187,37 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
           width: double.maxFinite,
           height: 200,
           color: Colors.black38,
-        ),
-        Padding(
-            padding: const EdgeInsets.only(top: 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: StreamBuilder<SequenceState?>(
-                    stream: _controller.player.sequenceStateStream,
-                    builder: (context, snapshot) {
-                      final state = snapshot.data;
-                      if (state?.sequence.isEmpty ?? true) {
-                        return const SizedBox();
-                      }
-                      final metadata = state!.currentSource!.tag as MediaItem;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(metadata.album!,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold)),
-                          Text(metadata.title,
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                ControlButtons(_controller.player),
-                StreamBuilder<PositionData>(
-                  stream: _controller.positionDataStream,
-                  builder: (context, snapshot) {
-                    final positionData = snapshot.data;
-                    return SeekBar(
-                      duration: positionData?.duration ?? Duration.zero,
-                      position: positionData?.position ?? Duration.zero,
-                      bufferedPosition:
-                          positionData?.bufferedPosition ?? Duration.zero,
-                      onChangeEnd: (newPosition) {
-                        _controller.player.seek(newPosition);
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(height: 8.0),
-                Row(
+          child: Container(
+            child: StreamBuilder<SequenceState?>(
+              stream: player.sequenceStateStream,
+              builder: (context, snapshot) {
+                final state = snapshot.data;
+                if (state?.sequence.isEmpty ?? true) {
+                  return const SizedBox();
+                }
+                final metadata = state!.currentSource!.tag as MediaItem;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    StreamBuilder<LoopMode>(
-                      stream: _controller.player.loopModeStream,
-                      builder: (context, snapshot) {
-                        final loopMode = snapshot.data ?? LoopMode.off;
-                        const icons = [
-                          Icon(Icons.repeat, color: Colors.grey),
-                          Icon(Icons.repeat, color: Colors.orange),
-                          Icon(Icons.repeat_one, color: Colors.orange),
-                        ];
-                        const cycleModes = [
-                          LoopMode.off,
-                          LoopMode.all,
-                          LoopMode.one,
-                        ];
-                        final index = cycleModes.indexOf(loopMode);
-                        return IconButton(
-                          icon: icons[index],
-                          onPressed: () {
-                            _controller.player.setLoopMode(cycleModes[
-                                (cycleModes.indexOf(loopMode) + 1) %
-                                    cycleModes.length]);
-                          },
-                        );
-                      },
-                    ),
-                    Expanded(
-                      child: Text(
-                        "القائمه",
-                        style: Theme.of(context).textTheme.headlineSmall,
+                    Text(metadata.album!,
                         textAlign: TextAlign.center,
-                      ),
-                    ),
-                    StreamBuilder<bool>(
-                      stream: _controller.player.shuffleModeEnabledStream,
-                      builder: (context, snapshot) {
-                        final shuffleModeEnabled = snapshot.data ?? false;
-                        return IconButton(
-                          icon: shuffleModeEnabled
-                              ? const Icon(Icons.shuffle, color: Colors.orange)
-                              : const Icon(Icons.shuffle, color: Colors.grey),
-                          onPressed: () async {
-                            final enable = !shuffleModeEnabled;
-                            if (enable) {
-                              await _controller.player.shuffle();
-                            }
-                            await _controller.player
-                                .setShuffleModeEnabled(enable);
-                          },
-                        );
-                      },
-                    ),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold)),
+                    Text(metadata.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold)),
                   ],
-                ),
-                SizedBox(
-                  height: 240.0,
-                  child: StreamBuilder<SequenceState?>(
-                    stream: _controller.player.sequenceStateStream,
-                    builder: (context, snapshot) {
-                      final state = snapshot.data;
-                      final sequence = state?.sequence ?? [];
-                      return ReorderableListView(
-                        onReorder: (int oldIndex, int newIndex) {
-                          if (oldIndex < newIndex) newIndex--;
-                          _controller.playlist.move(oldIndex, newIndex);
-                        },
-                        children: [
-                          for (var i = 1; i < sequence.length; i++)
-                            row(sequence, state, i)
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ],
-            )),
+                );
+              },
+            ),
+          ),
+        )
       ]),
     );
   }
@@ -224,7 +246,7 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
                 fontSize: 20, color: Theme.of(context).colorScheme.primary),
           ),
           onTap: () {
-            _controller.player.seek(Duration.zero, index: i);
+            player.seek(Duration.zero, index: i);
           },
         ),
       ),

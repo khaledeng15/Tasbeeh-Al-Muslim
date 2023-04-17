@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:rect_getter/rect_getter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tsbeh/helper/String+ext.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -33,49 +35,62 @@ class ViewScreenState extends State<ViewScreen> {
     setState(() {});
   }
 
+  final globalKey = RectGetter.createGlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.model.titleParent)),
-        bottomSheet: BottomSheet(
-          elevation: 10,
-          enableDrag: false,
-          builder: (context) {
-            return btnShare();
-          },
-          onClosing: () {},
-        ),
-        body: Container(
-          padding: EdgeInsets.only(bottom: 70),
-          child: SingleChildScrollView(
+      appBar: AppBar(
+        title: Text(widget.model.titleParent),
+        actions: [btnShare()],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
+          child: Container(
+            width: double.maxFinite,
             child: Text(
               _controller.txt,
               textAlign: TextAlign.right,
               textDirection: TextDirection.rtl,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, wordSpacing: 5, height: 2),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget btnShare() {
-    return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: SizedBox(
-            width: double.maxFinite,
-            height: 45,
-            child: TextButton(
-              onPressed: () {
-                Share.share(_controller.txt, subject: widget.model.title);
-              },
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-              ),
-              child: Text(
-                'قم بمشاركه المحتوى',
-                style: boldTextStyle(size: 18),
-              ),
-            )));
+    if (Platform.isIOS) {
+      return btnShareIpad();
+    } else {
+      return IconButton(
+          onPressed: () async {
+            await Share.share(
+              _controller.txt,
+              subject: widget.model.title,
+            );
+          },
+          icon: Icon(Icons.share));
+    }
+  }
+
+  Widget btnShareIpad() {
+    return RectGetter(
+      key: globalKey,
+      child: IconButton(
+          onPressed: () async {
+            var rect = RectGetter.getRectFromKey(globalKey);
+            await Share.share(
+              _controller.txt,
+              subject: widget.model.title,
+              sharePositionOrigin:
+                  Rect.fromLTWH(rect!.left + 40, rect.top + 20, 2, 2),
+            );
+          },
+          icon: Icon(Icons.share)),
+    );
   }
 }

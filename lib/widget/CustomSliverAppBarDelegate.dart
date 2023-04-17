@@ -17,18 +17,28 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     final top = expandedHeight - shrinkOffset - size / 0.6;
     final width = context.width();
 
-    return Stack(
-      fit: StackFit.expand,
-      clipBehavior: Clip.none,
-      children: [
-        buildBackground(shrinkOffset, width),
-        Positioned(
-          top: top,
-          left: 16,
-          right: 16,
-          child: buildFloating(shrinkOffset),
-        ),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: Colors.black26,
+              blurRadius: 15.0,
+              offset: Offset(0.0, 0.75))
+        ],
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        clipBehavior: Clip.none,
+        children: [
+          buildBackground(shrinkOffset, width),
+          Positioned(
+            top: top,
+            left: 16,
+            right: 16,
+            child: buildFloating(shrinkOffset),
+          ),
+        ],
+      ),
     );
   }
 

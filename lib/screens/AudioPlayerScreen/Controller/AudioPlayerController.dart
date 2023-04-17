@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
+import '../../../main.dart';
 import '../../../models/AudioModel/common.dart';
 import '../../../models/Base/ApiModel.dart';
 
@@ -14,7 +15,6 @@ class AudioPlayerController {
 
   AudioPlayerController(this.refresh);
 
-  late AudioPlayer player;
   late ConcatenatingAudioSource playlist;
   late List<ApiModel> list;
   late ApiModel model;
@@ -31,10 +31,9 @@ class AudioPlayerController {
   }
 
   Future<void> _init() async {
-    player = AudioPlayer();
-
     final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.speech());
+    await session.configure(const AudioSessionConfiguration.music());
+
     // Listen to errors during playback.
     player.playbackEventStream.listen((event) {},
         onError: (Object e, StackTrace stackTrace) {
@@ -51,15 +50,19 @@ class AudioPlayerController {
     }
   }
 
+  String urlSupportedExtension(String url) {
+    return url.replaceAll(".pls", ".weba");
+  }
+
   void buildPlaylist() {
     List<AudioSource> lst = [];
     for (int i = 0; i < list.length; i++) {
       ApiModel temp = list[i];
       lst.add(AudioSource.uri(
-        Uri.parse(temp.url!),
+        Uri.parse(urlSupportedExtension(temp.url!)),
         tag: MediaItem(
-          id: model.itemId,
-          album: temp.titleParent,
+          id: temp.itemId,
+          album: model.titleParent,
           title: temp.title,
         ),
       ));
@@ -70,7 +73,7 @@ class AudioPlayerController {
           ![TargetPlatform.windows, TargetPlatform.linux]
               .contains(defaultTargetPlatform))
         ClippingAudioSource(
-          child: AudioSource.uri(Uri.parse(model.url!)),
+          child: AudioSource.uri(Uri.parse(urlSupportedExtension(model.url!))),
           tag: MediaItem(
             id: model.itemId,
             album: model.titleParent,

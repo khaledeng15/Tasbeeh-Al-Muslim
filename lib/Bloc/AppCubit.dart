@@ -12,25 +12,7 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
   List<ApiModel> menuList = [
     buildListHome(
-      itemId: "",
-      title: "ضوتيات",
-      photo: "mic.png",
-      url: "https://api.4topapps.com/APPS/tsbeh/v3/radio.php",
-      type: ApiType.open,
-      subType: ApiSubType.Open_radio_list,
-      appModel: AppModel.radioList,
-    ),
-    buildListHome(
-      itemId: "",
-      title: "القران الكريم (صوت)",
-      photo: "quran.png",
-      url: "https://api.4topapps.com/APPS/tsbeh/v3/mp3Quran_ver2.php",
-      type: ApiType.open,
-      subType: ApiSubType.Open_list,
-      appModel: AppModel.quran,
-    ),
-    buildListHome(
-      itemId: "",
+      itemId: "01",
       title: "تسبيح المسلم",
       photo: "zeker.png",
       url: "",
@@ -39,7 +21,25 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.zeker,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "02",
+      title: "القران الكريم (صوت)",
+      photo: "quran.png",
+      url: "https://api.4topapps.com/APPS/tsbeh/v3/mp3Quran_ver2.php",
+      type: ApiType.open,
+      subType: ApiSubType.Open_list,
+      appModel: AppModel.quran,
+    ),
+    buildListHome(
+      itemId: "03",
+      title: "ضوتيات",
+      photo: "mic.png",
+      url: "https://api.4topapps.com/APPS/tsbeh/v3/radio.php",
+      type: ApiType.open,
+      subType: ApiSubType.Open_radio_list,
+      appModel: AppModel.radioList,
+    ),
+    buildListHome(
+      itemId: "04",
       title: "أحاديث نبويه",
       photo: "hades.png",
       url: "",
@@ -48,7 +48,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.hades,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "05",
       title: "الدعاء فى القرآن",
       photo: "doaa.png",
       url: "",
@@ -57,7 +57,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.doaaInQuran,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "06",
       title: "الأوائل",
       photo: "first.png",
       url: "",
@@ -66,7 +66,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.firstInIslam,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "07",
       title: "أذكار اليوم",
       photo: "azkar-elyome.png",
       url: "",
@@ -75,7 +75,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.azkarElyome,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "08",
       title: "الأحداث الاسلامية",
       photo: "events-islam.png",
       url: "",
@@ -84,7 +84,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.islamEvents,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "09",
       title: "محول التقويم",
       photo: "convertdate.png",
       url: "convertdate.html",
@@ -93,7 +93,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.convertDate,
     ),
     buildListHome(
-      itemId: "",
+      itemId: "10",
       title: "عن التطبيق",
       photo: "about.png",
       url: "",

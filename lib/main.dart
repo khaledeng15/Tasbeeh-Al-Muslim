@@ -31,7 +31,7 @@ const assetPath = "assets/images";
 bool isDarkModeOn = false;
 const int DurationHours = 24;
 const dateFormat = 'MMM dd, yyyy';
-final playerAzkar = AudioPlayer();
+late final AudioPlayer player;
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -63,6 +63,8 @@ Future<void> main() async {
   isDarkModeOn = CashLocal.getStringCash('IsDark') == "" ? false : true;
 
   String lang = "ar";
+
+  player = AudioPlayer();
 
   runApp(MyApp(isDarkModeOn, lang));
 }

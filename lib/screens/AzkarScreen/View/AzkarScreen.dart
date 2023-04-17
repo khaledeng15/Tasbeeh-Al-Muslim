@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tsbeh/main.dart';
 
 import '../../../Bloc/AppCubit.dart';
@@ -445,15 +450,7 @@ class AzkarScreenState extends State<AzkarScreen>
           size: 24, color: Theme.of(context).colorScheme.secondary),
       onTap: () {
         var temp = _controller.zekerList[index];
-        Uri fileUrl = temp.soundFileNamePath();
-        var audio = AudioSource.uri(fileUrl);
-
-        playerAzkar.setAudioSource(audio).then((value) {
-          playerAzkar.play();
-        });
-        // playerAzkar.setAsset(temp.soundFileNamePath()).then((value) {
-        //   playerAzkar.play();
-        // });
+        _controller.playSound(temp);
       },
     );
   }

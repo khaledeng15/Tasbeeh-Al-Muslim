@@ -65,6 +65,8 @@ dependencies:
   url_launcher: ^6.1.2
   flutter_native_timezone: ^2.0.0
   google_fonts: ^4.0.3
+  package_info_plus: ^3.1.0
+  rect_getter: ^1.1.0
 
   # WEB TOOLS
   webview_flutter: ^4.0.1
@@ -102,3 +104,4 @@ flutter:
     - assets/
     - assets/db/
     - assets/images/
+    # - assets/raw/ # stop this in android build run only with ios to copy file sound in android the raw folder added to resources folder

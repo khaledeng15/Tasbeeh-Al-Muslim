@@ -89,12 +89,12 @@ class listViewScreenState extends State<listViewScreen> {
   Widget _buildListView() {
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: _controller.list.length,
+        // itemCount: _controller.list.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        prototypeItem: ListTile(
-          title: cell(0),
-        ),
+        // prototypeItem: ListTile(
+        //   title: cell(0),
+        // ),
         itemBuilder: (context, index) {
           return cell(index);
         });

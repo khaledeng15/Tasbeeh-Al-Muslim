@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tsbeh/Bloc/AppCubit.dart';
+import 'package:tsbeh/helper/List+ext.dart';
 import 'package:tsbeh/main.dart';
 
 import '../../../Bloc/AppStates.dart';
+import '../../../models/Base/ApiModel.dart';
 import '../../../widget/CustomSliverAppBarDelegate.dart';
 import '../Controller/HomeController.dart';
 
@@ -50,12 +52,7 @@ class HomeScreenState extends State<HomeScreen> {
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  lstButtons(),
-                ],
-              )
+              lstButtons(),
             ],
           ),
         )
@@ -64,6 +61,48 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget lstButtons() {
+    var listSorted = _controller.cubit.menuList.sortedBy((it) => it.itemId);
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(top: 30, right: 15, left: 15, bottom: 10),
+        child: Wrap(
+          // spacing: 25,
+          // runSpacing: 20.0,
+          direction: Axis.horizontal,
+          alignment: WrapAlignment.center,
+          verticalDirection: VerticalDirection.down,
+          children: <Widget>[
+            for (var item in listSorted) listItem(item),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget listItem(ApiModel temp) {
+    return GestureDetector(
+        child: Container(
+          width: 120,
+          height: 140,
+          child: Column(
+            children: [
+              Image.asset("$assetPath/${temp.photo}",
+                  height: 90, width: 90, fit: BoxFit.cover),
+              SizedBox(
+                height: 8,
+              ),
+              Text(temp.title),
+            ],
+          ),
+        ),
+        onTap: () {
+          _controller.openScreenBy(temp);
+        });
+  }
+
+  Widget lstButtonsOld() {
     return GridView.builder(
       physics: ScrollPhysics(),
       itemCount: _controller.cubit.menuList.length,

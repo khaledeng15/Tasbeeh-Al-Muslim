@@ -32,10 +32,16 @@ class ZekerModel {
   tz.TZDateTime? notficationScheduledDate;
 
   String soundFileName() {
-    return fullFileName!;
+    if (Platform.isAndroid) {
+      return fullFileName!;
+    } else if (Platform.isIOS) {
+      return "${fullFileName}.mp3";
+    } else {
+      return fullFileName!;
+    }
   }
 
-  Uri soundFileNamePath() {
+  String soundFileNamePath() {
     String file = zeker_id;
     if (choose_repeat.isEmpty == false && zeker_repeat != 1) {
       int chooseRepeat = int.parse(choose_repeat);
@@ -49,9 +55,11 @@ class ZekerModel {
     }
 
     if (Platform.isAndroid) {
-      return Uri.parse("android.resource://com.tsbeh/raw/$file");
+      return "android.resource://com.tsbeh/raw/$file";
+    } else if (Platform.isIOS) {
+      return "assets/raw/${file}.mp3";
     } else {
-      return Uri.parse("raw/$file");
+      return file;
     }
   }
 

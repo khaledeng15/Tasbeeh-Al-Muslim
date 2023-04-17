@@ -1,13 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:tsbeh/appRoutes.dart';
 
 import '../../../Bloc/AppCubit.dart';
 import '../../../Bloc/AppStates.dart';
+import '../../../main.dart';
 import '../../../models/ZekerBuildNotifications/BuildAzkar.dart';
 import '../../../models/ZekerBuildNotifications/BuildNotifications.dart';
 import '../../../models/zekerModel.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AzkarController {
   final Function() refresh;
@@ -107,5 +113,28 @@ class AzkarController {
     cubit.emit(InitialAppStates());
 
     AppRoutes.back();
+  }
+
+  void playSound(ZekerModel temp) async {
+    String path = temp.soundFileNamePath();
+    if (Platform.isAndroid) {
+      Uri fileUrl = Uri.parse(path);
+      var audio = AudioSource.uri(fileUrl);
+      player.setAudioSource(audio).then((value) {
+        player.play();
+      });
+    } else {
+      var audio = AudioSource.asset(
+        path,
+        tag: MediaItem(
+          id: "1",
+          album: "",
+          title: "",
+        ),
+      );
+      player.setAudioSource(audio).then((value) {
+        player.play();
+      });
+    }
   }
 }

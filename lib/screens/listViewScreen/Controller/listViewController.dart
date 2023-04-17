@@ -41,17 +41,17 @@ class listViewController {
   }
 
   Future<void> onInit() async {
-    Future.delayed(const Duration(milliseconds: 2000), () async {
-      isLoading = false;
+    // Future.delayed(const Duration(milliseconds: 2000), () async {
+    //   isLoading = false;
 
-      if (model.subtype == ApiSubType.Open_list_db) {
-        await getFromDB();
-      } else {
-        getFromApi();
-      }
+    if (model.subtype == ApiSubType.Open_list_db) {
+      await getFromDB();
+    } else {
+      getFromApi();
+    }
 
-      update();
-    });
+    //   update();
+    // });
 
     update();
   }
