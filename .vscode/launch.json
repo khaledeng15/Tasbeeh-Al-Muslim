@@ -20,7 +20,19 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
-        }
+        },
+        {
+            "name": "Build an APK Release",
+            "command": "flutter build apk --release",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Build an appbundle Release",
+            "command": "flutter build appbundle --release",
+            "request": "launch",
+            "type": "node-terminal"
+        },
     ]
 }
 
