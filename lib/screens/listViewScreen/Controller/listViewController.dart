@@ -21,7 +21,7 @@ class listViewController {
 
   List<ApiModel> list = [];
   Apis api = Apis();
-  final loadMoreController = ScrollController();
+  // final loadMoreController = ScrollController();
   final ApiModel model;
 
   int page = 1;
@@ -30,6 +30,25 @@ class listViewController {
   String searchTxt = "";
   String categID = "1";
   bool ltr = false;
+
+  bool? loadingMore;
+  late bool hasMoreItems;
+  int _maxItems = 30;
+  int _numItemsPage = 10;
+  Future? initialLoad;
+
+  Future loadMoreItems() async {
+    // final totalItems = list.length;
+    // await Future.delayed(Duration(seconds: 3), () {
+    //   for (var i = 0; i < _numItemsPage; i++) {
+    //     items.add(Item('Item ${totalItems + i + 1}'));
+    //   }
+    // });
+
+    // _hasMoreItems = list.length < _maxItems;
+
+    hasMoreItems = false;
+  }
 
   void update() {
     refresh();
@@ -41,14 +60,18 @@ class listViewController {
   }
 
   Future<void> onInit() async {
-    // Future.delayed(const Duration(milliseconds: 2000), () async {
-    //   isLoading = false;
+    initialLoad = Future.delayed(Duration(seconds: 1), () async {
+      // Future.delayed(const Duration(milliseconds: 2000), () async {
+      //   isLoading = false;
 
-    if (model.subtype == ApiSubType.Open_list_db) {
-      await getFromDB();
-    } else {
-      getFromApi();
-    }
+      if (model.subtype == ApiSubType.Open_list_db) {
+        await getFromDB();
+      } else {
+        getFromApi();
+      }
+      hasMoreItems = true;
+      update();
+    });
 
     //   update();
     // });
@@ -104,13 +127,13 @@ class listViewController {
 
         update();
 
-        if (page == 1) {
-          loadMoreController.animateTo(
-            0.0,
-            curve: Curves.easeOut,
-            duration: const Duration(milliseconds: 300),
-          );
-        }
+        // if (page == 1) {
+        //   loadMoreController.animateTo(
+        //     0.0,
+        //     curve: Curves.easeOut,
+        //     duration: const Duration(milliseconds: 300),
+        //   );
+        // }
 
         if (lst.length == 0) {
           page = page - 1;

@@ -84,7 +84,7 @@ class HomeScreenState extends State<HomeScreen> {
   Widget listItem(ApiModel temp) {
     return GestureDetector(
         child: Container(
-          width: 120,
+          width: 110,
           height: 140,
           child: Column(
             children: [
@@ -93,42 +93,15 @@ class HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 8,
               ),
-              Text(temp.title),
+              Text(
+                temp.title,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
         onTap: () {
           _controller.openScreenBy(temp);
         });
-  }
-
-  Widget lstButtonsOld() {
-    return GridView.builder(
-      physics: ScrollPhysics(),
-      itemCount: _controller.cubit.menuList.length,
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        var temp = _controller.cubit.menuList[index];
-        return GestureDetector(
-            child: Container(
-              child: Column(
-                children: [
-                  Image.asset("$assetPath/${temp.photo}",
-                      height: 90, width: 90, fit: BoxFit.cover),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(temp.title),
-                ],
-              ),
-            ),
-            onTap: () {
-              _controller.openScreenBy(temp);
-            });
-      },
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: 0.8),
-    );
   }
 }

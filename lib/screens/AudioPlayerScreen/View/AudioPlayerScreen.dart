@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:optimize_battery/optimize_battery.dart';
+import 'package:tsbeh/helper/connection/cash/CashLocal.dart';
 import 'package:tsbeh/screens/AudioPlayerScreen/View/ControlButtons.dart';
 
 import '../../../main.dart';
@@ -22,6 +27,7 @@ class AudioPlayerScreen extends StatefulWidget {
 class AudioPlayerScreenState extends State<AudioPlayerScreen>
     with WidgetsBindingObserver {
   late AudioPlayerController _controller;
+  bool isIgnoringBattery = true;
 
   @override
   void initState() {
@@ -29,6 +35,8 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
     _controller = AudioPlayerController(refresh);
     _controller.onInit(widget.list, widget.model);
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
+
+    checkBatteryOptimization(false);
   }
 
   void refresh() {
@@ -52,10 +60,79 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
     }
   }
 
+  void checkBatteryOptimization(bool forceShow) async {
+    if (!Platform.isAndroid) {
+      isIgnoringBattery = true;
+      return;
+    }
+
+    isIgnoringBattery = await OptimizeBattery.isIgnoringBatteryOptimizations();
+    if (isIgnoringBattery == false) {
+      if (forceShow == false) {
+        String skip = CashLocal.getStringCash("IgnoringBatteryOptimizations");
+        if (skip == "1") {
+          return;
+        }
+      }
+
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                title: const Text(
+                  "جهازك يقوم بغلق التطبيق فى الخلفيه",
+                  textAlign: TextAlign.center,
+                ),
+                content: const Text(
+                    "لكى يعمل التطبيق فى الخلفيه يرجي الغاء القيود على البطاريه",
+                    textAlign: TextAlign.center),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text(
+                          'الغاء',
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            OptimizeBattery.openBatteryOptimizationSettings(),
+                        child: const Text('فتح الاعدادات',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                  forceShow == true
+                      ? SizedBox()
+                      : TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            CashLocal.saveCash(
+                                "IgnoringBatteryOptimizations", "1");
+                          },
+                          child: const Text('لا تظهر هذه الرساله مره اخرى'),
+                        ),
+                ],
+              ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.model.titleParent)),
+      appBar: AppBar(
+        title: Text(widget.model.titleParent),
+        actions: [
+          isIgnoringBattery == true
+              ? SizedBox()
+              : IconButton(
+                  onPressed: () {
+                    checkBatteryOptimization(true);
+                  },
+                  icon: Icon(Icons.battery_saver_sharp))
+        ],
+      ),
       body: Column(children: [
         Cover(),
         const SizedBox(height: 30.0),

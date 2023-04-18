@@ -119,7 +119,14 @@ class AzkarController {
     String path = temp.soundFileNamePath();
     if (Platform.isAndroid) {
       Uri fileUrl = Uri.parse(path);
-      var audio = AudioSource.uri(fileUrl);
+      var audio = AudioSource.uri(
+        fileUrl,
+        tag: MediaItem(
+          id: "1",
+          album: "",
+          title: "",
+        ),
+      );
       player.setAudioSource(audio).then((value) {
         player.play();
       });

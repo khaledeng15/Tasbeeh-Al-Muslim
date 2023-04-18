@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tsbeh/AppRoutes.dart';
 
+import '../../../helper/incrementally_loading_listview.dart';
 import '../../../models/Base/ApiModel.dart';
 import '../../../widget/TextSearchWidget.dart';
 import '../Controller/listViewController.dart';
@@ -66,17 +67,17 @@ class listViewScreenState extends State<listViewScreen> {
                                           ? CircularProgressIndicator()
                                           : Text("لا توجد نتائج",
                                               style: TextStyle(fontSize: 30))))
-                              : Expanded(
-                                  child: SingleChildScrollView(
-                                      physics: ClampingScrollPhysics(),
-                                      controller:
-                                          _controller.loadMoreController,
-                                      child: Column(children: <Widget>[
-                                        SizedBox(height: 10),
-                                        _buildListView(),
-                                        _buildProgressIndicator(),
-                                      ])),
-                                ),
+                              : Expanded(child: _buildListView()),
+                          //  Expanded(
+                          //     child: SingleChildScrollView(
+                          //         physics: ClampingScrollPhysics(),
+                          //         // controller: _controller.loadMoreController,
+                          //         child: Column(children: <Widget>[
+                          //           SizedBox(height: 10),
+                          //           _buildListView(),
+                          //           _buildProgressIndicator(),
+                          //         ])),
+                          //   ),
                         ],
                         // ),
                       ),
@@ -87,9 +88,75 @@ class listViewScreenState extends State<listViewScreen> {
   }
 
   Widget _buildListView() {
+    return IncrementallyLoadingListView(
+      shrinkWrap: true,
+      hasMore: () => _controller.hasMoreItems,
+      itemCount: () => _controller.list.length,
+      loadMore: () async {
+        // can shorten to "loadMore: _loadMoreItems" but this syntax is used to demonstrate that
+        // functions with parameters can also be invoked if needed
+        await _controller.loadMoreItems();
+      },
+      onLoadMore: () {
+        setState(() {
+          _controller.loadingMore = true;
+        });
+      },
+      onLoadMoreFinished: () {
+        setState(() {
+          _controller.loadingMore = false;
+        });
+      },
+      // separatorBuilder: (_, __) => Divider(),
+      // loadMoreOffsetFromBottom: 2,
+      itemBuilder: (context, index) {
+        return cell(index);
+      },
+    );
+
+    return FutureBuilder(
+      future: _controller.initialLoad,
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator());
+          case ConnectionState.done:
+            return IncrementallyLoadingListView(
+              shrinkWrap: true,
+              hasMore: () => _controller.hasMoreItems,
+              itemCount: () => _controller.list.length,
+              loadMore: () async {
+                // can shorten to "loadMore: _loadMoreItems" but this syntax is used to demonstrate that
+                // functions with parameters can also be invoked if needed
+                // await _loadMoreItems();
+              },
+              onLoadMore: () {
+                setState(() {
+                  _controller.loadingMore = true;
+                });
+              },
+              onLoadMoreFinished: () {
+                setState(() {
+                  _controller.loadingMore = false;
+                });
+              },
+              // separatorBuilder: (_, __) => Divider(),
+              // loadMoreOffsetFromBottom: 2,
+              itemBuilder: (context, index) {
+                return cell(index);
+              },
+            );
+          default:
+            return Text('Something went wrong');
+        }
+      },
+    );
+  }
+
+  Widget _buildListViewOld() {
     return ListView.builder(
         scrollDirection: Axis.vertical,
-        // itemCount: _controller.list.length,
+        itemCount: _controller.list.length,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         // prototypeItem: ListTile(
@@ -108,8 +175,6 @@ class listViewScreenState extends State<listViewScreen> {
           AppRoutes.openAction(obj, _controller.list);
         },
         child: Card(
-            child: Directionality(
-          textDirection: TextDirection.rtl,
           child: Container(
               padding: EdgeInsets.only(top: 10, bottom: 5),
               height: 80,
@@ -126,9 +191,9 @@ class listViewScreenState extends State<listViewScreen> {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
                 ),
-                trailing: Icon(Icons.arrow_forward_ios),
+                leading: Icon(Icons.arrow_back_ios),
               )),
-        )));
+        ));
   }
 
   Widget _buildProgressIndicator() {

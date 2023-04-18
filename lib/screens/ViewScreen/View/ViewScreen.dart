@@ -40,26 +40,33 @@ class ViewScreenState extends State<ViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.model.titleParent),
-        actions: [btnShare()],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
-          child: Container(
-            width: double.maxFinite,
-            child: Text(
-              _controller.txt,
-              textAlign: TextAlign.right,
-              textDirection: TextDirection.rtl,
-              style: TextStyle(fontSize: 20, wordSpacing: 5, height: 2),
-            ),
+        appBar: AppBar(
+          title: Text(widget.model.titleParent),
+          actions: [btnShare()],
+        ),
+        body: web());
+  }
+
+  Widget txtWidget() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding:
+            const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
+        child: Container(
+          width: double.maxFinite,
+          child: Text(
+            _controller.txt,
+            textAlign: TextAlign.right,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(fontSize: 20, wordSpacing: 5, height: 2),
           ),
         ),
       ),
     );
+  }
+
+  Widget web() {
+    return WebViewWidget(controller: _controller.webcontroller);
   }
 
   Widget btnShare() {

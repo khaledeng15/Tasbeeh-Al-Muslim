@@ -67,6 +67,7 @@ dependencies:
   google_fonts: ^4.0.3
   package_info_plus: ^3.1.0
   rect_getter: ^1.1.0
+  optimize_battery: ^0.0.4
 
   # WEB TOOLS
   webview_flutter: ^4.0.1
