@@ -35,6 +35,10 @@ class ContactusScreenState extends State<ContactusScreen> {
                   requestUrl(
                       "https://github.com/khaledeng15/Tasbeeh-Al-Muslim");
                 }),
+                rowViewIcon(
+                    "صفحه التطبيق", "", Icon(Icons.app_shortcut, size: 20), () {
+                  requestUrl("https://www.cybeasy.com/Tasbeeh-Al-Muslim");
+                }),
               ])),
         ));
   }
