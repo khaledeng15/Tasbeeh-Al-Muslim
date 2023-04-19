@@ -28,7 +28,7 @@ class ViewScreenState extends State<ViewScreen> {
   void initState() {
     super.initState();
     _controller = ViewController(refresh, widget.model);
-    _controller.onInit();
+    _controller.onInit(context);
   }
 
   void refresh() {
@@ -44,7 +44,7 @@ class ViewScreenState extends State<ViewScreen> {
           title: Text(widget.model.titleParent),
           actions: [btnShare()],
         ),
-        body: web());
+        body: _controller.loading ? Loader() : web());
   }
 
   Widget txtWidget() {
