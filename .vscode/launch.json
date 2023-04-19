@@ -33,6 +33,12 @@
             "request": "launch",
             "type": "node-terminal"
         },
+        {
+            "name": "Build an ipa Release",
+            "command": "flutter build ipa",
+            "request": "launch",
+            "type": "node-terminal"
+        },
     ]
 }
 
