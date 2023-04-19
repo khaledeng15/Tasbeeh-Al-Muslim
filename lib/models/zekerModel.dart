@@ -51,9 +51,10 @@ class ZekerModel {
         chooseRepeat = filerepeat;
       }
 
-      file = "a$file" "_" "$chooseRepeat";
+      file = "$file" "_" "$chooseRepeat";
     }
 
+    file = "a$file";
     if (Platform.isAndroid) {
       return "android.resource://com.tsbeh/raw/$file";
     } else if (Platform.isIOS) {
