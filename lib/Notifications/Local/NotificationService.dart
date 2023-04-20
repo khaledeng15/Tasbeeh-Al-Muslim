@@ -38,6 +38,7 @@ class NotificationService {
       zekerModel.channelName!,
       channelDescription: zekerModel.channelDescription,
       sound: RawResourceAndroidNotificationSound(zekerModel.soundFileName()),
+      priority: Priority.high,
       playSound: true,
     );
   }

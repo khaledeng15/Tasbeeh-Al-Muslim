@@ -36,7 +36,7 @@ class BuildNotifications {
     zekerModel.channelName = "a1_1";
     zekerModel.channelDescription = "";
     zekerModel.notficationId = 1;
-    zekerModel.fullFileName = "a1_1.mp3";
+    zekerModel.fullFileName = "a1_1";
     zekerModel.notficationTitle = "test";
     zekerModel.notficationBody = "test";
     zekerModel.notficationScheduledDate = scheduledDate;

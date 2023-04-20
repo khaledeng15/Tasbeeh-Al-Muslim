@@ -123,10 +123,10 @@ class AzkarController {
         fileUrl,
         tag: MediaItem(
           id: "1",
-          album: "",
-          title: "",
+          title: "    ${temp.zeker_name}   ",
         ),
       );
+
       player.setAudioSource(audio).then((value) {
         player.play();
       });
@@ -135,8 +135,7 @@ class AzkarController {
         path,
         tag: MediaItem(
           id: "1",
-          album: "",
-          title: "",
+          title: temp.zeker_name,
         ),
       );
       player.setAudioSource(audio).then((value) {
