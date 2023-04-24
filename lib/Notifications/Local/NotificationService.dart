@@ -44,6 +44,7 @@ class NotificationService {
   }
 
   DarwinNotificationDetails iOSPlatformChannelSpecifics(ZekerModel zekerModel) {
+    String soundName = zekerModel.soundFileName();
     return DarwinNotificationDetails(
       presentAlert:
           true, // Present an alert when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
@@ -51,8 +52,8 @@ class NotificationService {
           true, // Present the badge number when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
       presentSound:
           true, // Play a sound when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
-      sound: zekerModel
-          .soundFileName(), // Specifics the file path to play (only from iOS 10 onwards)
+      sound:
+          soundName, // Specifics the file path to play (only from iOS 10 onwards)
       badgeNumber: 1, // The application's icon badge number
       // attachments: List<IOSNotificationAttachment>?, (only from iOS 10 onwards)
       // subtitle: String?, //Secondary description  (only from iOS 10 onwards)

@@ -23,13 +23,13 @@ class BuildNotifications {
     await removeAllChanel();
   }
 
-  void testPush() {
+  void testPush({ZekerModel? zekerModel}) {
     NotificationService().cancelAll();
     tz.TZDateTime scheduledDate = tz.TZDateTime.now(tz.local);
 
     scheduledDate = scheduledDate.add(const Duration(minutes: 1));
 
-    ZekerModel zekerModel = ZekerModel();
+    zekerModel = ZekerModel();
     zekerModel.zeker_id = "1";
     zekerModel.zeker_repeat = 1;
     zekerModel.channelID = "a1_1";
@@ -47,6 +47,7 @@ class BuildNotifications {
 
     // "a1_1"
     NotificationService().scheduleLocalNotifications(zekerModel);
+    log("test push ${zekerModel.soundFileName()}  ");
   }
 
   Future<void> build(BuildAzkar bz, BuildContext context) async {
@@ -156,6 +157,11 @@ class BuildNotifications {
         zekerModel.notficationId = zekerTime.timeID();
         zekerModel.notficationTitle = zekerModel.zeker_name;
         zekerModel.notficationScheduledDate = zekerTime.scheduledDate();
+
+        // For Test run push after 1 minute
+        // if (i == 0) {
+        //   testPush(zekerModel: zekerModel);
+        // }
 
         NotificationService().scheduleLocalNotifications(zekerModel);
       }

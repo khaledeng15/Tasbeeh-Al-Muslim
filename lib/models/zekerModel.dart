@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:tsbeh/helper/dbSQLiteProvider.dart';
 
 class ZekerModel {
   ZekerModel();
+  static const platform = MethodChannel('klib.flutter.dev/native');
 
   late String zeker_id;
   late int zeker_type_id;
@@ -58,10 +60,16 @@ class ZekerModel {
     if (Platform.isAndroid) {
       return "android.resource://com.tsbeh/raw/$file";
     } else if (Platform.isIOS) {
-      return "assets/raw/${file}.mp3";
+      // return "assets/raw/${file}.mp3";
+
+      return "${file}.mp3";
     } else {
       return file;
     }
+  }
+
+  static Future<String> getPassFileInIOS(String fileName) async {
+    return await platform.invokeMethod('getFilePath', {'fileName': fileName});
   }
 
   static Future<List<ZekerModel>> getListOfRepeats(BuildContext context) async {

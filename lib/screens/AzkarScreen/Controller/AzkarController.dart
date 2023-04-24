@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -13,7 +15,6 @@ import '../../../main.dart';
 import '../../../models/ZekerBuildNotifications/BuildAzkar.dart';
 import '../../../models/ZekerBuildNotifications/BuildNotifications.dart';
 import '../../../models/zekerModel.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class AzkarController {
   final Function() refresh;
@@ -131,8 +132,10 @@ class AzkarController {
         player.play();
       });
     } else {
-      var audio = AudioSource.asset(
-        path,
+      String fileUrl = await ZekerModel.getPassFileInIOS(path);
+
+      var audio = AudioSource.file(
+        fileUrl,
         tag: MediaItem(
           id: "1",
           title: temp.zeker_name,

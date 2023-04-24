@@ -85,40 +85,45 @@ class scheduleNotificationsScreenState
 
   Widget cellList(PendingNotificationRequest notification) {
     ZekerModel zeker = _controller.getNotificationModel(notification);
-    return Dismissible(
-        key: ValueKey(notification.id),
-        background: Container(
-          color: Colors.redAccent,
-          alignment: Alignment.centerRight,
-          child: const Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.delete, color: Colors.white),
+    return InkWell(
+      onTap: () {
+        _controller.playSound(zeker);
+      },
+      child: Dismissible(
+          key: ValueKey(notification.id),
+          background: Container(
+            color: Colors.redAccent,
+            alignment: Alignment.centerRight,
+            child: const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.delete, color: Colors.white),
+            ),
           ),
-        ),
-        onDismissed: (dismissDirection) {
-          _controller.deleteNotification(notification);
-        },
-        child: Container(
-          child: Card(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: ListTile(
-                    title: Text(
-                      zeker.zeker_name,
-                      textAlign: TextAlign.right,
-                    ),
-                    subtitle: Text(
-                      zeker.choose_repeat + " : عدد مرات التكرار",
-                      textAlign: TextAlign.right,
-                    ),
-                    leading: Text(zeker.scheduledDate()),
-                  )),
-            ],
+          onDismissed: (dismissDirection) {
+            _controller.deleteNotification(notification);
+          },
+          child: Container(
+            child: Card(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: ListTile(
+                      title: Text(
+                        zeker.zeker_name,
+                        textAlign: TextAlign.right,
+                      ),
+                      subtitle: Text(
+                        zeker.choose_repeat + " : عدد مرات التكرار",
+                        textAlign: TextAlign.right,
+                      ),
+                      leading: Text(zeker.scheduledDate()),
+                    )),
+              ],
+            )),
           )),
-        ));
+    );
   }
 }
