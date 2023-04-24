@@ -4,7 +4,7 @@ class ZekerTime {
   ZekerTime();
 
   int hours = 0;
-  int minutes = 25;
+  int minutes = 3;
   bool modeHours = false;
 
   int timeID() {

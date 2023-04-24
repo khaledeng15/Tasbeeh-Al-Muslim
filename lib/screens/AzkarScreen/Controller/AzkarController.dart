@@ -33,6 +33,8 @@ class AzkarController {
   List hours = [];
   List minutes = [];
   late AppCubit cubit;
+  bool hideStopTime = false;
+  bool _showLoading = false;
 
   void update() {
     refresh();
@@ -46,8 +48,32 @@ class AzkarController {
     });
 
     selectedZekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
-
+    checkStopTime();
     update();
+  }
+
+  bool isLoading() {
+    return _showLoading;
+  }
+
+  void showLoading() {
+    _showLoading = true;
+    update();
+  }
+
+  void hideLoading() {
+    _showLoading = false;
+    update();
+  }
+
+  void checkStopTime() {
+    if (Platform.isIOS) {
+      if (builder.everyTime.hours == 0 && builder.everyTime.minutes < 25) {
+        hideStopTime = true;
+      } else {
+        hideStopTime = false;
+      }
+    }
   }
 
   void setupTime() {
@@ -96,24 +122,35 @@ class AzkarController {
     }
   }
 
-  void scheduleAzkar(BuildContext context) {
+  Future<void> scheduleAzkar(BuildContext context) async {
+    if (_showLoading == true) {
+      return;
+    }
+
     zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
     if (zekerList.length == 0) {
       EasyLoading.showError("من فضلك اختار ذكر اولا");
       return;
     }
 
-    if (builder.everyTime.hours == 0 && builder.everyTime.minutes < 25) {
-      EasyLoading.showError("اقل وقت للتذكير ٢٥ دقيقه");
-      return;
+    if (Platform.isAndroid) {
+      if (builder.everyTime.hours == 0 && builder.everyTime.minutes < 3) {
+        EasyLoading.showError("اقل وقت للتذكير ٣ دقائق");
+        return;
+      }
     }
 
-    buildNotifications.build(builder, context);
-    BuildAzkar.play();
+    showLoading();
 
-    cubit.emit(InitialAppStates());
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      await buildNotifications.build(builder, context);
+      BuildAzkar.play();
 
-    AppRoutes.back();
+      cubit.emit(InitialAppStates());
+      hideLoading();
+
+      AppRoutes.back();
+    });
   }
 
   void playSound(ZekerModel temp) async {

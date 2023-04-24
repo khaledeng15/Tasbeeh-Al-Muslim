@@ -69,10 +69,20 @@ class AzkarScreenState extends State<AzkarScreen>
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(MediaQuery.of(context).size.width, 45),
               ),
-              child: Text(
-                "تشغيل الاذكار",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              child: _controller.isLoading()
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "..." + "جارى انشاء الاذكار",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Text(
+                      "تشغيل الاذكار",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
               onPressed: () {
                 _controller.scheduleAzkar(context);
               },
@@ -104,72 +114,81 @@ class AzkarScreenState extends State<AzkarScreen>
   }
 
   Widget setting() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-        Widget>[
-      Text(
-        "تحديد أوقات الأذكار",
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: Theme.of(context).colorScheme.primary),
-      ),
-      SizedBox(height: 10),
-      Card(
-          child: Padding(
-              padding: EdgeInsets.all(12.0),
-              child: InkWell(
-                onTap: () {
-                  pickerTimeEveryBottomSheet(context);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("تشغيل الذكر كل"),
-                    Expanded(
-                      child: Text(
-                        "${_controller.builder.everyTime.hours}:${_controller.builder.everyTime.minutes}",
-                        textAlign: TextAlign.left,
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "تحديد أوقات الأذكار",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+          SizedBox(height: 10),
+          Card(
+              child: Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: InkWell(
+                    onTap: () {
+                      pickerTimeEveryBottomSheet(context);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text("تشغيل الذكر كل"),
+                        Expanded(
+                          child: Text(
+                            "${_controller.builder.everyTime.hours}:${_controller.builder.everyTime.minutes}",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        const Icon(Icons.arrow_right,
+                            size: 30, color: Colors.grey),
+                      ],
+                    ),
+                  ))),
+          SizedBox(height: 10),
+          stopTimeAt(),
+          SizedBox(height: 20)
+        ]);
+  }
+
+  Widget stopTimeAt() {
+    return _controller.hideStopTime == true
+        ? SizedBox()
+        : Card(
+            child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () async {
+                    await SleepHourClass.showTimeRange(context);
+                    _controller.builder.sleepTime = SleepHourClass.get();
+                    setState(() {});
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      CupertinoSwitch(
+                        value: _controller.builder.sleepTime.stopAt,
+                        onChanged: (bool val) {
+                          _controller.builder.sleepTime.stopAt =
+                              !_controller.builder.sleepTime.stopAt;
+                          _controller.builder.sleepTime.save();
+                          setState(() {});
+                        },
                       ),
-                    ),
-                    const Icon(Icons.arrow_right, size: 30, color: Colors.grey),
-                  ],
-                ),
-              ))),
-      SizedBox(height: 10),
-      Card(
-          child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () async {
-                  await SleepHourClass.showTimeRange(context);
-                  _controller.builder.sleepTime = SleepHourClass.get();
-                  setState(() {});
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CupertinoSwitch(
-                      value: _controller.builder.sleepTime.stopAt,
-                      onChanged: (bool val) {
-                        _controller.builder.sleepTime.stopAt =
-                            !_controller.builder.sleepTime.stopAt;
-                        _controller.builder.sleepTime.save();
-                        setState(() {});
-                      },
-                    ),
-                    10.width,
-                    Text("ايقاف الذكر فى   "),
-                    Expanded(
-                        child: Text(
-                      "${_controller.builder.stopTimeFormate()}",
-                      textAlign: TextAlign.left,
-                    )),
-                    const Icon(Icons.arrow_right, size: 30, color: Colors.grey),
-                  ],
-                ),
-              ))),
-      SizedBox(height: 20)
-    ]);
+                      10.width,
+                      Text("ايقاف الذكر فى   "),
+                      Expanded(
+                          child: Text(
+                        "${_controller.builder.stopTimeFormate()}",
+                        textAlign: TextAlign.left,
+                      )),
+                      const Icon(Icons.arrow_right,
+                          size: 30, color: Colors.grey),
+                    ],
+                  ),
+                )));
   }
 
   Future<void> pickerTimeEveryBottomSheet(context) async {
@@ -210,16 +229,31 @@ class AzkarScreenState extends State<AzkarScreen>
                                 fontSize: 18,
                                 color: Theme.of(context).colorScheme.onPrimary))
                         .onTap(() {
-                      if (selectedHours == 0 && selectedMinutes < 25) {
-                        EasyLoading.showInfo("اقل وقت للتذكير هو ٢٥ دقيقه",
+                      if (selectedHours == 0 &&
+                          selectedMinutes < 3 &&
+                          Platform.isAndroid) {
+                        EasyLoading.showInfo("اقل وقت للتذكير هو ٣ دقائق",
                             duration: Duration(seconds: 5));
                       } else {
-                        _controller.builder.everyTime.hours = selectedHours;
-                        _controller.builder.everyTime.minutes = selectedMinutes;
-                        _controller.builder.saveEveryTime();
-                        finish(context);
+                        if (selectedHours == 0 && selectedMinutes == 0) {
+                          EasyLoading.showInfo("اقل وقت للتذكير هو ١ دقيقه",
+                              duration: Duration(seconds: 5));
+                        } else {
+                          if (selectedHours == 0 &&
+                              selectedMinutes < 25 &&
+                              Platform.isIOS) {
+                            _controller.builder.sleepTime.stopAt = false;
+                            _controller.builder.sleepTime.save();
+                          }
+                          _controller.builder.everyTime.hours = selectedHours;
+                          _controller.builder.everyTime.minutes =
+                              selectedMinutes;
+                          _controller.builder.saveEveryTime();
+                          _controller.checkStopTime();
+                          finish(context);
 
-                        setState(() {});
+                          setState(() {});
+                        }
                       }
                     }),
                   ],

@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tsbeh/helper/List+ext.dart';
+import 'package:tsbeh/models/IosNativeCall.dart';
 import 'package:tsbeh/models/zekerModel.dart';
 
 import '../../Notifications/Local/NotificationService.dart';
@@ -138,6 +141,58 @@ class BuildNotifications {
   }
 
   Future<void> buildList(BuildAzkar bz) async {
+    if (Platform.isIOS &&
+        bz.everyTime.hours == 0 &&
+        bz.everyTime.minutes < 25) {
+      buildListIosTime25(bz);
+    } else {
+      buildListAndroidIos(bz);
+    }
+  }
+
+  // build List If Time Less Than 25 Minutes in ios only
+  Future<void> buildListIosTime25(BuildAzkar bz) async {
+    fileCursor = 0;
+    int countarr = zekerList.length;
+    int minutesToRepeat = bz.everyTime.minutes;
+    List<ZekerTime> zTimeList = [];
+    double countRepeat = 60 / minutesToRepeat;
+    for (int i = 1; i <= countRepeat; i++) {
+      ZekerTime x = ZekerTime();
+      x.hours = 0;
+      x.minutes = minutesToRepeat * i;
+      if (x.minutes == 60) {
+        x.minutes = 0;
+      }
+      zTimeList.add(x);
+    }
+
+    for (int i = 0; i < zTimeList.length; i++) {
+      ZekerTime zekerTime = zTimeList[i];
+
+      ZekerModel zekerModel = getZekerSelected(countarr);
+      log("${zekerModel.soundFileName()} / ${zekerTime.toJson()}");
+
+      zekerModel.channelID = zekerModel.soundFileName();
+      zekerModel.channelName = zekerModel.zeker_name;
+      zekerModel.channelDescription = "";
+      zekerModel.notficationId = zekerTime.timeID();
+      zekerModel.notficationTitle = zekerModel.zeker_name;
+      zekerModel.notficationScheduledMinute = zekerTime.minutes;
+
+      await IosNativeCall.schedulingLocalNotificationInHour(
+          zekerModel.notficationId.toString(),
+          zekerModel.zeker_name,
+          zekerModel.soundFileName(),
+          zekerTime.minutes.toDouble(),
+          zekerModel.toStringJson());
+    }
+    // int count = await NotificationService().count();
+    // log("Stored Notifications : $count ");
+  }
+
+  // build List If Time greater Than 25 Minutes in ios and android
+  Future<void> buildListAndroidIos(BuildAzkar bz) async {
     fileCursor = 0;
     int countarr = zekerList.length;
 

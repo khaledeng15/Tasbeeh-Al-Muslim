@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:tsbeh/helper/dbSQLiteProvider.dart';
+import 'package:tsbeh/models/IosNativeCall.dart';
 
 class ZekerModel {
   ZekerModel();
-  static const platform = MethodChannel('klib.flutter.dev/native');
 
   late String zeker_id;
   late int zeker_type_id;
@@ -32,6 +32,7 @@ class ZekerModel {
   String? notficationTitle;
   String? notficationBody;
   tz.TZDateTime? notficationScheduledDate;
+  int? notficationScheduledMinute;
 
   String soundFileName() {
     if (Platform.isAndroid) {
@@ -69,7 +70,7 @@ class ZekerModel {
   }
 
   static Future<String> getPassFileInIOS(String fileName) async {
-    return await platform.invokeMethod('getFilePath', {'fileName': fileName});
+    return await IosNativeCall.getFilePath(fileName);
   }
 
   static Future<List<ZekerModel>> getListOfRepeats(BuildContext context) async {
@@ -141,6 +142,7 @@ class ZekerModel {
     cls.notficationId = map["notficationId"] ?? 0;
     cls.notficationTitle = map["notficationTitle"] ?? "";
     cls.notficationBody = map["notficationBody"] ?? "";
+    cls.notficationScheduledMinute = map["notficationScheduledMinute"] ?? 0;
 
     String dt = map["notficationScheduledDate"] ?? "";
     if (dt.isNotEmpty) {
@@ -166,6 +168,7 @@ class ZekerModel {
         'notficationId': notficationId,
         'notficationTitle': notficationTitle,
         'notficationBody': notficationBody,
+        'notficationScheduledMinute': notficationScheduledMinute,
         'notficationScheduledDate': notficationScheduledDate == null
             ? ""
             : tzDateTimeToString(dt: notficationScheduledDate!),

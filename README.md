@@ -2,6 +2,8 @@
 
 <a href='https://play.google.com/store/apps/details?id=com.tsbeh'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width = "200" height = "80"/></a>
 
+<a href='https://apps.apple.com/us/app/%D8%AA%D8%B3%D8%A8%D9%8A%D8%AD-%D8%A7%D9%84%D9%85%D8%B3%D9%84%D9%85/id739018955'><img alt='Get it on Apple Store' src='https://raw.github.com/khaledeng15/Tasbeeh-Al-Muslim/main/screenShots/Download_on_the_App.svg' width = "200" height = "66"/></a>
+
 <h4>Overview of the App</h4>
 
 Tasbeeh Al Muslim that helps you to remember allah Almighty, as it contains a set of audio dhikr, which is played every specific period of time based on your desire to remember

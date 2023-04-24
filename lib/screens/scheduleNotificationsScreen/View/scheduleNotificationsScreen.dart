@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../../../Bloc/AppCubit.dart';
 import '../../../models/zekerModel.dart';
@@ -67,30 +68,31 @@ class scheduleNotificationsScreenState
   Widget azkarList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 80),
-      child: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        scrollDirection: Axis.vertical,
-        physics: AlwaysScrollableScrollPhysics(),
-        children: List.generate(
-          _controller.pendingList.length,
-          (index) => Container(
-              child: cellList(
-            _controller.pendingList[index],
-          )),
-        ),
-      ),
+      child: _controller.loading
+          ? Loader()
+          : ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              scrollDirection: Axis.vertical,
+              physics: AlwaysScrollableScrollPhysics(),
+              children: List.generate(
+                _controller.pendingList.length,
+                (index) => Container(
+                    child: cellList(
+                  _controller.pendingList[index],
+                )),
+              ),
+            ),
     );
   }
 
-  Widget cellList(PendingNotificationRequest notification) {
-    ZekerModel zeker = _controller.getNotificationModel(notification);
+  Widget cellList(ZekerModel zeker) {
     return InkWell(
       onTap: () {
         _controller.playSound(zeker);
       },
       child: Dismissible(
-          key: ValueKey(notification.id),
+          key: ValueKey(zeker.notficationId),
           background: Container(
             color: Colors.redAccent,
             alignment: Alignment.centerRight,
@@ -100,7 +102,7 @@ class scheduleNotificationsScreenState
             ),
           ),
           onDismissed: (dismissDirection) {
-            _controller.deleteNotification(notification);
+            _controller.deleteNotification(zeker);
           },
           child: Container(
             child: Card(
@@ -119,7 +121,12 @@ class scheduleNotificationsScreenState
                         zeker.choose_repeat + " : عدد مرات التكرار",
                         textAlign: TextAlign.right,
                       ),
-                      leading: Text(zeker.scheduledDate()),
+                      leading: zeker.notficationScheduledDate != null
+                          ? Text(zeker.scheduledDate())
+                          : Text("فى الدقيقه  " +
+                              zeker.notficationScheduledMinute.toString() +
+                              "\n" +
+                              " من كل ساعه"),
                     )),
               ],
             )),

@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:tsbeh/AppRoutes.dart';
 import 'package:tsbeh/helper/List+ext.dart';
+import 'package:tsbeh/models/IosNativeCall.dart';
 
 import '../../../Bloc/AppCubit.dart';
 import '../../../Bloc/AppStates.dart';
@@ -18,20 +20,45 @@ class scheduleNotificationsController {
 
   scheduleNotificationsController(this.refresh);
 
-  List<PendingNotificationRequest> pendingList = [];
+  List<ZekerModel> pendingList = [];
   late AppCubit cubit;
+
+  BuildAzkar builder = BuildAzkar();
+
+  bool isNotificationLessthan25Ios = false;
+
+  bool loading = true;
 
   void update() {
     refresh();
   }
 
   Future<void> onInit() async {
-    NotificationService().pending().then((list) {
-      pendingList = list;
-      pendingList.sortedBy((it) => it.id);
+    if (Platform.isIOS &&
+        builder.everyTime.hours == 0 &&
+        builder.everyTime.minutes < 25) {
+      isNotificationLessthan25Ios = true;
+      IosNativeCall.getPenddingLocalNotification().then((list) {
+        list.forEach((element) {
+          pendingList.add(element);
+        });
 
-      update();
-    });
+        pendingList.sortedBy((it) => it.notficationId!);
+        loading = false;
+        update();
+      });
+    } else {
+      NotificationService().pending().then((list) {
+        list.forEach((element) {
+          pendingList.add(getNotificationModel(element));
+        });
+
+        pendingList.sortedBy((it) => it.notficationId!);
+        loading = false;
+        update();
+      });
+    }
+
     update();
   }
 
@@ -41,13 +68,19 @@ class scheduleNotificationsController {
         ZekerModel.toMapString(notificationRequest.payload!));
   }
 
-  void deleteNotification(PendingNotificationRequest notificationRequest) {
-    NotificationService().cancelNotification(notificationRequest.id);
+  void deleteNotification(ZekerModel notificationRequest) {
+    if (isNotificationLessthan25Ios) {
+      IosNativeCall.cancelLocalNotification(
+          notificationRequest.notficationId!.toString());
+    } else {
+      NotificationService()
+          .cancelNotification(notificationRequest.notficationId!);
+    }
   }
 
   void stop() {
     BuildAzkar.stop();
-
+    NotificationService().cancelAll();
     cubit.emit(InitialAppStates());
 
     AppRoutes.back();
