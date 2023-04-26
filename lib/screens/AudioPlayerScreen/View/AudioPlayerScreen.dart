@@ -78,13 +78,17 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
       showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-                title: const Text(
-                  "جهازك يقوم بغلق التطبيق فى الخلفيه",
-                  textAlign: TextAlign.center,
-                ),
-                content: const Text(
+                title: Text("جهازك يقوم بغلق التطبيق فى الخلفيه",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer)),
+                content: Text(
                     "لكى يعمل التطبيق فى الخلفيه يرجي الغاء القيود على البطاريه",
-                    textAlign: TextAlign.center),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer)),
                 actions: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -197,7 +201,8 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
           Expanded(
             child: Text(
               "القائمه",
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
               textAlign: TextAlign.center,
             ),
           ),
@@ -320,7 +325,8 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
             sequence[i].tag.title as String,
             textAlign: TextAlign.right,
             style: TextStyle(
-                fontSize: 20, color: Theme.of(context).colorScheme.primary),
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
           ),
           onTap: () {
             player.seek(Duration.zero, index: i);

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Bloc/cubit/ThemeAppCubit.dart';
+import '../../main.dart';
+
 class ContactusScreen extends StatefulWidget {
   @override
   ContactusScreenState createState() => ContactusScreenState();
@@ -35,9 +38,14 @@ class ContactusScreenState extends State<ContactusScreen> {
                   requestUrl(
                       "https://github.com/khaledeng15/Tasbeeh-Al-Muslim");
                 }),
-                rowViewIcon(
-                    "صفحه التطبيق", "", Icon(Icons.app_shortcut, size: 20), () {
+                rowViewIcon("صفحه التطبيق", "", Icon(Icons.pageview, size: 20),
+                    () {
                   requestUrl("https://www.cybeasy.com/Tasbeeh-Al-Muslim");
+                }),
+                rowViewIcon(" الوضع المظلم", "",
+                    Icon(Icons.dark_mode_outlined, size: 20), () {
+                  ThemeAppCubit.get(context).ChangeAppMode();
+                  setState(() {});
                 }),
               ])),
         ));

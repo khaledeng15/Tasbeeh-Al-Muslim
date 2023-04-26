@@ -135,6 +135,8 @@ class BuildNotifications {
       }
 
       temp.fullFileName = "a$zekerId" "_" "$chooseRepeat";
+    } else {
+      temp.fullFileName = "a$zekerId";
     }
 
     return temp;

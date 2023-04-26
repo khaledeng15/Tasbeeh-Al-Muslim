@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:tsbeh/main.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../Bloc/cubit/ThemeAppCubit.dart';
 import '../../../helper/html/HtmlToMarkdown.dart';
 import '../../../models/AzkarElyomeModel.dart';
 import '../../../models/Base/ApiModel.dart';
@@ -74,6 +76,11 @@ class ViewController {
 
     String enc_html = HtmlCharacterEntities.decode(model.html);
     enc_html = enc_html.replaceAll("Traditional Arabic", "Cairo");
+    String fontColor = "black";
+    if (ThemeAppCubit.get(context).IsDark) {
+      fontColor = "white";
+      enc_html = enc_html.replaceAll("black", "white");
+    }
     enc_html = """<!DOCTYPE html>
     <html>
       <head><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,6 +88,7 @@ class ViewController {
 <style>
 body {
   font-family: "Cairo";
+  color : $fontColor ;
 }
 </style>
       </head>

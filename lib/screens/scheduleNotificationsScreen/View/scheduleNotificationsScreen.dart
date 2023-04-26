@@ -113,20 +113,34 @@ class scheduleNotificationsScreenState
                 Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: ListTile(
-                      title: Text(
-                        zeker.zeker_name,
-                        textAlign: TextAlign.right,
-                      ),
+                      title: Text(zeker.zeker_name,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer)),
                       subtitle: Text(
-                        zeker.choose_repeat + " : عدد مرات التكرار",
-                        textAlign: TextAlign.right,
-                      ),
+                          zeker.choose_repeat + " : عدد مرات التكرار",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer)),
                       leading: zeker.notficationScheduledDate != null
-                          ? Text(zeker.scheduledDate())
-                          : Text("فى الدقيقه  " +
-                              zeker.notficationScheduledMinute.toString() +
-                              "\n" +
-                              " من كل ساعه"),
+                          ? Text(zeker.scheduledDate(),
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer))
+                          : Text(
+                              "فى الدقيقه  " +
+                                  zeker.notficationScheduledMinute.toString() +
+                                  "\n" +
+                                  " من كل ساعه",
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer)),
                     )),
               ],
             )),

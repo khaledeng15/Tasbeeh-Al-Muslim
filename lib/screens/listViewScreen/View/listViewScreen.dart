@@ -66,7 +66,11 @@ class listViewScreenState extends State<listViewScreen> {
                                       child: _controller.isLoading
                                           ? CircularProgressIndicator()
                                           : Text("لا توجد نتائج",
-                                              style: TextStyle(fontSize: 30))))
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimaryContainer))))
                               : Expanded(child: _buildListView()),
                           //  Expanded(
                           //     child: SingleChildScrollView(
@@ -179,18 +183,20 @@ class listViewScreenState extends State<listViewScreen> {
               padding: EdgeInsets.only(top: 10, bottom: 5),
               height: 80,
               child: ListTile(
-                title: Text(
-                  _controller.list[index].title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                ),
-                subtitle: Text(
-                  _controller.list[index].description,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                ),
+                title: Text(_controller.list[index].title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer)),
+                subtitle: Text(_controller.list[index].description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer)),
                 leading: Icon(Icons.arrow_back_ios),
               )),
         ));

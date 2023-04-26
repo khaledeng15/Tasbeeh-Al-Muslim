@@ -15,7 +15,7 @@ class dbSQLiteProvider {
   static final dbSQLiteProvider db = dbSQLiteProvider._();
   static Database? _database;
 
-  static String database_name = "database.db" ;
+  static String database_name = "databaseV1.db";
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -40,7 +40,8 @@ class dbSQLiteProvider {
       try {
         print('Copying DB...');
         // Load database from asset and copy
-        ByteData data = await rootBundle.load(join('assets/db/', database_name));
+        ByteData data =
+            await rootBundle.load(join('assets/db/', database_name));
         List<int> bytes =
             data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         // Save copied asset to documents
@@ -57,7 +58,8 @@ class dbSQLiteProvider {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, database_name);
     return await openDatabase(
-      path, version: 6,
+      path,
+      version: 6,
       onOpen: (db) async {
         // await updateDB(_database);
       },
@@ -74,28 +76,21 @@ class dbSQLiteProvider {
   }
 
   updateDB(Database db) async {
-
     scripts(db);
 
     var prefs = await SharedPreferences.getInstance();
 
-
     String? _updated = prefs.getString("db_ver");
     if (_updated == null) {
-
       prefs.setString("db_ver", "1");
     }
-
-
   }
 
   void upgrade(Database db) {
     // db.execute("ALTER TABLE in");
-     
   }
 
   void scripts(Database db) {
     // db.execute( "CREATE TABLE IF NOT EXISTS  RecordSleep ( row_id INTEGER PRIMARY KEY AUTOINCREMENT, hours INTEGER  NOT NULL, dt TIMESTAMP NOT NULL )");
   }
-
 }

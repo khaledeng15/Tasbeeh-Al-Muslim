@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tsbeh/main.dart';
 
+import '../Bloc/cubit/ThemeAppCubit.dart';
 import '../models/ZekerBuildNotifications/BuildAzkar.dart';
 
 class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
@@ -35,7 +36,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             top: top,
             left: 16,
             right: 16,
-            child: buildFloating(shrinkOffset),
+            child: buildFloating(shrinkOffset, context),
           ),
         ],
       ),
@@ -85,21 +86,31 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     return "خاصيه التسبيح متوقفه";
   }
 
-  Widget buildFloating(double shrinkOffset) {
+  Widget buildFloating(double shrinkOffset, BuildContext context) {
     return Opacity(
       opacity: disappear(shrinkOffset),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('تسبيح المسلم', style: boldTextStyle(size: 30, color: white)),
-          Text('اذكر الله', style: boldTextStyle(size: 20, color: white)),
+          Text('تسبيح المسلم',
+              style: boldTextStyle(
+                  size: 30,
+                  color: ThemeAppCubit.get(context).IsDark
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
+                      : Colors.white)),
+          Text('اذكر الله',
+              style: boldTextStyle(
+                  size: 20,
+                  color: ThemeAppCubit.get(context).IsDark
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
+                      : Colors.white)),
           8.height,
           Container(
             //height: 80,
             // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: boxDecorationWithShadow(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 borderRadius: radius(12),
-                backgroundColor: white,
                 offset: Offset(0, 5)),
             child: Row(
               children: [
@@ -120,13 +131,19 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('التسبيح', style: boldTextStyle()),
+                        Text('التسبيح',
+                            style: boldTextStyle(
+                                size: 20,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                         4.height,
-                        Text(
-                          getSatutsAzkar(),
-                          style: secondaryTextStyle(),
-                          textDirection: TextDirection.rtl,
-                        ),
+                        Text(getSatutsAzkar(),
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                       ],
                     ),
                   ),

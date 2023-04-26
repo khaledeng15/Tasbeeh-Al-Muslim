@@ -28,7 +28,6 @@ import 'helper/dbSQLiteProvider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 const assetPath = "assets/images";
-bool isDarkModeOn = false;
 const int DurationHours = 24;
 const dateFormat = 'MMM dd, yyyy';
 late final AudioPlayer player;
@@ -60,7 +59,8 @@ Future<void> main() async {
 
   await dbSQLiteProvider.db.database;
 
-  isDarkModeOn = CashLocal.getStringCash('IsDark') == "" ? false : true;
+  bool isDarkModeOn =
+      CashLocal.getStringCash('IsDark') != "true" ? false : true;
 
   String lang = "ar";
 

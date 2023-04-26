@@ -75,13 +75,20 @@ class AzkarScreenState extends State<AzkarScreen>
                       child: Text(
                         "..." + "جارى انشاء الاذكار",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer),
                       ),
                     )
                   : Text(
                       "تشغيل الاذكار",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
                     ),
               onPressed: () {
                 _controller.scheduleAzkar(context);
@@ -135,12 +142,19 @@ class AzkarScreenState extends State<AzkarScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("تشغيل الذكر كل"),
+                        Text("تشغيل الذكر كل",
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                         Expanded(
                           child: Text(
-                            "${_controller.builder.everyTime.hours}:${_controller.builder.everyTime.minutes}",
-                            textAlign: TextAlign.left,
-                          ),
+                              "${_controller.builder.everyTime.hours}:${_controller.builder.everyTime.minutes}",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer)),
                         ),
                         const Icon(Icons.arrow_right,
                             size: 30, color: Colors.grey),
@@ -178,12 +192,19 @@ class AzkarScreenState extends State<AzkarScreen>
                         },
                       ),
                       10.width,
-                      Text("ايقاف الذكر فى   "),
+                      Text("ايقاف الذكر فى   ",
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer)),
                       Expanded(
                           child: Text(
-                        "${_controller.builder.stopTimeFormate()}",
-                        textAlign: TextAlign.left,
-                      )),
+                              "${_controller.builder.stopTimeFormate()}",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer))),
                       const Icon(Icons.arrow_right,
                           size: 30, color: Colors.grey),
                     ],
@@ -265,13 +286,21 @@ class AzkarScreenState extends State<AzkarScreen>
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: const [
+                      children: [
                         Text("ساعه",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                         Text("دقيقه",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20))
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer))
                       ])),
               SizedBox(
                   height: 200,
@@ -289,7 +318,12 @@ class AzkarScreenState extends State<AzkarScreen>
                             itemExtent: 35,
 
                             children: _controller.hours.map((e) {
-                              return Text(e, style: TextStyle(fontSize: 20));
+                              return Text(e,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer));
                             }).toList(),
                             onSelectedItemChanged: (int val) {
                               // selectedValue = countryName[val];
@@ -305,7 +339,12 @@ class AzkarScreenState extends State<AzkarScreen>
                             // backgroundColor: context.scaffoldBackgroundColor,
                             itemExtent: 35,
                             children: _controller.minutes.map((e) {
-                              return Text(e, style: TextStyle(fontSize: 20));
+                              return Text(e,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer));
                             }).toList(),
                             onSelectedItemChanged: (int val) {
                               // selectedValue = countryName[val];
@@ -329,7 +368,7 @@ class AzkarScreenState extends State<AzkarScreen>
               style: primaryTextStyle(
                   color: _controller.selectedSegmentedListType == 0
                       ? white
-                      : Theme.of(context).colorScheme.primary,
+                      : Theme.of(context).colorScheme.onPrimaryContainer,
                   size: 12))),
       1: Padding(
           padding: const EdgeInsets.all(5),
@@ -337,7 +376,7 @@ class AzkarScreenState extends State<AzkarScreen>
               style: primaryTextStyle(
                   color: _controller.selectedSegmentedListType == 1
                       ? white
-                      : Theme.of(context).colorScheme.primary,
+                      : Theme.of(context).colorScheme.onPrimaryContainer,
                   size: 12))),
       2: Padding(
           padding: const EdgeInsets.all(5),
@@ -345,7 +384,7 @@ class AzkarScreenState extends State<AzkarScreen>
               style: primaryTextStyle(
                   color: _controller.selectedSegmentedListType == 2
                       ? white
-                      : Theme.of(context).colorScheme.primary,
+                      : Theme.of(context).colorScheme.onPrimaryContainer,
                   size: 12))),
       3: Padding(
           padding: const EdgeInsets.all(5),
@@ -353,7 +392,7 @@ class AzkarScreenState extends State<AzkarScreen>
               style: primaryTextStyle(
                   color: _controller.selectedSegmentedListType == 3
                       ? white
-                      : Theme.of(context).colorScheme.primary,
+                      : Theme.of(context).colorScheme.onPrimaryContainer,
                   size: 12)))
     };
     return Container(
@@ -395,7 +434,9 @@ class AzkarScreenState extends State<AzkarScreen>
                     10.width,
                     Text(
                       _controller.zekerList[index].zeker_name,
-                      style: boldTextStyle(color: textPrimaryColorGlobal),
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
                       // maxLines: 1,
                       overflow: TextOverflow.visible,
                     ).expand(),
@@ -460,7 +501,9 @@ class AzkarScreenState extends State<AzkarScreen>
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-          Text("التكرار"),
+          Text("التكرار",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer)),
           CupertinoSegmentedControl(
             borderColor: Theme.of(context).colorScheme.secondary,
             selectedColor: Theme.of(context).colorScheme.primary,

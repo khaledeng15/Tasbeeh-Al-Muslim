@@ -96,6 +96,8 @@ class HomeScreenState extends State<HomeScreen> {
               Text(
                 temp.title,
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer),
               ),
             ],
           ),

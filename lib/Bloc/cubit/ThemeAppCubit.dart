@@ -1,12 +1,11 @@
- import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
- 
+
 import '../../helper/connection/cash/CashLocal.dart';
 import 'ThemeAppStates.dart';
 
- 
 class ThemeAppCubit extends Cubit<ThemeAppStates> {
   ThemeAppCubit() : super(InitialThemeAppState());
   static ThemeAppCubit get(context) => BlocProvider.of(context);
@@ -49,10 +48,9 @@ class ThemeAppCubit extends Cubit<ThemeAppStates> {
       emit(AppChangeModeState());
     } else {
       IsDark = !IsDark;
-      
-       CashLocal.saveCash("IsDark", IsDark) ;
-        emit(AppChangeModeState());
-   
+
+      CashLocal.saveCash("IsDark", IsDark.toString());
+      emit(AppChangeModeState());
     }
   }
 
