@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -94,6 +95,13 @@ Future<void> initFirebase() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  if (Platform.isAndroid) {
+    messaging.subscribeToTopic("android");
+  } else if (Platform.isIOS) {
+    messaging.subscribeToTopic("ios");
+  }
 }
 
 Future<void> setupTimeZone() async {
