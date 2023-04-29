@@ -119,7 +119,7 @@ class ContactusScreenState extends State<ContactusScreen> {
                         )),
                     Card(
                         child: Column(children: [
-                      rowViewIcon(" تحميل كود التطبيق بالكامل", "",
+                      rowViewIcon("كود التطبيق كامل", "",
                           Icon(Icons.app_shortcut, size: 20), () {
                         requestUrl(
                             "https://github.com/khaledeng15/Tasbeeh-Al-Muslim");
@@ -136,24 +136,27 @@ class ContactusScreenState extends State<ContactusScreen> {
                           _inAppReview.requestReview();
                         }
                       }),
-                      rowViewIcon(
-                          "انشر التطبيق", "", Icon(Icons.share, size: 20),
-                          () async {
-                        String shareTxt = "قم بتحميل برنامج تسبيح المسلم \n" +
-                            "https://www.cybeasy.com/Tasbeeh-Al-Muslim/";
-                        if (Platform.isIOS) {
-                          var rect = RectGetter.getRectFromKey(globalKey);
-                          await Share.share(
-                            shareTxt,
-                            sharePositionOrigin: Rect.fromLTWH(
-                                rect!.left + 40, rect.top + 20, 2, 2),
-                          );
-                        } else {
-                          await Share.share(
-                            shareTxt,
-                          );
-                        }
-                      }),
+                      RectGetter(
+                          key: globalKey,
+                          child: rowViewIcon(
+                              "انشر التطبيق", "", Icon(Icons.share, size: 20),
+                              () async {
+                            String shareTxt =
+                                "قم بتحميل برنامج تسبيح المسلم \n" +
+                                    "https://www.cybeasy.com/Tasbeeh-Al-Muslim/";
+                            if (Platform.isIOS) {
+                              var rect = RectGetter.getRectFromKey(globalKey);
+                              await Share.share(
+                                shareTxt,
+                                sharePositionOrigin: Rect.fromLTWH(
+                                    rect!.left + 40, rect.top + 20, 2, 2),
+                              );
+                            } else {
+                              await Share.share(
+                                shareTxt,
+                              );
+                            }
+                          })),
                     ]))
                   ]),
                   // Divider(),
