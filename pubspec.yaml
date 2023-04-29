@@ -80,6 +80,10 @@ dependencies:
   just_audio_background: ^0.0.1-beta.7
   time_range_picker: ^2.1.0
 
+  # firebase
+  firebase_crashlytics: ^3.1.2
+  firebase_analytics: ^10.2.1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

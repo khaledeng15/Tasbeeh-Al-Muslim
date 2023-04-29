@@ -12,6 +12,7 @@
 		295A1B1029ECBA3500561DB0 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 295A1B0F29ECBA3500561DB0 /* Entitlements.plist */; };
 		295A1E4129ECCD1700561DB0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295A1E4029ECCD1600561DB0 /* AudioToolbox.framework */; };
 		295A1E4329ECCD2800561DB0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295A1E4229ECCD2700561DB0 /* MediaPlayer.framework */; };
+		29B08DA829FC379300B41F5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29B08DA729FC379300B41F5C /* GoogleService-Info.plist */; };
 		29DEBC5529F3EF78006E933A /* a12_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29DEBB8A29F3EF78006E933A /* a12_1.mp3 */; };
 		29DEBC5629F3EF78006E933A /* a014.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29DEBB8B29F3EF78006E933A /* a014.mp3 */; };
 		29DEBC5729F3EF78006E933A /* a028.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29DEBB8C29F3EF78006E933A /* a028.mp3 */; };
@@ -221,6 +222,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		BAE7DFDC28308D4418E4BA1D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C634779E6EC8D97BDA9D3B1 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -243,6 +245,7 @@
 		295A1B0F29ECBA3500561DB0 /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		295A1E4029ECCD1600561DB0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		295A1E4229ECCD2700561DB0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		29B08DA729FC379300B41F5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29DEBB8A29F3EF78006E933A /* a12_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = a12_1.mp3; sourceTree = "<group>"; };
 		29DEBB8B29F3EF78006E933A /* a014.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = a014.mp3; sourceTree = "<group>"; };
 		29DEBB8C29F3EF78006E933A /* a028.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = a028.mp3; sourceTree = "<group>"; };
@@ -451,6 +454,7 @@
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
+		7C634779E6EC8D97BDA9D3B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -706,6 +710,7 @@
 				97C146EF1CF9000F007C117D /* Products */,
 				B3DE033753DC29543E45EDA9 /* Pods */,
 				DDB64B90F412D262D0B3087B /* Frameworks */,
+				7C634779E6EC8D97BDA9D3B1 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -727,6 +732,7 @@
 				97C147021CF9000F007C117D /* Info.plist */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
+				29B08DA729FC379300B41F5C /* GoogleService-Info.plist */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				294D5F4A29EA15D900A1790A /* logo.png */,
@@ -770,6 +776,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				828F5756E8C63249DB3FFF04 /* [CP] Embed Pods Frameworks */,
+				B4B01393F5525843072CE150 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 			);
 			buildRules = (
 			);
@@ -985,6 +992,7 @@
 				29DEBCD929F3EF79006E933A /* a050.mp3 in Resources */,
 				29DEBCBC29F3EF78006E933A /* a123.mp3 in Resources */,
 				29DEBD0929F3EF79006E933A /* a25_1.mp3 in Resources */,
+				29B08DA829FC379300B41F5C /* GoogleService-Info.plist in Resources */,
 				29DEBC6D29F3EF78006E933A /* a32_3.mp3 in Resources */,
 				29DEBD0629F3EF79006E933A /* a30.mp3 in Resources */,
 				29DEBCF029F3EF79006E933A /* a5_1.mp3 in Resources */,
@@ -1027,6 +1035,7 @@
 				29DEBC6429F3EF78006E933A /* a10_1.mp3 in Resources */,
 				29DEBCBE29F3EF78006E933A /* a24_1.mp3 in Resources */,
 				29DEBCB029F3EF78006E933A /* a073.mp3 in Resources */,
+				BAE7DFDC28308D4418E4BA1D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1101,6 +1110,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+		};
+		B4B01393F5525843072CE150 /* [firebase_crashlytics] Crashlytics Upload Symbols */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}\"",
+				"\"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\"",
+			);
+			name = "[firebase_crashlytics] Crashlytics Upload Symbols";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" ";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1199,7 +1228,7 @@
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "تسبيح المسلم";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1334,7 +1363,7 @@
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "تسبيح المسلم";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1361,7 +1390,7 @@
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "تسبيح المسلم";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

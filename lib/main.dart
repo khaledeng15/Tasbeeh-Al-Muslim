@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -19,6 +20,7 @@ import 'Notifications/Local/NotificationService.dart';
 import 'Theme/AppTheme.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'firebase_options.dart';
 import 'helper/connection/cash/CashLocal.dart';
 // import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -26,11 +28,19 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import 'helper/dbSQLiteProvider.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 const assetPath = "assets/images";
 const int DurationHours = 24;
 const dateFormat = 'MMM dd, yyyy';
 late final AudioPlayer player;
+
+FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+FirebaseAnalyticsObserver observer =
+    FirebaseAnalyticsObserver(analytics: analytics);
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -46,6 +56,8 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await CashLocal.init();
+
+  await initFirebase();
 
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
@@ -67,6 +79,21 @@ Future<void> main() async {
   player = AudioPlayer();
 
   runApp(MyApp(isDarkModeOn, lang));
+}
+
+Future<void> initFirebase() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = (errorDetails) {
+    // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    // If you wish to record a "non-fatal" exception, please remove the "fatal" parameter
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 }
 
 Future<void> setupTimeZone() async {
