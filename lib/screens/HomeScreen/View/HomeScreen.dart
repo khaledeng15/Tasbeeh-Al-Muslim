@@ -6,6 +6,7 @@ import 'package:tsbeh/main.dart';
 
 import '../../../Bloc/AppStates.dart';
 import '../../../models/Base/ApiModel.dart';
+import '../../../models/UpdateNewVer.dart';
 import '../../../widget/CustomSliverAppBarDelegate.dart';
 import '../Controller/HomeController.dart';
 
@@ -25,6 +26,8 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     _controller = HomeController(refresh);
     _controller.onInit();
+
+    UpdateNewVer.check(false, context);
   }
 
   void refresh() {

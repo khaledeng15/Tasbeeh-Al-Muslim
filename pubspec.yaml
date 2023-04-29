@@ -66,10 +66,11 @@ dependencies:
   url_launcher: ^6.1.2
   flutter_native_timezone: ^2.0.0
   google_fonts: ^4.0.3
-  package_info_plus: ^3.1.0
+  # package_info_plus: ^3.1.0
   rect_getter: ^1.1.0
   optimize_battery: ^0.0.4
   in_app_review: ^2.0.6
+  new_version: ^0.3.1
 
   # WEB TOOLS
   webview_flutter: ^4.0.1
