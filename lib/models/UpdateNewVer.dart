@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:new_version/new_version.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 
 class UpdateNewVer {
-  static final newVersion = NewVersion(
+  static final newVersion = NewVersionPlus(
     iOSId: 'com.greatideas4ap.taspieh',
     androidId: 'com.tsbeh',
   );
@@ -16,12 +16,12 @@ class UpdateNewVer {
     }
   }
 
-  static basicStatusCheck(NewVersion newVersion, BuildContext context) {
+  static basicStatusCheck(NewVersionPlus newVersion, BuildContext context) {
     newVersion.showAlertIfNecessary(context: context);
   }
 
   static advancedStatusCheck(
-      NewVersion newVersion, BuildContext context) async {
+      NewVersionPlus newVersion, BuildContext context) async {
     final status = await newVersion.getVersionStatus();
     if (status != null) {
       debugPrint("releaseNotes:" + status.releaseNotes.toString());

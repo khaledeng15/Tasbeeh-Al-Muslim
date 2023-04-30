@@ -31,7 +31,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

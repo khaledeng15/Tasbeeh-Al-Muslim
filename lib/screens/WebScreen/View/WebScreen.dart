@@ -45,7 +45,7 @@ class WebScreenState extends State<WebScreen> {
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void getApi() {

@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../Controller/TempController.dart';
 
@@ -20,7 +20,7 @@ class TempScreenState extends State<TempScreen> {
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

@@ -32,7 +32,7 @@ class ViewScreenState extends State<ViewScreen> {
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   final globalKey = RectGetter.createGlobalKey();

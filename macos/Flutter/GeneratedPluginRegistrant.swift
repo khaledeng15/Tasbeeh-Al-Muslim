@@ -17,7 +17,7 @@ import flutter_native_timezone
 import in_app_review
 import just_audio
 import nb_utils
-import package_info_plus_macos
+import package_info_plus
 import path_provider_foundation
 import share_plus
 import shared_preferences_foundation

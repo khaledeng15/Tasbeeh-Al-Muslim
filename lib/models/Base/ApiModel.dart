@@ -75,7 +75,7 @@ class ApiModel {
 
   late ApiSubType subtype;
 
-  late ApiReadFrom readFrom;
+  ApiReadFrom? readFrom;
 
   late AppModel appModel;
 

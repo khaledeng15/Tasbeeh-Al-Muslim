@@ -40,7 +40,7 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

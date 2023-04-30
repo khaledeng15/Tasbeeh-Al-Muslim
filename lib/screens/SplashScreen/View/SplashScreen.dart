@@ -21,7 +21,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

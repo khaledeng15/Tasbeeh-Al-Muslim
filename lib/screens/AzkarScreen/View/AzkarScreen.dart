@@ -41,7 +41,7 @@ class AzkarScreenState extends State<AzkarScreen>
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

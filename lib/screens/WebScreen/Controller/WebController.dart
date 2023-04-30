@@ -14,10 +14,13 @@ class WebController {
   }
 
   Future<void> onInit() async {
-    if (model.readFrom == ApiReadFrom.database) {
-      ApiModel modelDB = await HadesModel.getrow(model.itemId.toInt());
-      model.html = modelDB.html;
+    if (model.readFrom != null) {
+      if (model.readFrom == ApiReadFrom.database) {
+        ApiModel modelDB = await HadesModel.getrow(model.itemId.toInt());
+        model.html = modelDB.html;
+      }
     }
+
     update();
   }
 }

@@ -26,7 +26,7 @@ class scheduleNotificationsScreenState
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

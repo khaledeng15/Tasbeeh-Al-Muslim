@@ -27,7 +27,7 @@ class listViewScreenState extends State<listViewScreen> {
   }
 
   void refresh() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -42,17 +48,6 @@ class DefaultFirebaseOptions {
         );
     }
   }
-
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB6FjznZeku9CRf52I9cWEotdET7znYcF0',
-    appId: '1:560991843913:web:2878ee7e9a3a616336b198',
-    messagingSenderId: '560991843913',
-    projectId: 'tsbeh-e4931',
-    authDomain: 'tsbeh-e4931.firebaseapp.com',
-    databaseURL: 'https://tsbeh-e4931.firebaseio.com',
-    storageBucket: 'tsbeh-e4931.appspot.com',
-    measurementId: 'G-Z4EX3EEBYM',
-  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAVUQ-8FfQis51CuxXoxUFiv_lRHAnywgk',
@@ -73,17 +68,5 @@ class DefaultFirebaseOptions {
     androidClientId: '560991843913-pjd0lltof043o0v6vmb75sm03kg0j36o.apps.googleusercontent.com',
     iosClientId: '560991843913-04vli0fbmarb7fcu2jg4nnurm771iaet.apps.googleusercontent.com',
     iosBundleId: 'com.greatideas4ap.taspieh',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDmSuYAuNuQdLCXkT1CuS2vJUW0B4hbw7U',
-    appId: '1:560991843913:ios:bc76a952e082676e36b198',
-    messagingSenderId: '560991843913',
-    projectId: 'tsbeh-e4931',
-    databaseURL: 'https://tsbeh-e4931.firebaseio.com',
-    storageBucket: 'tsbeh-e4931.appspot.com',
-    androidClientId: '560991843913-pjd0lltof043o0v6vmb75sm03kg0j36o.apps.googleusercontent.com',
-    iosClientId: '560991843913-8j5fc70qqgroatbg0ooanm32b2hhckt2.apps.googleusercontent.com',
-    iosBundleId: 'com.tsbeh.tsbeh',
   );
 }
