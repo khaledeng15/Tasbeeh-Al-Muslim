@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tsbeh/AppRoutes.dart';
@@ -24,6 +25,10 @@ class listViewScreenState extends State<listViewScreen> {
     super.initState();
     _controller = listViewController(refresh, widget.model);
     _controller.onInit();
+
+    FirebaseAnalytics.instance.logEvent(
+      name: _controller.model.title,
+    );
   }
 
   void refresh() {

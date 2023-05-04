@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +39,10 @@ class AzkarScreenState extends State<AzkarScreen>
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+
+    FirebaseAnalytics.instance.logEvent(
+      name: 'AzkarScreen',
+    );
   }
 
   void refresh() {

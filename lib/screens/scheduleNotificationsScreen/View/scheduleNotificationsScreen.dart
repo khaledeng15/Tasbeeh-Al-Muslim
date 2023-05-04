@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -23,6 +24,10 @@ class scheduleNotificationsScreenState
     super.initState();
     _controller = scheduleNotificationsController(refresh);
     _controller.onInit();
+
+    FirebaseAnalytics.instance.logEvent(
+      name: "scheduleNotificationsScreen",
+    );
   }
 
   void refresh() {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_review_helper/app_review_helper.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,8 @@ Future<void> main() async {
 
   player = AudioPlayer();
 
+  checkAppRating();
+
   runApp(MyApp(isDarkModeOn, lang));
 }
 
@@ -108,6 +111,34 @@ Future<void> setupTimeZone() async {
   tz.initializeTimeZones();
   final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timeZone));
+}
+
+void checkAppRating() {
+  final appReviewHelper = AppReviewHelper.instance;
+  appReviewHelper.initial(
+    /// Min days
+    minDays: 3,
+
+    /// If you add this line in your main(), it's same as app opening count
+    minCallThisFunction: 3,
+
+    /// If the current version is satisfied with this than not showing the request
+    /// this value use plugin `satisfied_version` to compare.
+    // noRequestVersions: ['<=1.0.0', '3.0.0', '>4.0.0'],
+
+    /// Control which versions allow reminding if `keepRemind` is false
+    // remindedVersions: ['2.0.0', '3.0.0'],
+
+    /// If true, it'll keep asking for the review on each new version (and satisfy with all the above conditions).
+    /// If false, it only requests for the first time the conditions are satisfied.
+    keepRemind: false,
+
+    /// Request with delayed duaration
+    duration: const Duration(seconds: 5),
+
+    /// Print debug log
+    isDebug: false,
+  );
 }
 
 class MyApp extends StatelessWidget {

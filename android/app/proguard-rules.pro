@@ -1,0 +1,2 @@
+-keep class com.google.android.play.core.review.** { *; }
+-keep class com.google.android.gms.tasks.** { *; }

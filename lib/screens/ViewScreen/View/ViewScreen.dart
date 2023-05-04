@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -29,6 +30,10 @@ class ViewScreenState extends State<ViewScreen> {
     super.initState();
     _controller = ViewController(refresh, widget.model);
     _controller.onInit(context);
+
+    FirebaseAnalytics.instance.logEvent(
+      name: "ViewScreen",
+    );
   }
 
   void refresh() {

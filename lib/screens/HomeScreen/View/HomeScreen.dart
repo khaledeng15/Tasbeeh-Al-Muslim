@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tsbeh/Bloc/AppCubit.dart';
@@ -27,6 +28,9 @@ class HomeScreenState extends State<HomeScreen> {
     _controller = HomeController(refresh);
     _controller.onInit();
 
+    FirebaseAnalytics.instance.logEvent(
+      name: 'HomeScreen',
+    );
     UpdateNewVer.check(false, context);
   }
 

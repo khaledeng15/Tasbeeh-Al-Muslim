@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
@@ -35,6 +36,10 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
     _controller = AudioPlayerController(refresh);
     _controller.onInit(widget.list, widget.model);
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
+
+    FirebaseAnalytics.instance.logEvent(
+      name: 'AudioPlayerScreen',
+    );
 
     checkBatteryOptimization(false);
   }

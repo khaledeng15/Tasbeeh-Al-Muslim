@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:share_plus/share_plus.dart';
@@ -42,6 +43,10 @@ class WebScreenState extends State<WebScreen> {
     _controller.onInit();
 
     loadWebContent(context);
+
+    FirebaseAnalytics.instance.logEvent(
+      name: "WebScreen",
+    );
   }
 
   void refresh() {
