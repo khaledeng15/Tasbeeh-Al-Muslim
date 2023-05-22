@@ -13,6 +13,16 @@ class AppCubit extends Cubit<AppStates> {
   List<ApiModel> menuList = [
     buildListHome(
       itemId: "01",
+      headerInList: "أذكار",
+      title: "",
+      photo: "",
+      url: "",
+      type: ApiType.open,
+      subType: ApiSubType.Zeker,
+      appModel: AppModel.zeker,
+    ),
+    buildListHome(
+      itemId: "01_1",
       title: "تسبيح المسلم",
       photo: "zeker.png",
       url: "",
@@ -21,7 +31,26 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.zeker,
     ),
     buildListHome(
+      itemId: "01_2",
+      title: "التوبه",
+      photo: "tawba.png",
+      url: "",
+      type: ApiType.open,
+      subType: ApiSubType.TawbaHome,
+      appModel: AppModel.tawba,
+    ),
+    buildListHome(
       itemId: "02",
+      headerInList: "صويتات",
+      title: "",
+      photo: "",
+      url: "",
+      type: ApiType.open,
+      subType: ApiSubType.Zeker,
+      appModel: AppModel.zeker,
+    ),
+    buildListHome(
+      itemId: "02_1",
       title: "القران الكريم (صوت)",
       photo: "quran.png",
       url: "https://api.4topapps.com/APPS/tsbeh/v3/mp3Quran_ver2.php",
@@ -30,7 +59,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.quran,
     ),
     buildListHome(
-      itemId: "03",
+      itemId: "02_2",
       title: "ضوتيات",
       photo: "mic.png",
       url: "https://api.4topapps.com/APPS/tsbeh/v3/radio.php",
@@ -39,7 +68,17 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.radioList,
     ),
     buildListHome(
-      itemId: "04",
+      itemId: "03",
+      headerInList: "اقرأ",
+      title: "",
+      photo: "",
+      url: "",
+      type: ApiType.open,
+      subType: ApiSubType.Zeker,
+      appModel: AppModel.zeker,
+    ),
+    buildListHome(
+      itemId: "03_1",
       title: "أحاديث نبويه",
       photo: "hades.png",
       url: "",
@@ -48,7 +87,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.hades,
     ),
     buildListHome(
-      itemId: "05",
+      itemId: "03_2",
       title: "الدعاء فى القرآن",
       photo: "doaa.png",
       url: "",
@@ -57,7 +96,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.doaaInQuran,
     ),
     buildListHome(
-      itemId: "06",
+      itemId: "03_3",
       title: "الأوائل",
       photo: "first.png",
       url: "",
@@ -66,7 +105,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.firstInIslam,
     ),
     buildListHome(
-      itemId: "07",
+      itemId: "03_4",
       title: "أذكار اليوم",
       photo: "azkar-elyome.png",
       url: "",
@@ -75,7 +114,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.azkarElyome,
     ),
     buildListHome(
-      itemId: "08",
+      itemId: "03_5",
       title: "الأحداث الاسلامية",
       photo: "events-islam.png",
       url: "",
@@ -84,7 +123,17 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.islamEvents,
     ),
     buildListHome(
-      itemId: "09",
+      itemId: "04",
+      headerInList: "أخرى",
+      title: "",
+      photo: "",
+      url: "",
+      type: ApiType.open,
+      subType: ApiSubType.Zeker,
+      appModel: AppModel.zeker,
+    ),
+    buildListHome(
+      itemId: "04_1",
       title: "محول التقويم",
       photo: "convertdate.png",
       url: "convertdate.html",
@@ -93,7 +142,7 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.convertDate,
     ),
     buildListHome(
-      itemId: "10",
+      itemId: "04_2",
       title: "عن التطبيق",
       photo: "about.png",
       url: "",
@@ -108,6 +157,7 @@ class AppCubit extends Cubit<AppStates> {
       required String title,
       required String photo,
       String? url,
+      String? headerInList,
       required ApiType type,
       required ApiSubType subType,
       required AppModel appModel}) {
@@ -119,6 +169,7 @@ class AppCubit extends Cubit<AppStates> {
     model.subtype = subType;
     model.appModel = appModel;
     model.photo = photo;
+    model.headerInList = headerInList;
 
     return model;
   }

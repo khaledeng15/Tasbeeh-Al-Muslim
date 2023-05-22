@@ -11,7 +11,8 @@ enum AppModel {
   islamEvents,
   convertDate,
   about,
-  unDefined
+  unDefined,
+  tawba
 }
 
 enum ApiType { unDefined, open }
@@ -33,7 +34,9 @@ enum ApiSubType {
   Open_radio_list,
   Open_sound,
   Zeker,
-  Open_list_db
+  Open_list_db,
+  TawbaHome,
+  RunTawba
 }
 
 enum ApiReadFrom { api, database, unDefined }
@@ -80,6 +83,11 @@ class ApiModel {
   late AppModel appModel;
 
   late String titleParent = "";
+  String? headerInList;
+
+  late int count;
+  late String soundfile;
+  late int time;
 
   static List<ApiModel> fromList(List data,
       {ApiType? type,
@@ -131,6 +139,9 @@ class ApiModel {
     cls.shareUrl = map["shareurl"] ?? "";
     cls.shareTitle = map["sharetitle"] ?? "";
     cls.description = map["description"] ?? "";
+    cls.count = map["count"] ?? 0;
+    cls.time = map["time"] ?? 0;
+    cls.soundfile = map["soundfile"] ?? "";
 
     if (readFrom != null) {
       cls.readFrom = readFrom;

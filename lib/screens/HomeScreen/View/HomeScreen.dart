@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tsbeh/Bloc/AppCubit.dart';
 import 'package:tsbeh/helper/List+ext.dart';
 import 'package:tsbeh/main.dart';
+import 'package:tsbeh/screens/WebScreen/View/WebScreen.dart';
 
 import '../../../Bloc/AppStates.dart';
+import '../../../Bloc/cubit/ThemeAppCubit.dart';
 import '../../../models/Base/ApiModel.dart';
 import '../../../models/UpdateNewVer.dart';
 import '../../../widget/CustomSliverAppBarDelegate.dart';
@@ -45,7 +47,29 @@ class HomeScreenState extends State<HomeScreen> {
         builder: (BuildContext context, AppStates state) {
           _controller.cubit = AppCubit.get(context);
 
-          return Scaffold(body: body());
+          return Scaffold(
+            appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                elevation: 0,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        ThemeAppCubit.get(context).ChangeAppMode();
+                        setState(() {});
+                      },
+                      icon: Icon(
+                        Icons.dark_mode_outlined,
+                        size: 30,
+                        color: ThemeAppCubit.get(context).IsDark
+                            ? Theme.of(context).colorScheme.onSecondaryContainer
+                            : Colors.white,
+                      ))
+                ]),
+            body: body(),
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+          );
         });
   }
 
@@ -89,28 +113,45 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget listItem(ApiModel temp) {
-    return GestureDetector(
-        child: Container(
-          width: 110,
-          height: 140,
-          child: Column(
-            children: [
-              Image.asset("$assetPath/${temp.photo}",
-                  height: 90, width: 90, fit: BoxFit.cover),
-              SizedBox(
-                height: 8,
-              ),
-              Text(
-                temp.title,
+    if (temp.headerInList != null) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 15),
+        child: Card(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            width: double.maxFinite,
+            child: Text(temp.headerInList!,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-              ),
-            ],
+                style: Theme.of(context).textTheme.headlineSmall!.apply(
+                    fontWeightDelta: 5,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer)),
           ),
         ),
-        onTap: () {
-          _controller.openScreenBy(temp);
-        });
+      );
+    } else {
+      return GestureDetector(
+          child: Container(
+            width: 110,
+            height: 140,
+            child: Column(
+              children: [
+                Image.asset("$assetPath/${temp.photo}",
+                    height: 90, width: 90, fit: BoxFit.cover),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  temp.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer),
+                ),
+              ],
+            ),
+          ),
+          onTap: () {
+            _controller.openScreenBy(temp);
+          });
+    }
   }
 }

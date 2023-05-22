@@ -27,6 +27,7 @@ class dbSQLiteProvider {
     return _database!;
   }
 
+  // TODO : update only database with version
   copyDB() async {
     // Construct a file path to copy database to
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -36,20 +37,19 @@ class dbSQLiteProvider {
     print('The DB path is: ' + path);
 
 // Only copy if the database doesn't exist
-    if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
-      try {
-        print('Copying DB...');
-        // Load database from asset and copy
-        ByteData data =
-            await rootBundle.load(join('assets/db/', database_name));
-        List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-        // Save copied asset to documents
-        await File(path).writeAsBytes(bytes);
-      } catch (error) {
-        print(error);
-      }
+    // if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
+    try {
+      print('Copying DB...');
+      // Load database from asset and copy
+      ByteData data = await rootBundle.load(join('assets/db/', database_name));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      // Save copied asset to documents
+      await File(path).writeAsBytes(bytes);
+    } catch (error) {
+      print(error);
     }
+    // }
   }
 
   initDB() async {
@@ -59,7 +59,7 @@ class dbSQLiteProvider {
     String path = join(documentsDirectory.path, database_name);
     return await openDatabase(
       path,
-      version: 6,
+      version: 7,
       onOpen: (db) async {
         // await updateDB(_database);
       },

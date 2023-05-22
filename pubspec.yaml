@@ -114,4 +114,6 @@ flutter:
     - assets/
     - assets/db/
     - assets/images/
+    - assets/sounds/
+
     # - assets/raw/ # stop this in android build run only with ios to copy file sound in android the raw folder added to resources folder

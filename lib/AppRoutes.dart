@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tsbeh/screens/AudioPlayerScreen/View/AudioPlayerScreen.dart';
 import 'package:tsbeh/screens/ContactusScreen/ContactusScreen.dart';
+import 'package:tsbeh/screens/RunTawbaScreen/View/RunTawbaScreen.dart';
+import 'package:tsbeh/screens/TawbaScreen/View/TawbaScreen.dart';
 import 'package:tsbeh/screens/ViewScreen/View/ViewScreen.dart';
 import 'package:tsbeh/screens/WebScreen/View/WebScreen.dart';
 import 'package:tsbeh/screens/listViewScreen/View/listViewScreen.dart';
@@ -102,6 +104,13 @@ class AppRoutes {
       } else {
         AppRoutes.openScheduleNotificationsScreen();
       }
+    } else if (model.subtype == ApiSubType.TawbaHome) {
+      navigateTo(router: TawbaScreen());
+    } else if (model.subtype == ApiSubType.RunTawba) {
+      navigateTo(
+          router: RunTawbaScreen(
+        model: model,
+      ));
     }
   }
 
