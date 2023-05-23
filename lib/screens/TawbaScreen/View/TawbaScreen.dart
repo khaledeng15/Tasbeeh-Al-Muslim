@@ -146,17 +146,18 @@ class TawbaScreenState extends State<TawbaScreen> {
                     color: Theme.of(context).colorScheme.onSecondaryContainer),
               ),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               Text(
                 "غفر الله لك",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onSecondaryContainer),
               ),
               SizedBox(
-                height: 10,
+                height: 50,
               ),
               Text(
                 "ماذا تريد ان تفعل؟",

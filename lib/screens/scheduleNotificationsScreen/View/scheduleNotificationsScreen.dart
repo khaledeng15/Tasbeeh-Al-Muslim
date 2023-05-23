@@ -39,7 +39,21 @@ class scheduleNotificationsScreenState
     _controller.cubit = AppCubit.get(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text("قائمه التنبيهات")),
+      appBar: AppBar(
+        title: Text("قائمه التنبيهات"),
+        actions: [
+          _controller.editSort == false
+              ? Container()
+              : TextButton(
+                  onPressed: () {
+                    _controller.saveSort();
+                  },
+                  child: Text(
+                    "حفظ",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )),
+        ],
+      ),
       bottomSheet: BottomSheet(
         elevation: 10,
         enableDrag: false,
@@ -75,18 +89,45 @@ class scheduleNotificationsScreenState
       padding: const EdgeInsets.only(bottom: 80),
       child: _controller.loading
           ? Loader()
-          : ListView(
+          : ReorderableListView(
               shrinkWrap: true,
               padding: EdgeInsets.symmetric(horizontal: 8),
               scrollDirection: Axis.vertical,
               physics: AlwaysScrollableScrollPhysics(),
-              children: List.generate(
-                _controller.pendingList.length,
-                (index) => Container(
-                    child: cellList(
-                  _controller.pendingList[index],
-                )),
-              ),
+              onReorder: (int startIndex, int endIndex) {
+                if (startIndex != endIndex) {
+                  _controller.editSort = true;
+
+                  if (startIndex < endIndex) {
+                    endIndex -= 1;
+                  }
+
+                  setState(() {
+                    ZekerModel moveItem = _controller.pendingList[startIndex];
+                    _controller.pendingList.removeAt(startIndex);
+                    _controller.pendingList.insert(endIndex, moveItem);
+                    _controller.updateSortTime();
+                  });
+                }
+              },
+
+              children: <Widget>[
+                for (int index = 0;
+                    index < _controller.pendingList.length;
+                    index += 1)
+                  Container(
+                      key: Key('$index'),
+                      child: cellList(
+                        _controller.pendingList[index],
+                      )),
+              ],
+              //  List.generate(
+              //   _controller.pendingList.length,
+              //   (index) => Container(
+              //       child: cellList(
+              //     _controller.pendingList[index],
+              //   )),
+              // ),
             ),
     );
   }

@@ -41,7 +41,7 @@ class AppCubit extends Cubit<AppStates> {
     ),
     buildListHome(
       itemId: "02",
-      headerInList: "صويتات",
+      headerInList: "صوتيات",
       title: "",
       photo: "",
       url: "",
@@ -60,7 +60,7 @@ class AppCubit extends Cubit<AppStates> {
     ),
     buildListHome(
       itemId: "02_2",
-      title: "ضوتيات",
+      title: "صوتيات",
       photo: "mic.png",
       url: "https://api.4topapps.com/APPS/tsbeh/v3/radio.php",
       type: ApiType.open,

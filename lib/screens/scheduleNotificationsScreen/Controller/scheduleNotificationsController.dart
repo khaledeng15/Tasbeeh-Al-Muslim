@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -14,6 +15,7 @@ import '../../../Notifications/Local/NotificationService.dart';
 import '../../../main.dart';
 import '../../../models/ZekerBuildNotifications/BuildAzkar.dart';
 import '../../../models/zekerModel.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class scheduleNotificationsController {
   final Function() refresh;
@@ -21,6 +23,8 @@ class scheduleNotificationsController {
   scheduleNotificationsController(this.refresh);
 
   List<ZekerModel> pendingList = [];
+  List<tz.TZDateTime> timeList = [];
+
   late AppCubit cubit;
 
   BuildAzkar builder = BuildAzkar();
@@ -28,6 +32,7 @@ class scheduleNotificationsController {
   bool isNotificationLessthan25Ios = false;
 
   bool loading = true;
+  bool editSort = false;
 
   void update() {
     refresh();
@@ -41,9 +46,10 @@ class scheduleNotificationsController {
       IosNativeCall.getPenddingLocalNotification().then((list) {
         list.forEach((element) {
           pendingList.add(element);
+          timeList.add(element.notficationScheduledDate!);
         });
 
-        pendingList.sortedBy((it) => it.notficationId!);
+        // pendingList.sortedBy((it) => it.notficationId!);
         loading = false;
         update();
       });
@@ -51,9 +57,12 @@ class scheduleNotificationsController {
       NotificationService().pending().then((list) {
         list.forEach((element) {
           pendingList.add(getNotificationModel(element));
+          ZekerModel zeker =
+              ZekerModel.fromJson(ZekerModel.toMapString(element.payload!));
+          timeList.add(zeker.notficationScheduledDate!);
         });
 
-        pendingList.sortedBy((it) => it.notficationId!);
+        // pendingList.sortedBy((it) => it.notficationId!);
         loading = false;
         update();
       });
@@ -115,5 +124,26 @@ class scheduleNotificationsController {
         player.play();
       });
     }
+  }
+
+  // Sort
+  void updateSortTime() {
+    for (int index = 0; index < pendingList.length; index++) {
+      ZekerModel zekerModel = pendingList[index];
+      zekerModel.notficationScheduledDate = timeList[index];
+    }
+
+    update();
+  }
+
+  Future<void> saveSort() async {
+    EasyLoading.show();
+    editSort = false;
+    NotificationService().cancelAll();
+    pendingList.forEach((element) async {
+      await NotificationService().scheduleLocalNotifications(element);
+    });
+    EasyLoading.dismiss();
+    update();
   }
 }
