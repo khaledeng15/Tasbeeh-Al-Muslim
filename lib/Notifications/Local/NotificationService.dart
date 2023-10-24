@@ -157,7 +157,7 @@ class NotificationService {
       final bool? result2 = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
-          ?.requestPermission();
+          ?.requestNotificationsPermission();
     }
   }
 

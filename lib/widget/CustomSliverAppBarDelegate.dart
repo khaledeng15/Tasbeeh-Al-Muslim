@@ -59,7 +59,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             alignment: Alignment.topCenter,
             height: 360,
             decoration: boxDecorationWithRoundedCorners(
-                borderRadius: radius(0),
+                // borderRadius: radius(0),
                 backgroundColor: Colors.black.withOpacity(0.6)),
             child:
                 Container(), //searchWidget(Colors.white).paddingSymmetric(horizontal: 16),

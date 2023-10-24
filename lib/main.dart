@@ -9,11 +9,8 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:tsbeh/screens/HomeScreen/View/HomeScreen.dart';
-import 'package:tsbeh/screens/SplashScreen/View/SplashScreen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:just_audio_background/just_audio_background.dart';
-import 'package:just_audio/just_audio.dart';
 
 import 'Bloc/AppCubit.dart';
 import 'Bloc/cubit/ThemeAppCubit.dart';
@@ -120,7 +117,7 @@ void checkAppRating() {
     minDays: 3,
 
     /// If you add this line in your main(), it's same as app opening count
-    minCallThisFunction: 3,
+    minCalls: 3,
 
     /// If the current version is satisfied with this than not showing the request
     /// this value use plugin `satisfied_version` to compare.
