@@ -143,7 +143,7 @@ class NotificationService {
             onDidReceiveNotificationResponse);
 
     if (Platform.isIOS) {
-// For iOS:
+      // For iOS:
       // await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
       final bool? result = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<

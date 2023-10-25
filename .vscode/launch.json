@@ -7,7 +7,8 @@
         {
             "name": "tsbehFlutter",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "tsbehFlutter (profile mode)",
@@ -41,8 +42,6 @@
         },
     ]
 }
-
-
 // get simulator path in ios
 // open `xcrun simctl get_app_container booted com.greatideas4ap.taspieh data` -a Finder
 // open `xcrun simctl get_app_container booted com.greatideas4ap.taspieh Bundle` -a Finder
