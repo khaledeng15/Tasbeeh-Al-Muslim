@@ -29,16 +29,12 @@ class AzkarScreen extends StatefulWidget {
 class AzkarScreenState extends State<AzkarScreen>
     with SingleTickerProviderStateMixin {
   late AzkarController _controller;
-  late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
     _controller = AzkarController(refresh);
     _controller.onInit(context);
-
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
 
     FirebaseAnalytics.instance.logEvent(
       name: 'AzkarScreen',
@@ -77,8 +73,15 @@ class AzkarScreenState extends State<AzkarScreen>
               child: _controller.isLoading()
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "..." + "جارى انشاء الاذكار",
+                      child:
+                          // CircularProgressIndicator(
+                          //   value: _controller.animationController.value,
+                          //   semanticsLabel: "جارى انشاء الاذكار",
+                          // ),
+                          Text(
+                        "..." +
+                            " (${_controller.currentGenrated}/${_controller.totalGenrated}) " +
+                            "جارى انشاء الاذكار",
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

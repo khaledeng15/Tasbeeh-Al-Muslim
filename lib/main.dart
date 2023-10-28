@@ -64,7 +64,7 @@ Future<void> main() async {
     androidNotificationOngoing: true,
   );
 
-  await NotificationService().init();
+  await NotificationService.init();
 
   await setupTimeZone();
 

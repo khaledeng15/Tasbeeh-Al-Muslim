@@ -88,11 +88,14 @@ class scheduleNotificationsController {
   }
 
   void stop() {
+    loading = true;
     BuildAzkar.stop();
-    NotificationService().cancelAll();
-    cubit.emit(InitialAppStates());
+    NotificationService().cancelAll().then((value) {
+      cubit.emit(InitialAppStates());
+      loading = false;
 
-    AppRoutes.back();
+      AppRoutes.back();
+    });
   }
 
   void playSound(ZekerModel temp) async {

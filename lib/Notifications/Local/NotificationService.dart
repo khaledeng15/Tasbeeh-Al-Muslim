@@ -8,18 +8,19 @@ import 'package:timezone/timezone.dart' as tz;
 import '../../models/zekerModel.dart';
 
 /// https://www.freecodecamp.org/news/local-notifications-in-flutter/
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 class NotificationService {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // static final NotificationService _notificationService =
+  //     NotificationService._internal();
 
-  static final NotificationService _notificationService =
-      NotificationService._internal();
+  // factory NotificationService() {
+  //   return _notificationService;
+  // }
 
-  factory NotificationService() {
-    return _notificationService;
-  }
-
-  NotificationService._internal();
+  // NotificationService._internal();
 
   // static const String CHANNEL_ID = "TSBEH";
   // static const String CHANNEL_NAME = "TSBEH";
@@ -111,7 +112,7 @@ class NotificationService {
   //   //     onSelectNotification: selectNotification);
   // }
 
-  Future<void> init() async {
+  static Future<void> init() async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
@@ -158,6 +159,8 @@ class NotificationService {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
+
+      print("requestNotificationsPermission: $result2");
     }
   }
 
@@ -182,7 +185,7 @@ class NotificationService {
   // Future<void> selectNotification(String? payload) async {
   //   //Handle notification tapped logic here
   // }
-  Future<void> onDidReceiveLocalNotification(
+  static Future<void> onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) async {
     //Handle notification tapped logic here
   }

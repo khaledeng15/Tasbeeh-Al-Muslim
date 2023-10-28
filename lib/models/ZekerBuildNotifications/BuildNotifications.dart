@@ -53,7 +53,8 @@ class BuildNotifications {
     log("test push ${zekerModel.soundFileName()}  ");
   }
 
-  Future<void> build(BuildAzkar bz, BuildContext context) async {
+  Future<void> build(
+      BuildAzkar bz, BuildContext context, Function(int, int) generated) async {
     await removeAllChanel();
 
     // testPush();
@@ -63,8 +64,8 @@ class BuildNotifications {
 
     BuildAzkar.saveZekerListFor(zekerList, zekerListFor.createdChanel);
 
-    removeAllChanel();
-    await buildList(bz);
+    await removeAllChanel();
+    await buildList(bz, generated);
   }
 
   tz.TZDateTime getDate() {
@@ -78,7 +79,7 @@ class BuildNotifications {
   }
 
   Future<void> removeAllChanel() async {
-    NotificationService().cancelAll();
+    await NotificationService().cancelAll();
   }
 
   List<ZekerTime> getListZekerTime(BuildAzkar bz) {
@@ -142,13 +143,13 @@ class BuildNotifications {
     return temp;
   }
 
-  Future<void> buildList(BuildAzkar bz) async {
+  Future<void> buildList(BuildAzkar bz, Function(int, int) generated) async {
     if (Platform.isIOS &&
         bz.everyTime.hours == 0 &&
         bz.everyTime.minutes < 25) {
-      buildListIosTime25(bz);
+      await buildListIosTime25(bz);
     } else {
-      buildListAndroidIos(bz);
+      await buildListAndroidIos(bz, generated);
     }
   }
 
@@ -194,7 +195,8 @@ class BuildNotifications {
   }
 
   // build List If Time greater Than 25 Minutes in ios and android
-  Future<void> buildListAndroidIos(BuildAzkar bz) async {
+  Future<void> buildListAndroidIos(
+      BuildAzkar bz, Function(int, int) generated) async {
     fileCursor = 0;
     int countarr = zekerList.length;
 
@@ -203,6 +205,7 @@ class BuildNotifications {
 
     for (int i = 0; i < zTimeList.length; i++) {
       ZekerTime zekerTime = zTimeList[i];
+      await Future.delayed(Duration(milliseconds: 10));
 
       if (excludeTime(zekerTime, sleepHours, bz) == false) {
         ZekerModel zekerModel = getZekerSelected(countarr);
@@ -219,12 +222,13 @@ class BuildNotifications {
         // if (i == 0) {
         //   testPush(zekerModel: zekerModel);
         // }
+        generated(i, zTimeList.length);
 
         NotificationService().scheduleLocalNotifications(zekerModel);
       }
     }
-    int count = await NotificationService().count();
-    log("Stored Notifications : $count ");
+    // int count = await NotificationService().count();
+    // log("Stored Notifications : $count ");
   }
 
   static bool excludeTime(

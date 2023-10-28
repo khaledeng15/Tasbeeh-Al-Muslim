@@ -36,6 +36,9 @@ class AzkarController {
   bool hideStopTime = false;
   bool _showLoading = false;
 
+  int currentGenrated = 0;
+  int totalGenrated = 0;
+
   void update() {
     refresh();
   }
@@ -143,7 +146,12 @@ class AzkarController {
     showLoading();
 
     Future.delayed(const Duration(milliseconds: 500), () async {
-      await buildNotifications.build(builder, context);
+      await buildNotifications.build(builder, context, (i, total) {
+        currentGenrated = i;
+        totalGenrated = total;
+        // print("$currentGenrated/$totalGenrated");
+        refresh();
+      });
       BuildAzkar.play();
 
       cubit.emit(InitialAppStates());
