@@ -89,6 +89,7 @@ class scheduleNotificationsController {
 
   void stop() {
     loading = true;
+    refresh();
     BuildAzkar.stop();
     NotificationService().cancelAll().then((value) {
       cubit.emit(InitialAppStates());

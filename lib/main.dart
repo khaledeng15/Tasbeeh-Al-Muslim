@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+// import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:tsbeh/screens/HomeScreen/View/HomeScreen.dart';
@@ -106,8 +106,28 @@ Future<void> initFirebase() async {
 
 Future<void> setupTimeZone() async {
   tz.initializeTimeZones();
-  final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+  // final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+  final String timeZone = getNameLocalTimeZone();
+  print("timeZone:$timeZone");
   tz.setLocalLocation(tz.getLocation(timeZone));
+}
+
+String getNameLocalTimeZone() {
+  var locations = tz.timeZoneDatabase.locations;
+
+  int milliseconds = DateTime.now().timeZoneOffset.inMilliseconds;
+  String name = "";
+
+  locations.forEach((key, value) {
+    for (var element in value.zones) {
+      if (element.offset == milliseconds) {
+        name = value.name;
+        break;
+      }
+    }
+  });
+
+  return name;
 }
 
 void checkAppRating() {
@@ -128,7 +148,7 @@ void checkAppRating() {
 
     /// If true, it'll keep asking for the review on each new version (and satisfy with all the above conditions).
     /// If false, it only requests for the first time the conditions are satisfied.
-    keepRemind: false,
+    keepRemind: true,
 
     /// Request with delayed duaration
     duration: const Duration(seconds: 5),

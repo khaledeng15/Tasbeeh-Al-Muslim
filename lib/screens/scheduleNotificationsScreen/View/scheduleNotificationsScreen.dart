@@ -64,7 +64,7 @@ class scheduleNotificationsScreenState
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(MediaQuery.of(context).size.width, 45),
               ),
-              child: Text(
+              child: _controller.loading ? CircularProgressIndicator() : Text(
                 "ايقاف الاذكار",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
