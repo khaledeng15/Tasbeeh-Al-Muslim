@@ -46,7 +46,9 @@ class scheduleNotificationsController {
       IosNativeCall.getPenddingLocalNotification().then((list) {
         list.forEach((element) {
           pendingList.add(element);
-          timeList.add(element.notficationScheduledDate!);
+          if (element.notficationScheduledDate != null) {
+            timeList.add(element.notficationScheduledDate!);
+          }
         });
 
         // pendingList.sortedBy((it) => it.notficationId!);
