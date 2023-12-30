@@ -55,7 +55,7 @@ class NotificationService {
           true, // Play a sound when the notification is displayed and the application is in the foreground (only from iOS 10 onwards)
       sound:
           soundName, // Specifics the file path to play (only from iOS 10 onwards)
-      badgeNumber: 1, // The application's icon badge number
+      badgeNumber: 0, // The application's icon badge number
       // attachments: List<IOSNotificationAttachment>?, (only from iOS 10 onwards)
       // subtitle: String?, //Secondary description  (only from iOS 10 onwards)
       // threadIdentifier: String? (only from iOS 10 onwards)

@@ -11,9 +11,14 @@ import Flutter
       
       initChanel()
       GeneratedPluginRegistrant.register(with: self)
-      
+      do {
       if #available(iOS 10.0, *) {
         UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+          UIApplication.shared.applicationIconBadgeNumber = 0
+
+      }
+      } catch {
+        
       }
       
       // Get the singleton instance.
@@ -117,7 +122,8 @@ result(url)
         content.userInfo = ["payload": payload]
  
         content.sound = UNNotificationSound(named:UNNotificationSoundName(rawValue: sound))
-
+        content.badge = 0 ;
+        
 //        let thisTime:TimeInterval = minute * 60.0
         
         // show this notification five seconds from now
