@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tsbeh/appRoutes.dart';
 
 import '../../../Bloc/AppCubit.dart';
@@ -129,6 +131,14 @@ class AzkarController {
     if (_showLoading == true) {
       return;
     }
+    bool isDenied = await Permission.notification.isPermanentlyDenied;
+    if (isDenied) {
+      EasyLoading.showError(
+          "من فضل اسمح للتطبيق للوصول الى الإشعارات وذلك من الاعدادات",
+          duration: Duration(seconds: 30),
+          dismissOnTap: true);
+      return;
+    }
 
     zekerList = BuildAzkar.getZekerListFor(zekerListFor.selected);
     if (zekerList.length == 0) {
@@ -157,7 +167,10 @@ class AzkarController {
       cubit.emit(InitialAppStates());
       hideLoading();
 
-      AppRoutes.back();
+      EasyLoading.showSuccess("تم انشاء الاذكار بنجاح", dismissOnTap: false)
+          .then((value) {
+        AppRoutes.back();
+      });
     });
   }
 

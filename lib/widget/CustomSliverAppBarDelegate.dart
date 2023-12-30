@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:tsbeh/appRoutes.dart';
 import 'package:tsbeh/main.dart';
+import 'package:tsbeh/screens/YoutubeVideoScreen/View/YoutubeVideoScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Bloc/cubit/ThemeAppCubit.dart';
 import '../models/ZekerBuildNotifications/BuildAzkar.dart';
@@ -15,7 +18,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final size = 120;
-    final top = expandedHeight - shrinkOffset - size / 0.6;
+    final top = expandedHeight - shrinkOffset - size / 0.5;
     final width = context.width();
 
     return Container(
@@ -92,6 +95,19 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(
+            width: 150,
+            child: IconButton(
+                onPressed: () async {
+                  // navigateTo(router: YoutubeVideoScreen());
+
+                  final Uri _url = Uri.parse("https://youtu.be/T2N4WomMICA");
+                  if (!await launchUrl(_url)) {
+                    // throw Exception('Could not launch $_url');
+                  }
+                },
+                icon: Image.asset("$assetPath/youtubeBtn.png")),
+          ),
           Text('تسبيح المسلم',
               style: boldTextStyle(
                   size: 30,
