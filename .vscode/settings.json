@@ -1,11 +1,13 @@
 {
-    "sqltools.connections": [
-        {
-            "previewLimit": 50,
-            "driver": "SQLite",
-            "database": "${workspaceFolder:tsbehFlutter}/assets/json/database.db",
-            "name": "database tsbeh"
-        }
-    ],
-    "sqltools.useNodeRuntime": true
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "${workspaceFolder:tsbehFlutter}/assets/json/database.db",
+      "name": "database tsbeh"
+    }
+  ],
+  "sqltools.useNodeRuntime": true,
+  "cmake.configureOnOpen": false,
+  "dart.flutterSdkPath": ".fvm/versions/3.19.2"
 }

@@ -59,7 +59,7 @@ dependencies:
   provider: ^6.0.1
   path_provider: ^2.0.11
   shared_preferences: ^2.0.15
-  flutter_local_notifications: ^16.1.0
+  flutter_local_notifications: ^17.0.0
   timezone: ^0.9.1
   sqflite: ^2.0.0+4
   share_plus: ^7.2.1
@@ -89,7 +89,7 @@ dependencies:
   firebase_messaging: ^14.4.1
   firebase_core: ^2.10.0
   
-  permission_handler: ^11.0.1
+  permission_handler: ^11.3.0
   youtube_player_flutter: ^8.1.2
 
 

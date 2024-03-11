@@ -1,20 +1,20 @@
-buildscript {
-    ext.kotlin_version = '1.9.22'
-    repositories {
-        google()
-        mavenCentral()
-    }
+// buildscript {
+//     ext.kotlin_version = '1.9.22'
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        // START: FlutterFire Configuration
-         classpath 'com.google.gms:google-services:4.3.14'
-        // END: FlutterFire Configuration
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+//     dependencies {
+//         classpath 'com.android.tools.build:gradle:7.4.2'
+//         // START: FlutterFire Configuration
+//          classpath 'com.google.gms:google-services:4.3.14'
+//         // END: FlutterFire Configuration
+//         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
 
-    }
-}
+//     }
+// }
 
 allprojects {
     repositories {
@@ -34,3 +34,5 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+

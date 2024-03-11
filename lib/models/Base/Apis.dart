@@ -9,7 +9,7 @@ import 'ApiModel.dart';
 import 'ApiModel__.dart';
 import 'ApiRequest.dart';
 
-const String apiURL = "http://api.4topapps.com/APPS/tsbeh/v3";
+// const String apiURL = "http://api.4topapps.com/APPS/tsbeh/v3";
 
 class Apis {
   Apis({this.status, this.errorMessage});
@@ -50,33 +50,33 @@ class Apis {
   //========================================================================
   // USer
   //========================================================================
-  Future<List<ApiModel>> menuHome(bool isCaching) async {
-    try {
-      var request = ApiRequest();
-      String? URL = apiURL + "/api.php?mod=menu_home";
+  // Future<List<ApiModel>> menuHome(bool isCaching) async {
+  //   try {
+  //     var request = ApiRequest();
+  //     String? URL = apiURL + "/api.php?mod=menu_home";
 
-      request.URL = "$URL/graphql.json";
-      request.isCaching = true;
-      request.returnCaching = false;
-      request.isGet = true;
+  //     request.URL = "$URL/graphql.json";
+  //     request.isCaching = true;
+  //     request.returnCaching = false;
+  //     request.isGet = true;
 
-      ApiBase.requestApi(request, onResult: (response) {
-        if (response.statusCode == 200) {
-          // var _menu = ApiModel.fromList(response.responseMap!);
-        }
-      });
+  //     ApiBase.requestApi(request, onResult: (response) {
+  //       if (response.statusCode == 200) {
+  //         // var _menu = ApiModel.fromList(response.responseMap!);
+  //       }
+  //     });
 
-      // final List  res = await _httpClient.getRequest( apiURL + "/api.php?mod=menu_home",isCaching:isCaching);
-      // var _menu = ApiModel.fromList(res);
-      // // this.fromJson(res);
+  //     // final List  res = await _httpClient.getRequest( apiURL + "/api.php?mod=menu_home",isCaching:isCaching);
+  //     // var _menu = ApiModel.fromList(res);
+  //     // // this.fromJson(res);
 
-      // return _menu;
-    } catch (e) {
-      print("Could Not Load Data: $e");
-      return [];
-    }
-    return [];
-  }
+  //     // return _menu;
+  //   } catch (e) {
+  //     print("Could Not Load Data: $e");
+  //     return [];
+  //   }
+  //   return [];
+  // }
 
   void getList(
       {required String url,
