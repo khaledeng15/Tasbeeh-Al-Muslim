@@ -91,6 +91,7 @@ dependencies:
   
   permission_handler: ^11.3.0
   youtube_player_flutter: ^8.1.2
+  device_info_plus: ^9.1.2
 
 
 # For information on the generic Dart part of this file, see the

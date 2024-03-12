@@ -42,7 +42,13 @@ android {
     // ndkVersion flutter.ndkVersion
     ndkVersion "25.1.8937393"
 
+ defaultConfig {
+    multiDexEnabled true
+  }
+
     compileOptions {
+            // coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -91,6 +97,8 @@ flutter {
 }
 
 dependencies {
+    //   coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:32.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'

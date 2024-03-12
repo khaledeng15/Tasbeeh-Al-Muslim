@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:device_info_plus/device_info_plus.dart';
 
 import '../../models/zekerModel.dart';
 
@@ -155,12 +156,23 @@ class NotificationService {
             sound: true,
           );
     } else if (Platform.isAndroid) {
-      final bool? result2 = await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.requestNotificationsPermission();
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-      print("requestNotificationsPermission: $result2");
+      final androidInfo = await deviceInfo.androidInfo;
+      int sdk = androidInfo.version.sdkInt;
+      if (sdk < 34) {
+        final bool? result2 = await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestNotificationsPermission();
+        print("requestNotificationsPermission: $result2");
+      } else {
+        final bool? result2 = await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestExactAlarmsPermission();
+        print("requestNotificationsPermission: $result2");
+      }
     }
   }
 
