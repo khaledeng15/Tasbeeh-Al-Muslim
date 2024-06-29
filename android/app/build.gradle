@@ -75,7 +75,7 @@ android {
 
  signingConfigs {
         release {
-               storeFile file('/Volumes/MAC_DATA/work/CYBEASY/Development/tsbeh/Tsbeh-Flutter/key.jks')
+               storeFile file('../../key.jks')
             storePassword '123456'
             keyAlias 'key0'
             keyPassword '123456'
