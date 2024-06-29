@@ -160,13 +160,14 @@ class NotificationService {
 
       final androidInfo = await deviceInfo.androidInfo;
       int sdk = androidInfo.version.sdkInt;
-      if (sdk < 34) {
-        final bool? result2 = await flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>()
-            ?.requestNotificationsPermission();
-        print("requestNotificationsPermission: $result2");
-      } else {
+      // if (sdk < 34) {
+      final bool? result2 = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+      print("requestNotificationsPermission: $result2");
+      // }
+      if (sdk >= 34) {
         final bool? result2 = await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()

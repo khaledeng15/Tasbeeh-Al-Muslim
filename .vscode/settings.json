@@ -9,5 +9,5 @@
   ],
   "sqltools.useNodeRuntime": true,
   "cmake.configureOnOpen": false,
-  "dart.flutterSdkPath": ".fvm/versions/3.19.2"
+  "dart.flutterSdkPath": ".fvm/versions/3.22.2"
 }

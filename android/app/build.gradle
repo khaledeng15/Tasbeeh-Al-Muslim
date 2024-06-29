@@ -38,7 +38,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.mora"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34 //flutter.compileSdkVersion
     // ndkVersion flutter.ndkVersion
     ndkVersion "25.1.8937393"
 
@@ -47,7 +47,8 @@ android {
   }
 
     compileOptions {
-            // coreLibraryDesugaringEnabled true
+           coreLibraryDesugaringEnabled true
+
 
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -67,7 +68,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21//flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 33// flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -106,4 +107,9 @@ dependencies {
     implementation("com.google.android.play:review-ktx:2.0.1")
     implementation("com.google.android.play:app-update:2.1.0")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
+
+
 }

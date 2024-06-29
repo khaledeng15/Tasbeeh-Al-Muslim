@@ -4,13 +4,13 @@ import 'package:app_review_helper/app_review_helper.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 // import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:tsbeh/screens/HomeScreen/View/HomeScreen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'Bloc/AppCubit.dart';
 import 'Bloc/cubit/ThemeAppCubit.dart';
@@ -198,17 +198,17 @@ class MyApp extends StatelessWidget {
                 : ThemeMode.light,
             debugShowCheckedModeBanner: false,
             home: HomeScreen(),
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              Locale('en', ''),
-              Locale('ar', ''),
-            ],
-            locale: ThemeAppCubit.get(themecontext).appLocal,
+            // localizationsDelegates: const [
+            //   AppLocalizations.delegate,
+            //   GlobalMaterialLocalizations.delegate,
+            //   GlobalWidgetsLocalizations.delegate,
+            //   GlobalCupertinoLocalizations.delegate,
+            // ],
+            // supportedLocales: [
+            //   Locale('en', ''),
+            //   Locale('ar', ''),
+            // ],
+            // locale: ThemeAppCubit.get(themecontext).appLocal,
           );
         },
       ),

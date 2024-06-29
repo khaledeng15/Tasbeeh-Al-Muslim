@@ -161,7 +161,7 @@ class HomeScreenState extends State<HomeScreen> {
                 "ساعدنا وانشر التطبيق ولك أجر فاعله",
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600),
               )
             ],
