@@ -44,7 +44,6 @@ class NotificationService {
       fullScreenIntent: true,
       priority: Priority.high,
       playSound: true,
-      onlyAlertOnce: true,
     );
   }
 
