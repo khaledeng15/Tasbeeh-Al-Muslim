@@ -15,7 +15,7 @@ class AudioPlayerController {
 
   AudioPlayerController(this.refresh);
 
-  late ConcatenatingAudioSource playlist;
+  List<AudioSource> playlist = [];
   late List<ApiModel> list;
   late ApiModel model;
 
@@ -35,15 +35,19 @@ class AudioPlayerController {
     await session.configure(const AudioSessionConfiguration.music());
 
     // Listen to errors during playback.
-    player.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace stackTrace) {
-      print('A stream error occurred: $e');
-    });
+    player.playbackEventStream.listen(
+      (event) {},
+      onError: (Object e, StackTrace stackTrace) {
+        print('A stream error occurred: $e');
+      },
+    );
     try {
       buildPlaylist();
       // Preloading audio is not currently supported on Linux.
-      await player.setAudioSource(playlist,
-          preload: kIsWeb || defaultTargetPlatform != TargetPlatform.linux);
+      // await player.setAudioSources(
+      //   playlist,
+      //   preload: kIsWeb || defaultTargetPlatform != TargetPlatform.linux,
+      // );
     } catch (e) {
       // Catch load errors: 404, invalid url...
       print("Error loading audio source: $e");
@@ -54,24 +58,16 @@ class AudioPlayerController {
     return url.replaceAll(".pls", ".weba");
   }
 
-  void buildPlaylist() {
-    List<AudioSource> lst = [];
-    for (int i = 0; i < list.length; i++) {
-      ApiModel temp = list[i];
-      lst.add(AudioSource.uri(
-        Uri.parse(urlSupportedExtension(temp.url!)),
-        tag: MediaItem(
-          id: temp.itemId,
-          album: model.titleParent,
-          title: temp.title,
-        ),
-      ));
-    }
+  // استبدال ConcatenatingAudioSource بالطريقة الحديثة باستخدام setAudioSources
 
-    playlist = ConcatenatingAudioSource(children: [
-      if (kIsWeb ||
-          ![TargetPlatform.windows, TargetPlatform.linux]
-              .contains(defaultTargetPlatform))
+  Future<void> buildPlaylist() async {
+    // إضافة المقطع الرئيسي (model) إذا كان مسموح به حسب المنصة
+    if (kIsWeb ||
+        ![
+          TargetPlatform.windows,
+          TargetPlatform.linux,
+        ].contains(defaultTargetPlatform)) {
+      playlist.add(
         ClippingAudioSource(
           child: AudioSource.uri(Uri.parse(urlSupportedExtension(model.url!))),
           tag: MediaItem(
@@ -80,16 +76,41 @@ class AudioPlayerController {
             title: model.title,
           ),
         ),
-    ]);
+      );
+    }
 
-    playlist.addAll(lst);
+    // 2. إضافة باقي المقاطع من list
+    for (int i = 0; i < list.length; i++) {
+      ApiModel temp = list[i];
+      playlist.add(
+        AudioSource.uri(
+          Uri.parse(urlSupportedExtension(temp.url!)),
+          tag: MediaItem(
+            id: temp.itemId,
+            album: model.titleParent,
+            title: temp.title,
+            artist: temp.title,
+            artUri: Uri.parse(
+              'https://www.cybeasy.com/Tasbeeh-Al-Muslim/vapp-landing/img/logo.png',
+            ),
+          ),
+        ),
+      );
+    }
+
+    // إعداد قائمة التشغيل في المشغل
+    await player.setAudioSources(
+      playlist,
+      // preload: kIsWeb || defaultTargetPlatform != TargetPlatform.linux,
+    );
   }
 
   Stream<PositionData> get positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-          player.positionStream,
-          player.bufferedPositionStream,
-          player.durationStream,
-          (position, bufferedPosition, duration) => PositionData(
-              position, bufferedPosition, duration ?? Duration.zero));
+        player.positionStream,
+        player.bufferedPositionStream,
+        player.durationStream,
+        (position, bufferedPosition, duration) =>
+            PositionData(position, bufferedPosition, duration ?? Duration.zero),
+      );
 }

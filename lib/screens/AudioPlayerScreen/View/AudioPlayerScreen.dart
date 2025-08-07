@@ -168,7 +168,8 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
           return ReorderableListView(
             onReorder: (int oldIndex, int newIndex) {
               if (oldIndex < newIndex) newIndex--;
-              _controller.playlist.move(oldIndex, newIndex);
+              // _controller.playlist.move(oldIndex, newIndex);
+              moveItem(_controller.playlist, oldIndex, newIndex);
             },
             children: [
               for (var i = 1; i < sequence.length; i++) row(sequence, state, i),
@@ -177,6 +178,11 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
         },
       ),
     );
+  }
+
+  void moveItem<T>(List<T> list, int oldIndex, int newIndex) {
+    final item = list.removeAt(oldIndex);
+    list.insert(newIndex, item);
   }
 
   Widget headerlistMedai() {

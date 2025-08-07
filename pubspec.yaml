@@ -79,7 +79,7 @@ dependencies:
 
     # Audio
   just_audio: ^0.10.4
-  just_audio_background: ^0.0.1-beta.7
+  just_audio_background: ^0.0.1-beta.17
   time_range_picker: ^2.3.1
   audio_session: ^0.2.2
 
