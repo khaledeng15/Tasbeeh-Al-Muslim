@@ -20,7 +20,7 @@ version: 1.0.16+18 #android
 # version: 3.9.2+15
 
 environment:
-  sdk: ">=2.19.5 <3.0.0"
+  sdk: ^3.8.1
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,15 +36,14 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons:
-    ^1.0.2
+  cupertino_icons: ^1.0.8
 
-    # Base
-  nb_utils: ^7.0.3
-  # intl:
-  #   ^0.19.0
+  #    # Base
+  nb_utils: ^7.1.7+2
+  #  # intl:
+  #  #   ^0.19.0
 
-    # Common
+  # Common
   http: ^1.1.0
   html:
     ^0.15.0
@@ -52,26 +51,26 @@ dependencies:
     # IMAGE
   cached_network_image: ^3.2.1
 
-  bloc: ^8.0.2
-  flutter_bloc: ^8.0.1
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
   flutter_easyloading: ^3.0.5
   timeago: ^3.1.0
   provider: ^6.0.1
-  path_provider: ^2.0.11
-  shared_preferences: ^2.0.15
-  flutter_local_notifications: ^17.2.3 
-  timezone: ^0.9.1
+  path_provider: ^2.1.5
+  shared_preferences: ^2.5.3
+  flutter_local_notifications: ^19.4.0
+  timezone: ^0.10.1
   sqflite: ^2.0.0+4
-  share_plus: ^9.0.0
+  share_plus: ^11.0.0
   url_launcher: ^6.1.2
-  # flutter_native_timezone: ^2.0.0
-  google_fonts: ^6.1.0
-  # package_info_plus: ^3.1.0
+
+  google_fonts: ^6.2.1
+
   rect_getter: ^1.1.0
-  optimize_battery: ^0.0.4
-  app_review_helper: ^0.7.1
-  new_version_plus: ^0.0.9
-  package_info_plus: ^4.0.2
+  #  disable_battery_optimization: ^1.1.1
+  app_review_helper: ^0.10.2
+  new_version_plus: ^0.1.1
+  package_info_plus: ^8.3.0
 
   # WEB TOOLS
   webview_flutter: ^4.0.1
@@ -79,20 +78,20 @@ dependencies:
     ^1.0.0+1
 
     # Audio
-  just_audio: ^0.9.38
+  just_audio: ^0.10.4
   just_audio_background: ^0.0.1-beta.7
-  time_range_picker: ^2.3.0
+  time_range_picker: ^2.3.1
+  audio_session: ^0.2.2
 
   # firebase
   firebase_crashlytics: ^4.0.2
   firebase_analytics: ^11.1.0
   firebase_messaging: ^15.0.2
   firebase_core: ^3.1.1
-  
-  permission_handler: ^11.3.0
-  youtube_player_flutter: ^9.0.1
-  device_info_plus: ^10.1.0
 
+  permission_handler: ^12.0.1
+  youtube_player_flutter: ^9.1.1
+  device_info_plus: ^11.5.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -111,9 +110,8 @@ flutter_icons:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
- 
 flutter:
   # generate: true # Add this line
   uses-material-design: true

@@ -1,11 +1,12 @@
 import 'dart:io';
 
+// import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:optimize_battery/optimize_battery.dart';
+
 import 'package:tsbeh/helper/connection/cash/CashLocal.dart';
 import 'package:tsbeh/screens/AudioPlayerScreen/View/ControlButtons.dart';
 
@@ -16,7 +17,7 @@ import '../Controller/AudioPlayerController.dart';
 
 class AudioPlayerScreen extends StatefulWidget {
   const AudioPlayerScreen({Key? key, required this.model, required this.list})
-      : super(key: key);
+    : super(key: key);
 
   final ApiModel model;
   final List<ApiModel> list;
@@ -37,9 +38,7 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
     _controller.onInit(widget.list, widget.model);
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
 
-    FirebaseAnalytics.instance.logEvent(
-      name: 'AudioPlayerScreen',
-    );
+    FirebaseAnalytics.instance.logEvent(name: 'AudioPlayerScreen');
 
     checkBatteryOptimization(false);
   }
@@ -71,7 +70,8 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
       return;
     }
 
-    isIgnoringBattery = await OptimizeBattery.isIgnoringBatteryOptimizations();
+    // isIgnoringBattery =
+    //     await DisableBatteryOptimization.isBatteryOptimizationDisabled ?? false;
     if (isIgnoringBattery == false) {
       if (forceShow == false) {
         String skip = CashLocal.getStringCash("IgnoringBatteryOptimizations");
@@ -81,49 +81,50 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
       }
 
       showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-                title: Text("جهازك يقوم بغلق التطبيق فى الخلفيه",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer)),
-                content: Text(
-                    "لكى يعمل التطبيق فى الخلفيه يرجي الغاء القيود على البطاريه",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer)),
-                actions: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text(
-                          'الغاء',
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            OptimizeBattery.openBatteryOptimizationSettings(),
-                        child: const Text('فتح الاعدادات',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ],
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            "جهازك يقوم بغلق التطبيق فى الخلفيه",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+          content: Text(
+            "لكى يعمل التطبيق فى الخلفيه يرجي الغاء القيود على البطاريه",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('الغاء'),
+                ),
+                // TextButton(
+                //   onPressed: () => DisableBatteryOptimization
+                //       .showDisableBatteryOptimizationSettings(),
+                //   child: const Text('فتح الاعدادات',
+                //       style: TextStyle(fontWeight: FontWeight.bold)),
+                // ),
+              ],
+            ),
+            forceShow == true
+                ? SizedBox()
+                : TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      CashLocal.saveCash("IgnoringBatteryOptimizations", "1");
+                    },
+                    child: const Text('لا تظهر هذه الرساله مره اخرى'),
                   ),
-                  forceShow == true
-                      ? SizedBox()
-                      : TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            CashLocal.saveCash(
-                                "IgnoringBatteryOptimizations", "1");
-                          },
-                          child: const Text('لا تظهر هذه الرساله مره اخرى'),
-                        ),
-                ],
-              ));
+          ],
+        ),
+      );
     }
   }
 
@@ -139,18 +140,21 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
                   onPressed: () {
                     checkBatteryOptimization(true);
                   },
-                  icon: Icon(Icons.battery_saver_sharp))
+                  icon: Icon(Icons.battery_saver_sharp),
+                ),
         ],
       ),
-      body: Column(children: [
-        Cover(),
-        const SizedBox(height: 30.0),
-        ControlButtons(player),
-        seekBarConrollers(),
-        const SizedBox(height: 8.0),
-        headerlistMedai(),
-        listMedai()
-      ]),
+      body: Column(
+        children: [
+          Cover(),
+          const SizedBox(height: 30.0),
+          ControlButtons(player),
+          seekBarConrollers(),
+          const SizedBox(height: 8.0),
+          headerlistMedai(),
+          listMedai(),
+        ],
+      ),
     );
   }
 
@@ -167,7 +171,7 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
               _controller.playlist.move(oldIndex, newIndex);
             },
             children: [
-              for (var i = 1; i < sequence.length; i++) row(sequence, state, i)
+              for (var i = 1; i < sequence.length; i++) row(sequence, state, i),
             ],
           );
         },
@@ -188,17 +192,15 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
                 Icon(Icons.repeat, color: Colors.orange),
                 Icon(Icons.repeat_one, color: Colors.orange),
               ];
-              const cycleModes = [
-                LoopMode.off,
-                LoopMode.all,
-                LoopMode.one,
-              ];
+              const cycleModes = [LoopMode.off, LoopMode.all, LoopMode.one];
               final index = cycleModes.indexOf(loopMode);
               return IconButton(
                 icon: icons[index],
                 onPressed: () {
-                  player.setLoopMode(cycleModes[
-                      (cycleModes.indexOf(loopMode) + 1) % cycleModes.length]);
+                  player.setLoopMode(
+                    cycleModes[(cycleModes.indexOf(loopMode) + 1) %
+                        cycleModes.length],
+                  );
                 },
               );
             },
@@ -207,7 +209,8 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
             child: Text(
               "القائمه",
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer),
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -240,9 +243,7 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
       builder: (context, snapshot) {
         final positionData = snapshot.data;
         if ((positionData?.duration ?? Duration.zero) == Duration.zero) {
-          return SizedBox(
-            height: 20,
-          );
+          return SizedBox(height: 20);
         } else {
           return SeekBar(
             duration: positionData?.duration ?? Duration.zero,
@@ -259,53 +260,67 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
 
   Widget Cover() {
     return Container(
-      decoration: BoxDecoration(boxShadow: <BoxShadow>[
-        BoxShadow(
-            color: Colors.black87, blurRadius: 15.0, offset: Offset(0.0, 0.75))
-      ], color: Theme.of(context).colorScheme.primary),
-      child: Stack(children: [
-        Image.asset(
-          "$assetPath/cover.jpg",
-          height: 200,
-          width: double.maxFinite,
-          fit: BoxFit.cover,
-        ),
-        Container(
-          width: double.maxFinite,
-          height: 200,
-          color: Colors.black38,
-          child: Container(
-            child: StreamBuilder<SequenceState?>(
-              stream: player.sequenceStateStream,
-              builder: (context, snapshot) {
-                final state = snapshot.data;
-                if (state?.sequence.isEmpty ?? true) {
-                  return const SizedBox();
-                }
-                final metadata = state!.currentSource!.tag as MediaItem;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(metadata.album!,
+      decoration: BoxDecoration(
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black87,
+            blurRadius: 15.0,
+            offset: Offset(0.0, 0.75),
+          ),
+        ],
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      child: Stack(
+        children: [
+          Image.asset(
+            "$assetPath/cover.jpg",
+            height: 200,
+            width: double.maxFinite,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            width: double.maxFinite,
+            height: 200,
+            color: Colors.black38,
+            child: Container(
+              child: StreamBuilder<SequenceState?>(
+                stream: player.sequenceStateStream,
+                builder: (context, snapshot) {
+                  final state = snapshot.data;
+                  if (state?.sequence.isEmpty ?? true) {
+                    return const SizedBox();
+                  }
+                  final metadata = state!.currentSource!.tag as MediaItem;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        metadata.album!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold)),
-                    Text(metadata.title,
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        metadata.title,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold)),
-                  ],
-                );
-              },
+                          color: Colors.white70,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
-        )
-      ]),
+        ],
+      ),
     );
   }
 
@@ -330,8 +345,9 @@ class AudioPlayerScreenState extends State<AudioPlayerScreen>
             sequence[i].tag.title as String,
             textAlign: TextAlign.right,
             style: TextStyle(
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.onPrimaryContainer),
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
           ),
           onTap: () {
             player.seek(Duration.zero, index: i);

@@ -125,10 +125,11 @@ class NotificationService {
 
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
-            requestSoundPermission: true,
-            requestBadgePermission: true,
-            requestAlertPermission: true,
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+      // onDidReceiveLocalNotification: onDidReceiveLocalNotification
+    );
 
 // final LinuxInitializationSettings initializationSettingsLinux =
 //     const LinuxInitializationSettings(
@@ -213,9 +214,10 @@ class NotificationService {
         zekerModel.notficationScheduledDate!,
         // tz.TZDateTime.now(tz.local).add( Duration(minutes: minutes)),
         notificationDetails(zekerModel),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        // androidAllowWhileIdle: true,
+        // uiLocalNotificationDateInterpretation:
+        //     UILocalNotificationDateInterpretation.absoluteTime,
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
         matchDateTimeComponents: DateTimeComponents.time,
         payload: zekerModel.toStringJson());
 
