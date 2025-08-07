@@ -28,36 +28,45 @@ class HttpClient {
     return key;
   }
 
-  void request(String path, bool isGet,
-      {Map<String, dynamic> body = const {},
-      bool isCaching = false,
-      String cashKey = "",
-      Map<String, String> headers = const {},
-      Function(ApiResponse)? onResult,
-      required Map<String, dynamic> query}) {
+  void request(
+    String path,
+    bool isGet, {
+    Map<String, dynamic> body = const {},
+    bool isCaching = false,
+    String cashKey = "",
+    Map<String, String> headers = const {},
+    Function(ApiResponse)? onResult,
+    required Map<String, dynamic> query,
+  }) {
     if (isGet) {
-      get(path,
-          body: body,
-          isCaching: isCaching,
-          cashKey: cashKey,
-          headers: headers,
-          onResult: onResult);
+      get(
+        path,
+        body: body,
+        isCaching: isCaching,
+        cashKey: cashKey,
+        headers: headers,
+        onResult: onResult,
+      );
     } else {
-      post(path,
-          body: body,
-          isCaching: isCaching,
-          cashKey: cashKey,
-          headers: headers,
-          onResult: onResult);
+      post(
+        path,
+        body: body,
+        isCaching: isCaching,
+        cashKey: cashKey,
+        headers: headers,
+        onResult: onResult,
+      );
     }
   }
 
-  Future<void> get(String path,
-      {Map<String, dynamic>? body,
-      bool isCaching = false,
-      String cashKey = "",
-      Map<String, String> headers = const {},
-      Function(ApiResponse)? onResult}) async {
+  Future<void> get(
+    String path, {
+    Map<String, dynamic>? body,
+    bool isCaching = false,
+    String cashKey = "",
+    Map<String, String> headers = const {},
+    Function(ApiResponse)? onResult,
+  }) async {
     try {
       var url = path;
 
@@ -82,7 +91,8 @@ class HttpClient {
 
           Response cashRespone = Response(res, 200);
           onResult!(
-              ApiResponse(cashRespone, null, cashRespone.statusCode, true));
+            ApiResponse(cashRespone, null, cashRespone.statusCode, true),
+          );
           // return res;
         }
         // else {
@@ -96,9 +106,10 @@ class HttpClient {
       //  ..headers.addAll(req_headers) ;
       var uri = Uri.parse(url);
       var request = Request('GET', uri)
-            ..headers.addAll(
-                headers) //if u have headers, basic auth, token bearer... Else remove line
-          ;
+        ..headers.addAll(
+          headers,
+        ) //if u have headers, basic auth, token bearer... Else remove line
+        ;
 
       var bodyJson = jsonEncode(body);
       request.body = bodyJson;
@@ -117,8 +128,11 @@ class HttpClient {
       if (statusCode >= 200 && statusCode < 299) {
         if (isCaching) {
           CashLocal.removeCacheContains(getkey(cashKey, url));
-          CashLocal.saveCash(getkey(cashKey, url), respStr,
-              duration: const Duration(hours: DurationHours));
+          CashLocal.saveCash(
+            getkey(cashKey, url),
+            respStr,
+            duration: const Duration(hours: DurationHours),
+          );
         }
 
         if (respStr.isEmpty) {
@@ -126,12 +140,14 @@ class HttpClient {
           // return ApiResponse(cashRespone, null, cashRespone.statusCode);
 
           onResult!(
-              ApiResponse(cashRespone, null, cashRespone.statusCode, false));
+            ApiResponse(cashRespone, null, cashRespone.statusCode, false),
+          );
         } else {
           Response cashRespone = Response(respStr, 200);
           // return ApiResponse(cashRespone, null, cashRespone.statusCode);
           onResult!(
-              ApiResponse(cashRespone, null, cashRespone.statusCode, false));
+            ApiResponse(cashRespone, null, cashRespone.statusCode, false),
+          );
         }
       } else if (statusCode >= 400 && statusCode < 500) {
         throw ClientErrorException();
@@ -145,12 +161,14 @@ class HttpClient {
     }
   }
 
-  Future<void> post(String path,
-      {Map<String, dynamic> body = const {},
-      bool isCaching = false,
-      String cashKey = "",
-      Map<String, String> headers = const {},
-      Function(ApiResponse)? onResult}) async {
+  Future<void> post(
+    String path, {
+    Map<String, dynamic> body = const {},
+    bool isCaching = false,
+    String cashKey = "",
+    Map<String, String> headers = const {},
+    Function(ApiResponse)? onResult,
+  }) async {
     try {
       var url = path;
 
@@ -158,17 +176,21 @@ class HttpClient {
 
       // ======================================================================
       // check Cash
-      if (isCaching == true) {
-        final localData = await CashLocal.getStringCash(getkey(cashKey, url));
-        if (localData.isNotEmpty) {
-          log("$cashKey return Cashed data");
+      try {
+        if (isCaching == true) {
+          final localData = await CashLocal.getStringCash(getkey(cashKey, url));
+          if (localData.isNotEmpty) {
+            log("$cashKey return Cashed data");
 
-          Response cashRespone = Response(localData, 200);
-          // return ApiResponse(cashRespone, null, cashRespone.statusCode);
-          onResult!(
-              ApiResponse(cashRespone, null, cashRespone.statusCode, true));
+            Response cashRespone = Response(localData, 200);
+            // return ApiResponse(cashRespone, null, cashRespone.statusCode);
+            onResult!(
+              ApiResponse(cashRespone, null, cashRespone.statusCode, true),
+            );
+          }
         }
-      }
+      } catch (e) {}
+
       // ======================================================================
       Response response;
       var uri = Uri.parse(path);
@@ -208,8 +230,11 @@ class HttpClient {
 
         if (isCaching) {
           CashLocal.removeCacheContains(getkey(cashKey, url));
-          CashLocal.saveCash(getkey(cashKey, url), respStr,
-              duration: const Duration(hours: DurationHours));
+          CashLocal.saveCash(
+            getkey(cashKey, url),
+            respStr,
+            duration: const Duration(hours: DurationHours),
+          );
         }
         onResult!(ApiResponse(response, res, response.statusCode, false));
       } else {
@@ -221,8 +246,13 @@ class HttpClient {
   }
 
   Future<dynamic> uploadFile(
-      String path, Map<String, String> body, String? image_name, File? image,
-      {bool isCaching = false, Map<String, String> headers = const {}}) async {
+    String path,
+    Map<String, String> body,
+    String? image_name,
+    File? image, {
+    bool isCaching = false,
+    Map<String, String> headers = const {},
+  }) async {
     // Response response;
 
     try {
@@ -239,7 +269,8 @@ class HttpClient {
 
       var request = MultipartRequest('POST', uri)
         ..headers.addAll(
-            headers) //if u have headers, basic auth, token bearer... Else remove line
+          headers,
+        ) //if u have headers, basic auth, token bearer... Else remove line
         ..fields.addAll(body);
 
       if (image != null) {
@@ -254,8 +285,11 @@ class HttpClient {
         final respStr = await response.stream.bytesToString();
 
         if (isCaching) {
-          CashLocal.saveCash("veli-$url-get", respStr,
-              duration: const Duration(hours: DurationHours));
+          CashLocal.saveCash(
+            "veli-$url-get",
+            respStr,
+            duration: const Duration(hours: DurationHours),
+          );
         }
 
         if (respStr.isEmpty) {
