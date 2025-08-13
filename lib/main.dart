@@ -38,8 +38,9 @@ const dateFormat = 'MMM dd, yyyy';
 late final AudioPlayer player;
 
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-FirebaseAnalyticsObserver observer =
-    FirebaseAnalyticsObserver(analytics: analytics);
+FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
+  analytics: analytics,
+);
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -70,8 +71,9 @@ Future<void> main() async {
 
   await dbSQLiteProvider.db.database;
 
-  bool isDarkModeOn =
-      CashLocal.getStringCash('IsDark') != "true" ? false : true;
+  bool isDarkModeOn = CashLocal.getStringCash('IsDark') != "true"
+      ? false
+      : true;
 
   String lang = "ar";
 
@@ -83,9 +85,7 @@ Future<void> main() async {
 }
 
 Future<void> initFirebase() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FlutterError.onError = (errorDetails) {
     // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
@@ -96,12 +96,61 @@ Future<void> initFirebase() async {
     return true;
   };
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  if (Platform.isAndroid) {
-    messaging.subscribeToTopic("android");
-  } else if (Platform.isIOS) {
-    messaging.subscribeToTopic("ios");
+  final messaging = FirebaseMessaging.instance;
+
+  if (Platform.isIOS) {
+    // 1) تأكد إن الإشعارات مسموحة
+    final settings = await messaging.getNotificationSettings();
+    final allowed =
+        settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional;
+    if (!allowed) {
+      // المستخدم رافض/لسه ما وافقش → لا تشترك في توبك
+      return;
+    }
+
+    // 2) انتظر لحد ما APNS token يبقى متاح (المحاكي مش هيجيب توكن)
+    final apns = await _waitForApnsToken(timeout: const Duration(seconds: 10));
+    if (apns == null) {
+      // لسه مفيش توكن (أو محاكي) → لا تشترك دلوقتي
+      return;
+    }
+
+    // 3) آمن دلوقتي
+    try {
+      await messaging.subscribeToTopic("ios");
+    } catch (e, st) {
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason: 'subscribeToTopic(ios)',
+      );
+    }
+  } else if (Platform.isAndroid) {
+    // على أندرويد الاشتراك لا يعتمد على وجود صلاحية وقتها؛ مفيش كراش
+    try {
+      await messaging.subscribeToTopic("android");
+    } catch (e, st) {
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason: 'subscribeToTopic(android)',
+      );
+    }
   }
+}
+
+/// يرجّع الـ APNS token أو null لو ما ظهرش قبل الـ timeout
+Future<String?> _waitForApnsToken({
+  Duration timeout = const Duration(seconds: 10),
+}) async {
+  final deadline = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(deadline)) {
+    final t = await FirebaseMessaging.instance.getAPNSToken();
+    if (t != null) return t;
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+  return null;
 }
 
 Future<void> setupTimeZone() async {
@@ -168,11 +217,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: ((BuildContext context) =>
-                AppCubit()..getHomeData(context))),
+          create: ((BuildContext context) => AppCubit()..getHomeData(context)),
+        ),
         BlocProvider(
-            create: ((BuildContext context) => ThemeAppCubit()
-              ..ChangeAppMode(fromShared: IsDark, lang: langCode))),
+          create: ((BuildContext context) =>
+              ThemeAppCubit()
+                ..ChangeAppMode(fromShared: IsDark, lang: langCode)),
+        ),
         // BlocProvider(
         //   create: ((BuildContext context) => LanguageCubit()..changeStartLang),
         // ),
@@ -186,7 +237,9 @@ class MyApp extends StatelessWidget {
               child = EasyLoading.init()(context, child);
 
               return Directionality(
-                  textDirection: TextDirection.ltr, child: child);
+                textDirection: TextDirection.ltr,
+                child: child,
+              );
             },
             // builder: EasyLoading.init(),
             navigatorKey: navigatorKey,

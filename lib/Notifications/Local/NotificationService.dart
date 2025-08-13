@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -169,37 +170,92 @@ class NotificationService {
       onDidReceiveBackgroundNotificationResponse:
           onDidReceiveNotificationResponse,
     );
+  }
 
+  // static Future<void> askNotifPermissionIfNeeded() async {
+  //   if (Platform.isIOS) {
+  //     // For iOS:
+  //     // await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+  //     final bool? result = await flutterLocalNotificationsPlugin
+  //         .resolvePlatformSpecificImplementation<
+  //           IOSFlutterLocalNotificationsPlugin
+  //         >()
+  //         ?.requestPermissions(alert: true, badge: true, sound: true);
+
+  //     // Push notifications (Firebase Messaging) — required for APNS/FCM
+  //     await FirebaseMessaging.instance.requestPermission(
+  //       alert: true,
+  //       badge: true,
+  //       sound: true,
+  //     );
+  //   } else if (Platform.isAndroid) {
+  //     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  //     final androidInfo = await deviceInfo.androidInfo;
+  //     int sdk = androidInfo.version.sdkInt;
+  //     if (sdk >= 34) {
+  //       final bool? result2 = await flutterLocalNotificationsPlugin
+  //           .resolvePlatformSpecificImplementation<
+  //             AndroidFlutterLocalNotificationsPlugin
+  //           >()
+  //           ?.requestExactAlarmsPermission();
+  //       print("requestNotificationsPermission: $result2");
+  //     } else {
+  //       final bool? result2 = await flutterLocalNotificationsPlugin
+  //           .resolvePlatformSpecificImplementation<
+  //             AndroidFlutterLocalNotificationsPlugin
+  //           >()
+  //           ?.requestNotificationsPermission();
+  //       print("requestNotificationsPermission: $result2");
+  //     }
+  //   }
+  // }
+
+  static Future<void> askNotifPermissionIfNeeded() async {
     if (Platform.isIOS) {
-      // For iOS:
-      // await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
-      final bool? result = await flutterLocalNotificationsPlugin
+      await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin
           >()
           ?.requestPermissions(alert: true, badge: true, sound: true);
-    } else if (Platform.isAndroid) {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-      final androidInfo = await deviceInfo.androidInfo;
-      int sdk = androidInfo.version.sdkInt;
-      // if (sdk < 34) {
-      final bool? result2 = await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >()
-          ?.requestNotificationsPermission();
-      print("requestNotificationsPermission: $result2");
-      // }
-      if (sdk >= 34) {
-        final bool? result2 = await flutterLocalNotificationsPlugin
-            .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin
-            >()
-            ?.requestExactAlarmsPermission();
-        print("requestNotificationsPermission: $result2");
+      // لطلب إذن إشعارات Push على iOS
+      await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      return;
+    }
+
+    // ANDROID
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final sdk = androidInfo.version.sdkInt;
+
+    final android = flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+
+    // 1) Exact Alarms إذا كانت مدعومة (Android 12+)
+    if (sdk >= 31) {
+      await android?.requestExactAlarmsPermission();
+      // على 31–33 قد يفتح شاشة "Alarms & reminders"
+      // على 34+ غالباً لازم المستخدم يفعّلها من الإعدادات (تفتح الشاشة له)
+    }
+
+    // 2) إذن الإشعارات العادي (POST_NOTIFICATIONS) عند الحاجة (Android 13+)
+    // ملاحظة: هذا مستقل عن Exact — لو بتعرض إشعارات على 33+، اطلبه.
+    if (sdk >= 33) {
+      final enabled = await android?.areNotificationsEnabled() ?? true;
+      if (!enabled) {
+        await android?.requestNotificationsPermission();
       }
     }
+
+    // 3) للإصدارات الأقدم من 31: لا يوجد Runtime permissions يمكن طلبها.
+    // لو حابب، تقدر تعرض رسالة ترشد المستخدم لفتح إعدادات التطبيق:
+    // if (sdk < 31) { await openAppSettings(); }  // عبر permission_handler
   }
 
   static void onDidReceiveNotificationResponse(

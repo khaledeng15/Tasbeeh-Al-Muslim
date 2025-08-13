@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '560991843913',
     projectId: 'tsbeh-e4931',
     databaseURL: 'https://tsbeh-e4931.firebaseio.com',
-    storageBucket: 'tsbeh-e4931.appspot.com',
+    storageBucket: 'tsbeh-e4931.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -64,9 +64,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '560991843913',
     projectId: 'tsbeh-e4931',
     databaseURL: 'https://tsbeh-e4931.firebaseio.com',
-    storageBucket: 'tsbeh-e4931.appspot.com',
+    storageBucket: 'tsbeh-e4931.firebasestorage.app',
     androidClientId: '560991843913-pjd0lltof043o0v6vmb75sm03kg0j36o.apps.googleusercontent.com',
     iosClientId: '560991843913-04vli0fbmarb7fcu2jg4nnurm771iaet.apps.googleusercontent.com',
     iosBundleId: 'com.greatideas4ap.taspieh',
   );
+
 }
