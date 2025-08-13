@@ -68,6 +68,15 @@ class AppCubit extends Cubit<AppStates> {
       appModel: AppModel.radioList,
     ),
     buildListHome(
+      itemId: "02_3",
+      title: "تفسير",
+      photo: "tafser.png",
+      url: "https://api.4topapps.com/APPS/tsbeh/v3/mp3Quran_tafser.php",
+      type: ApiType.open,
+      subType: ApiSubType.Open_radio_list,
+      appModel: AppModel.radioList,
+    ),
+    buildListHome(
       itemId: "03",
       headerInList: "اقرأ",
       title: "",
@@ -152,15 +161,16 @@ class AppCubit extends Cubit<AppStates> {
     ),
   ];
 
-  static ApiModel buildListHome(
-      {required String itemId,
-      required String title,
-      required String photo,
-      String? url,
-      String? headerInList,
-      required ApiType type,
-      required ApiSubType subType,
-      required AppModel appModel}) {
+  static ApiModel buildListHome({
+    required String itemId,
+    required String title,
+    required String photo,
+    String? url,
+    String? headerInList,
+    required ApiType type,
+    required ApiSubType subType,
+    required AppModel appModel,
+  }) {
     ApiModel model = ApiModel();
     model.itemId = itemId;
     model.title = title;
