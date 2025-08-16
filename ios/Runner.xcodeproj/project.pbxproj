@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		291E1FCA2E50869200748964 /* a1_2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 291E1FC92E50869200748964 /* a1_2.mp3 */; };
 		294D5F4B29EA15D900A1790A /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 294D5F4A29EA15D900A1790A /* logo.png */; };
 		295A1B1029ECBA3500561DB0 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 295A1B0F29ECBA3500561DB0 /* Entitlements.plist */; };
 		295A1E4129ECCD1700561DB0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295A1E4029ECCD1600561DB0 /* AudioToolbox.framework */; };
@@ -241,6 +242,7 @@
 /* Begin PBXFileReference section */
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		291E1FC92E50869200748964 /* a1_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = a1_2.mp3; sourceTree = "<group>"; };
 		2938712929FD4384007BB067 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		294D5F4A29EA15D900A1790A /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		295A1B0F29ECBA3500561DB0 /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				29DEBB8A29F3EF78006E933A /* a12_1.mp3 */,
+				291E1FC92E50869200748964 /* a1_2.mp3 */,
 				29DEBB8B29F3EF78006E933A /* a014.mp3 */,
 				29DEBB8C29F3EF78006E933A /* a028.mp3 */,
 				29DEBB8D29F3EF78006E933A /* a10_3.mp3 */,
@@ -966,6 +969,7 @@
 				29DEBCAE29F3EF78006E933A /* a31_1.mp3 in Resources */,
 				29DEBCA229F3EF78006E933A /* a064.mp3 in Resources */,
 				29DEBCE929F3EF79006E933A /* a053.mp3 in Resources */,
+				291E1FCA2E50869200748964 /* a1_2.mp3 in Resources */,
 				29DEBCFF29F3EF79006E933A /* a25_2.mp3 in Resources */,
 				29DEBCFE29F3EF79006E933A /* a18_2.mp3 in Resources */,
 				294D5F4B29EA15D900A1790A /* logo.png in Resources */,
