@@ -241,7 +241,7 @@ class HttpClient {
         onResult!(ApiResponse(response, res, response.statusCode, false));
       }
     } on SocketException {
-      throw ConnectionException();
+      // throw ConnectionException();
     }
   }
 
